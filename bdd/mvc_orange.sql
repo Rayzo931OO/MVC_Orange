@@ -1,48 +1,77 @@
 drop if exist mvc_orange;
+
 create new databases mvc_orange;
+
 use mvc_orange;
 
 CREATE TABLE user (
-  id INT PRIMARY KEY AUTO_INCREMENT UNIQUE,
-  nom VARCHAR(50) NOT NULL,
-  prenom VARCHAR(50) NOT NULL,
-  email VARCHAR(100) NOT NULL,
-  codePostal VARCHAR(5) NOT NULL,
-  adresse VARCHAR(100) NOT NULL,
-  telephone VARCHAR(20) NOT NULL
-  password VARCHAR(16) NOT NULL,
-  role VARCHAR(10) NOT NULL
+   id_utilisateur INT PRIMARY KEY AUTO_INCREMENT UNIQUE,
+   nom VARCHAR(50) NOT NULL,
+   prenom VARCHAR(50) NOT NULL,
+   email VARCHAR(100) NOT NULL,
+   code_postal VARCHAR(5) NOT NULL,
+   adresse VARCHAR(100) NOT NULL,
+   telephone VARCHAR(20) NOT NULL mot_de_passe VARCHAR(16) NOT NULL,
+   mot_de_passe VARCHAR(16) NOT NULL,
+   date_inscription DATETIME NOT NULL,
+   date_modification DATETIME,
+   role VARCHAR(10) NOT NULL
 );
+
 CREATE TABLE client (
-  numeroClient INT PRIMARY KEY AUTO_INCREMENT UNIQUE,
-  nom VARCHAR(50) NOT NULL,
-  prenom VARCHAR(50) NOT NULL,
-  email VARCHAR(100) NOT NULL,
-  codePostal VARCHAR(5) NOT NULL,
-  adresse VARCHAR(100) NOT NULL,
-  telephone VARCHAR(20) NOT NULL
-  password VARCHAR(16) NOT NULL,
-  role VARCHAR(10) NOT NULL
+   id_client INT PRIMARY KEY AUTO_INCREMENT UNIQUE,
+   id_utilisateur INT,
+   info_additionnel VARCHAR(255),
+   FOREIGN KEY (id_utilisateur) REFERENCES user(id_utilisateur)
 );
+
 CREATE TABLE technicien (
-  id INT PRIMARY KEY AUTO_INCREMENT UNIQUE,
-  nom VARCHAR(50) NOT NULL,
-  prenom VARCHAR(50) NOT NULL,
-  email VARCHAR(100) NOT NULL,
-  codePostal VARCHAR(5) NOT NULL,
-  adresse VARCHAR(100) NOT NULL,
-  telephone VARCHAR(20) NOT NULL
-  password VARCHAR(16) NOT NULL,
-  role VARCHAR(10) NOT NULL
+   id_technicien INT PRIMARY KEY AUTO_INCREMENT UNIQUE,
+   id_utilisateur INT,
+   expertise VARCHAR(255),
+   FOREIGN KEY (id_utilisateur) REFERENCES user(id_utilisateur)
 );
+
 CREATE TABLE admin (
-  id INT PRIMARY KEY AUTO_INCREMENT UNIQUE,
-  nom VARCHAR(50) NOT NULL,
-  prenom VARCHAR(50) NOT NULL,
-  email VARCHAR(100) NOT NULL,
-  codePostal VARCHAR(5) NOT NULL,
-  adresse VARCHAR(100) NOT NULL,
-  telephone VARCHAR(20) NOT NULL
-  password VARCHAR(16) NOT NULL,
-  role VARCHAR(10) NOT NULL
+   id_admin INT PRIMARY KEY AUTO_INCREMENT UNIQUE,
+   id_utilisateur INT,
+   grade_admin INT,
+   FOREIGN KEY (id_utilisateur) REFERENCES user(id_utilisateur)
 );
+
+CREATE TRIGGER insert_user
+AFTER
+INSERT ON user for each row
+BEGIN
+if new.role = 'client' then
+INSERT INTO client VALUES (null, new.id_utilisateur, "info_additionnel");
+ELSE IF new.role = 'technicien' then
+INSERT INTO technicien VALUES (null, new.id_utilisateur, "expertise");
+ELSE IF new.role = 'admin1' then
+INSERT INTO admin VALUES (null, new.id_utilisateur, 1);
+ELSE IF new.role = 'admin2' then
+INSERT INTO admin VALUES(null, new.id_utilisateur, 2);
+ELSE IF new.role = 'admin3' then
+INSERT INTO admin VALUES(null, new.id_utilisateur, 3);
+end if;
+END;
+
+CREATE TRIGGER delete_user
+AFTER
+INSERT ON user for each row
+BEGIN
+if new.role = 'client' then
+INSERT INTO client VALUES (null, new.id_utilisateur, "info_additionnel");
+ELSE IF new.role = 'technicien' then
+INSERT INTO technicien VALUES (null, new.id_utilisateur, "expertise");
+ELSE IF new.role = 'admin1' then
+INSERT INTO admin VALUES (null, new.id_utilisateur, 1);
+ELSE IF new.role = 'admin2' then
+INSERT INTO admin VALUES(null, new.id_utilisateur, 2);
+ELSE IF new.role = 'admin3' then
+INSERT INTO admin VALUES(null, new.id_utilisateur, 3);
+end if;
+END;
+
+-- insert into user a new user with null id
+INSERT INTO user VALUES(null,'Doe','John','john.doe@example.com','75000','123 Main St','0123456789','password123',now(),null,'admin1');

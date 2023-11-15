@@ -15,9 +15,6 @@ function insertClient($tab) // $tab <=> $_POST (formulaire)
 
 	//execution de la requete
 	mysqli_query($con, $requete);
-
-	//deconnexion
-	deconnexion($con);
 }
 function insertTechnicien($tab) // $tab <=> $_POST (formulaire)
 {
@@ -33,9 +30,6 @@ function insertTechnicien($tab) // $tab <=> $_POST (formulaire)
 
 	//execution de la requete
 	mysqli_query($con, $requete);
-
-	//deconnexion
-	deconnexion($con);
 }
 function selectWhereUser($email, $password)
 {
@@ -46,8 +40,6 @@ function selectWhereUser($email, $password)
 	//execution de la requete et récupération du produit
 	$leResultat = mysqli_query($con, $requete);
 	$unUser = mysqli_fetch_assoc($leResultat); //tableau associatif
-	//deconnexion
-	deconnexion($con);
 	//retour de user selectionné
 	return $unUser;
 }
@@ -60,8 +52,6 @@ function selectUserById($id)
 	//execution de la requete et récupération du produit
 	$leResultat = mysqli_query($con, $requete);
 	$unUser = mysqli_fetch_assoc($leResultat); //tableau associatif
-	//deconnexion
-	deconnexion($con);
 	//retour de user selectionné
 	return $unUser;
 }
@@ -84,14 +74,9 @@ function selectAllUser()
 			$clients[] = $row;
 		}
 
-		// Close the database connection
-		deconnexion($con);
-
 		// Return the clients array
 		return $clients;
 	} else {
-		// Close the database connection
-		deconnexion($con);
 
 		// Return an empty array if no clients found
 		return array();
@@ -106,9 +91,6 @@ function selectLikeUser ($mot, $role) {
 	//execution de la requete
 	$users = mysqli_query($con, $requete);
 
-	//deconnexion
-	deconnexion($con);
-
 	return $users;
 
 }
@@ -119,8 +101,6 @@ function updateUser($user, $targetFile){
 	$con = connexion();
 	//execution de la requete
 	mysqli_query($con, $requete);
-	//deconnexion
-	deconnexion($con);
 }
 function deleteUserById($id){
 	//ecriture de la requete
@@ -129,8 +109,6 @@ function deleteUserById($id){
 	$con = connexion();
 	//execution de la requete
 	mysqli_query($con, $requete);
-	//deconnexion
-	deconnexion($con);
 }
 
 
