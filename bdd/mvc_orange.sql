@@ -1,0 +1,48 @@
+drop if exist mvc_orange;
+create new databases mvc_orange;
+use mvc_orange;
+
+CREATE TABLE user (
+  id INT PRIMARY KEY AUTO_INCREMENT UNIQUE,
+  nom VARCHAR(50) NOT NULL,
+  prenom VARCHAR(50) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  codePostal VARCHAR(5) NOT NULL,
+  adresse VARCHAR(100) NOT NULL,
+  telephone VARCHAR(20) NOT NULL
+  password VARCHAR(16) NOT NULL,
+  role VARCHAR(10) NOT NULL
+);
+CREATE TABLE client (
+  numeroClient INT PRIMARY KEY AUTO_INCREMENT UNIQUE,
+  nom VARCHAR(50) NOT NULL,
+  prenom VARCHAR(50) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  codePostal VARCHAR(5) NOT NULL,
+  adresse VARCHAR(100) NOT NULL,
+  telephone VARCHAR(20) NOT NULL
+  password VARCHAR(16) NOT NULL,
+  role VARCHAR(10) NOT NULL
+);
+CREATE TABLE technicien (
+  id INT PRIMARY KEY AUTO_INCREMENT UNIQUE,
+  nom VARCHAR(50) NOT NULL,
+  prenom VARCHAR(50) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  codePostal VARCHAR(5) NOT NULL,
+  adresse VARCHAR(100) NOT NULL,
+  telephone VARCHAR(20) NOT NULL
+  password VARCHAR(16) NOT NULL,
+  role VARCHAR(10) NOT NULL
+);
+CREATE TABLE admin (
+  id INT PRIMARY KEY AUTO_INCREMENT UNIQUE,
+  nom VARCHAR(50) NOT NULL,
+  prenom VARCHAR(50) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  codePostal VARCHAR(5) NOT NULL,
+  adresse VARCHAR(100) NOT NULL,
+  telephone VARCHAR(20) NOT NULL
+  password VARCHAR(16) NOT NULL,
+  role VARCHAR(10) NOT NULL
+);
