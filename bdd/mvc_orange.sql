@@ -82,12 +82,6 @@ CREATE INDEX idx_technicien_user ON technicien(id_utilisateur);
 CREATE INDEX idx_admin_user ON admin(id_utilisateur);
 
 
-CREATE TABLE type_intervention (
-  id_type_intervention INT PRIMARY KEY AUTO_INCREMENT,
-  nom VARCHAR(50) NOT NULL,
-  description VARCHAR(200) NOT NULL
-);
-
 CREATE TABLE intervention (
   id_intervention INT PRIMARY KEY AUTO_INCREMENT,
   date_debut DATETIME NOT NULL,
@@ -98,8 +92,7 @@ CREATE TABLE intervention (
   description VARCHAR(200) NOT NULL,
   id_technicien INT NOT NULL,
   id_type_intervention INT NOT NULL,
-  FOREIGN KEY (id_technicien) REFERENCES technicien(id_technicien),
-  FOREIGN KEY (id_type_intervention) REFERENCES type_intervention(id_type_intervention)
+  FOREIGN KEY (id_technicien) REFERENCES technicien(id_technicien)
 );
 
 CREATE TABLE archive_intervention (
@@ -112,8 +105,15 @@ CREATE TABLE archive_intervention (
   description VARCHAR(200) NOT NULL,
   id_technicien INT NOT NULL,
   id_type_intervention INT NOT NULL,
-  FOREIGN KEY (id_technicien) REFERENCES technicien(id_technicien),
-  FOREIGN KEY (id_type_intervention) REFERENCES type_intervention(id_type_intervention)
+  FOREIGN KEY (id_technicien) REFERENCES technicien(id_technicien)
+);
+
+CREATE TABLE type_intervention (
+  id_type_intervention INT PRIMARY KEY AUTO_INCREMENT,
+  id_intervention INT,
+  nom VARCHAR(50) NOT NULL,
+  description VARCHAR(200) NOT NULL,
+  FOREIGN KEY (id_intervention) REFERENCES intervention(id_intervention)
 );
 
 DELIMITER $
@@ -205,6 +205,21 @@ BEGIN
     END IF;
 END$
 DELIMITER ;
+
+CREATE VIEW intervention_view AS (
+    SELECT
+        intervention.id_intervention AS inter_id,
+        intervention.date_debut,
+        intervention.date_fin,
+        intervention.date_creation,
+        intervention.date_modification,
+        intervention.status,
+        intervention.description AS interDescription,
+        technicien.id_technicien,
+        type_intervention.id_type_intervention,
+    FROM intervention
+    INNER JOIN type_intervention ON intervention.id_intervention = type_intervention.id_intervention
+);
 
 CREATE VIEW techniciens_view AS (
     SELECT
