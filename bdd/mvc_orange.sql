@@ -39,6 +39,27 @@ CREATE TABLE admin (
    FOREIGN KEY (id_utilisateur) REFERENCES user(id_utilisateur)
 );
 
+CREATE TABLE intervention (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  date_debut DATETIME NOT NULL,
+  date_fin DATETIME,
+  status VARCHAR(50) NOT NULL,
+  description VARCHAR(200) NOT NULL,
+  id_materiel INT NOT NULL,
+  id_technicien INT NOT NULL,
+  FOREIGN KEY (id_materiel) REFERENCES materiel(id_materiel),
+  FOREIGN KEY (id_technicien) REFERENCES technicien(id_technicien)
+);
+
+CREATE TABLE materiel (
+  id_materiel INT PRIMARY KEY AUTO_INCREMENT,
+  nom VARCHAR(50) NOT NULL,
+  description VARCHAR(100) NOT NULL,
+  id_client INT NOT NULL,
+  categorie VARCHAR(50) NOT NULL,
+  FOREIGN KEY (id_client) REFERENCES client(id_client)
+);
+
 CREATE TRIGGER insert_user
 AFTER
 INSERT ON user for each row
