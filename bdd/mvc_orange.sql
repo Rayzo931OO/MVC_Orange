@@ -288,7 +288,7 @@ CREATE VIEW type_intervention_view AS (
 INSERT INTO user (nom, prenom, email, code_postal, adresse, telephone, mot_de_passe, role) VALUES
 ('Dupont', 'Jean', 'jean.dupont@email.com', '75001', '123 Rue de Paris', '0123456789', 'password123', 'client'),
 ('Martin', 'Alice', 'alice.martin@email.com', '69001', '456 Avenue de Lyon', '0987654321', 'motdepasse456', 'technicien'),
-('Bernard', 'Lucas', 'lucas.bernard@email.com', '31000', '789 Rue de Toulouse', '1122334455', 'password789', 'admin'),
+('Bernard', 'Lucas', 'lucas.bernard@email.com', '31000', '789 Rue de Toulouse', '1122334455', 'password789', 'admin1'),
 ('Petit', 'Chloé', 'chloe.petit@email.com', '33000', '321 Rue de Bordeaux', '2233445566', 'passe321', 'client');
 INSERT INTO categorie (nom, description, type_categorie) VALUES
 ('Ordinateurs', 'Catégorie pour tous les ordinateurs', 'materiel'),
