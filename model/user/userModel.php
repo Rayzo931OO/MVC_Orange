@@ -52,8 +52,8 @@ class User
 	function selectUserById($id)
 	{
 		//ecriture de la requete
-		$req = $this->bdd->prepare("SELECT * from user where id= :id;");
-		$req->bindParam(':id', $id);
+		$req = $this->bdd->prepare("SELECT * from user where id_utilisateur= :id_utilisateur;");
+		$req->bindParam(':id_utilisateur', $id);
 		$req = $this->bdd->prepare($req);
 		$req->execute();
 		$res = $req->fetchAll();
@@ -82,7 +82,7 @@ class User
 	function updateUser($user, $avatar)
 	{
 		//ecriture de la requete
-		$req =  $this->bdd->prepare ("UPDATE user set nom= :nom, prenom= :prenom, email= :email, codePostal= :codePostal, adresse= :adresse, telephone= :telephone, avatar= :avatar where id= :id;");
+		$req =  $this->bdd->prepare ("UPDATE user set nom= :nom, prenom= :prenom, email= :email, codePostal= :codePostal, adresse= :adresse, telephone= :telephone, avatar= :avatar where id_utilisateur= :id_utilisateur;");
 		$req->bindParam(':nom', $user['nom']);
 		$req->bindParam(':prenom', $user['prenom']);
 		$req->bindParam(':email', $user['email']);
@@ -90,6 +90,7 @@ class User
 		$req->bindParam(':adresse', $user['adresse']);
 		$req->bindParam(':telephone', $user['telephone']);
 		$req->bindParam(':avatar', $avatar);	
+		$req->bindParam(':id_utilisateur', $user['id']);	
 		$req = $this->bdd->prepare($req);
 		$req->execute();
 		$res = $req->fetchAll();
@@ -98,8 +99,8 @@ class User
 	function deleteUserById($id)
 	{
 		//ecriture de la requete
-		$req =  $this->bdd->prepare ("DELETE from user where id= :id;");
-		$req->bindParam(':id', $id);
+		$req =  $this->bdd->prepare ("DELETE from user where id_utilisateur= :id_utilisateur;");
+		$req->bindParam(':id_utilisateur', $id);
 		$req = $this->bdd->prepare($req);
 		$req->execute();
 		$res = $req->fetchAll();

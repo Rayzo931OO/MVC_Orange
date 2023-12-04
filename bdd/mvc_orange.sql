@@ -146,37 +146,30 @@ BEGIN
 END$
 DELIMITER ;
 
+CREATE TABLE categorie (
+  id_categorie INT PRIMARY KEY AUTO_INCREMENT,
+  nom VARCHAR(50) NOT NULL,
+  description VARCHAR(100) NOT NULL,
+  type_categorie VARCHAR(50) NOT NULL
+);
+
 CREATE TABLE materiel (
   id_materiel INT PRIMARY KEY AUTO_INCREMENT,
   nom VARCHAR(50) NOT NULL,
-  description VARCHAR(100) NOT NULL
+  description VARCHAR(100) NOT NULL,
+  id_categorie INT NOT NULL,
+  FOREIGN KEY (id_categorie) REFERENCES categorie(id_categorie)
 );
 
 CREATE TABLE logiciel (
   id_logiciel INT PRIMARY KEY AUTO_INCREMENT,
   nom VARCHAR(50) NOT NULL,
   description VARCHAR(100) NOT NULL,
-  version VARCHAR(50) NOT NULL
-);
-
-CREATE TABLE categorie (
-  id_categorie INT PRIMARY KEY AUTO_INCREMENT,
-  nom VARCHAR(50) NOT NULL,
-  description TEXT,
-  type_categorie VARCHAR(50) NOT NULL
-);
-
-CREATE TABLE categorie_materiel (
+  version VARCHAR(50) NOT NULL,
   id_categorie INT NOT NULL,
-  PRIMARY KEY (id_categorie),
   FOREIGN KEY (id_categorie) REFERENCES categorie(id_categorie)
 );
 
-CREATE TABLE categorie_logiciel (
-  id_categorie INT NOT NULL,
-  PRIMARY KEY (id_categorie),
-  FOREIGN KEY (id_categorie) REFERENCES categorie(id_categorie)
-);
 
 CREATE TABLE jonction_materiel_categorie (
   id_materiel INT NOT NULL,
@@ -195,14 +188,18 @@ CREATE TABLE jonction_logiciel_categorie (
 );
 
 DELIMITER $
-CREATE TRIGGER insert_categorie
-AFTER INSERT ON categorie FOR EACH ROW
+CREATE TRIGGER insert_materiel
+AFTER INSERT ON materiel FOR EACH ROW
 BEGIN
-    IF NEW.type_categorie = 'materiel' THEN
-        INSERT INTO categorie_materiel (id_categorie) VALUES (NEW.id_categorie);
-    ELSEIF NEW.type_categorie = 'logiciel' THEN
-        INSERT INTO categorie_logiciel (id_categorie) VALUES (NEW.id_categorie);
-    END IF;
+   INSERT INTO junction_materiel_categorie(id_materiel, id_categorie) VALUES (NEW.id_materiel, NEW.id_categorie);
+END$
+DELIMITER ;
+
+DELIMITER $
+CREATE TRIGGER insert_logiciel
+AFTER INSERT ON logiciel FOR EACH ROW
+BEGIN
+   INSERT INTO junction_logiciel_categorie(id_logiciel, id_categorie) VALUES (NEW.id_logiciel, NEW.id_categorie);
 END$
 DELIMITER ;
 
@@ -274,25 +271,6 @@ CREATE VIEW client_view AS (
         client.info_additionnel
     FROM user
     INNER JOIN client ON user.id_utilisateur = client.id_utilisateur
-);
-
-CREATE VIEW materiel_categorie_view AS (
-    SELECT
-        categorie.id_categorie AS cat_id,
-        categorie.nom,
-        categorie.description,
-        categorie.type_categorie
-    FROM categorie
-    INNER JOIN categorie_materiel ON categorie.id_categorie = categorie_materiel.id_categorie
-);
-CREATE VIEW logiciel_categorie_view AS (
-    SELECT
-        categorie.id_categorie AS cat_id,
-        categorie.nom,
-        categorie.description,
-        categorie.type_categorie
-    FROM categorie
-    INNER JOIN categorie_logiciel ON categorie.id_categorie = categorie_logiciel.id_categorie
 );
 
 CREATE VIEW type_intervention_view AS (
