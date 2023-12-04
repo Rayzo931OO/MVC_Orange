@@ -3,6 +3,8 @@ $title = "Accueil Orange Tech";
 $h1 = "Pour vous identifier";
 ob_start();
 session_start();
+require_once("controleur/userController.php");
+$unControleur = new Controleur();
 ?>
 <?php
 if (!isset($_SESSION['email'])) {
