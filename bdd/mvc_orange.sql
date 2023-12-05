@@ -83,12 +83,6 @@ CREATE INDEX idx_technicien_user ON technicien(id_utilisateur);
 CREATE INDEX idx_admin_user ON admin(id_utilisateur);
 
 
-CREATE TABLE type_intervention (
-  id_type_intervention INT PRIMARY KEY AUTO_INCREMENT,
-  nom VARCHAR(50) NOT NULL,
-  description VARCHAR(200) NOT NULL
-);
-
 CREATE TABLE intervention (
   id_intervention INT PRIMARY KEY AUTO_INCREMENT,
   date_debut DATETIME NOT NULL,
@@ -99,8 +93,7 @@ CREATE TABLE intervention (
   description VARCHAR(200) NOT NULL,
   id_technicien INT NOT NULL,
   id_type_intervention INT NOT NULL,
-  FOREIGN KEY (id_technicien) REFERENCES technicien(id_technicien),
-  FOREIGN KEY (id_type_intervention) REFERENCES type_intervention(id_type_intervention)
+  FOREIGN KEY (id_technicien) REFERENCES technicien(id_technicien)
 );
 
 CREATE TABLE archive_intervention (
@@ -113,8 +106,15 @@ CREATE TABLE archive_intervention (
   description VARCHAR(200) NOT NULL,
   id_technicien INT NOT NULL,
   id_type_intervention INT NOT NULL,
-  FOREIGN KEY (id_technicien) REFERENCES technicien(id_technicien),
-  FOREIGN KEY (id_type_intervention) REFERENCES type_intervention(id_type_intervention)
+  FOREIGN KEY (id_technicien) REFERENCES technicien(id_technicien)
+);
+
+CREATE TABLE type_intervention (
+  id_type_intervention INT PRIMARY KEY AUTO_INCREMENT,
+  id_intervention INT,
+  nom VARCHAR(50) NOT NULL,
+  description VARCHAR(200) NOT NULL,
+  FOREIGN KEY (id_intervention) REFERENCES intervention(id_intervention)
 );
 
 DELIMITER $
@@ -147,37 +147,30 @@ BEGIN
 END$
 DELIMITER ;
 
+CREATE TABLE categorie (
+  id_categorie INT PRIMARY KEY AUTO_INCREMENT,
+  nom VARCHAR(50) NOT NULL,
+  description VARCHAR(100) NOT NULL,
+  type_categorie VARCHAR(50) NOT NULL
+);
+
 CREATE TABLE materiel (
   id_materiel INT PRIMARY KEY AUTO_INCREMENT,
   nom VARCHAR(50) NOT NULL,
-  description VARCHAR(100) NOT NULL
+  description VARCHAR(100) NOT NULL,
+  id_categorie INT NOT NULL,
+  FOREIGN KEY (id_categorie) REFERENCES categorie(id_categorie)
 );
 
 CREATE TABLE logiciel (
   id_logiciel INT PRIMARY KEY AUTO_INCREMENT,
   nom VARCHAR(50) NOT NULL,
   description VARCHAR(100) NOT NULL,
-  version VARCHAR(50) NOT NULL
-);
-
-CREATE TABLE categorie (
-  id_categorie INT PRIMARY KEY AUTO_INCREMENT,
-  nom VARCHAR(50) NOT NULL,
-  description TEXT,
-  type_categorie VARCHAR(50) NOT NULL
-);
-
-CREATE TABLE categorie_materiel (
+  version VARCHAR(50) NOT NULL,
   id_categorie INT NOT NULL,
-  PRIMARY KEY (id_categorie),
   FOREIGN KEY (id_categorie) REFERENCES categorie(id_categorie)
 );
 
-CREATE TABLE categorie_logiciel (
-  id_categorie INT NOT NULL,
-  PRIMARY KEY (id_categorie),
-  FOREIGN KEY (id_categorie) REFERENCES categorie(id_categorie)
-);
 
 CREATE TABLE jonction_materiel_categorie (
   id_materiel INT NOT NULL,
@@ -195,17 +188,49 @@ CREATE TABLE jonction_logiciel_categorie (
   FOREIGN KEY (id_categorie) REFERENCES categorie(id_categorie)
 );
 
-DELIMITER $
-CREATE TRIGGER insert_categorie
-AFTER INSERT ON categorie FOR EACH ROW
-BEGIN
-    IF NEW.type_categorie = 'materiel' THEN
-        INSERT INTO categorie_materiel (id_categorie) VALUES (NEW.id_categorie);
-    ELSEIF NEW.type_categorie = 'logiciel' THEN
-        INSERT INTO categorie_logiciel (id_categorie) VALUES (NEW.id_categorie);
-    END IF;
-END$
-DELIMITER ;
+-- DELIMITER $
+-- CREATE TRIGGER insert_materiel
+-- AFTER INSERT ON materiel FOR EACH ROW
+-- BEGIN
+--    INSERT INTO junction_materiel_categorie(id_materiel, id_categorie) VALUES (NEW.id_materiel, NEW.id_categorie);
+-- END$
+-- DELIMITER ;
+
+-- DELIMITER $
+-- CREATE TRIGGER insert_logiciel
+-- AFTER INSERT ON logiciel FOR EACH ROW
+-- BEGIN
+--    INSERT INTO junction_logiciel_categorie(id_logiciel, id_categorie) VALUES (NEW.id_logiciel, NEW.id_categorie);
+-- END$
+-- DELIMITER ;
+
+CREATE VIEW intervention_view AS (
+    SELECT
+        intervention.id_intervention AS inter_id,
+        intervention.date_debut,
+        intervention.date_fin,
+        intervention.date_creation,
+        intervention.date_modification,
+        intervention.status,
+        intervention.description AS interDescription,
+        intervention.id_technicien,
+        type_intervention.id_type_intervention
+    FROM intervention
+    INNER JOIN type_intervention ON intervention.id_intervention = type_intervention.id_intervention
+);
+
+-- CREATE TABLE intervention (
+--   id_intervention INT PRIMARY KEY AUTO_INCREMENT,
+--   date_debut DATETIME NOT NULL,
+--   date_fin DATETIME,
+--   date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--   date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+--   status VARCHAR(50) NOT NULL,
+--   description VARCHAR(200) NOT NULL,
+--   id_technicien INT NOT NULL,
+--   id_type_intervention INT NOT NULL,
+--   FOREIGN KEY (id_technicien) REFERENCES technicien(id_technicien)
+-- )
 
 CREATE VIEW techniciens_view AS (
     SELECT
@@ -262,25 +287,6 @@ CREATE VIEW client_view AS (
     INNER JOIN client ON user.id_utilisateur = client.id_utilisateur
 );
 
-CREATE VIEW materiel_categorie_view AS (
-    SELECT
-        categorie.id_categorie AS cat_id,
-        categorie.nom,
-        categorie.description,
-        categorie.type_categorie
-    FROM categorie
-    INNER JOIN categorie_materiel ON categorie.id_categorie = categorie_materiel.id_categorie
-);
-CREATE VIEW logiciel_categorie_view AS (
-    SELECT
-        categorie.id_categorie AS cat_id,
-        categorie.nom,
-        categorie.description,
-        categorie.type_categorie
-    FROM categorie
-    INNER JOIN categorie_logiciel ON categorie.id_categorie = categorie_logiciel.id_categorie
-);
-
 CREATE VIEW type_intervention_view AS (
    SELECT * FROM type_intervention
 );
@@ -296,36 +302,36 @@ INSERT INTO categorie (nom, description, type_categorie) VALUES
 ('Imprimantes', 'Catégorie pour toutes les imprimantes', 'materiel'),
 ('Logiciels de Sécurité', 'Catégorie pour les logiciels de sécurité', 'logiciel'),
 ('Périphériques', 'Catégorie pour les périphériques informatiques', 'materiel');
-INSERT INTO materiel (nom, description) VALUES
-('Ordinateur Portable', 'Un ordinateur portable de haute performance'),
-('Imprimante Laser', 'Imprimante laser haute performance'),
-('Disque Dur Externe', 'Disque dur externe de 1To'),
-('Souris sans fil', 'Souris ergonomique sans fil');
-INSERT INTO logiciel (nom, description, version) VALUES
-('Antivirus Pro', 'Logiciel antivirus avancé', '2023'),
-('Photoshop', "Logiciel de traitement d'image", '2023'),
-("Système d'exploitation XYZ", "Nouveau système d'exploitation", '10.0');
+INSERT INTO materiel (nom, description, id_categorie) VALUES
+('Ordinateur Portable', 'Un ordinateur portable de haute performance',1),
+('Imprimante Laser', 'Imprimante laser haute performance',2),
+('Disque Dur Externe', 'Disque dur externe de 1To',3),
+('Souris sans fil', 'Souris ergonomique sans fil',4);
+INSERT INTO logiciel (nom, description, version, id_categorie) VALUES
+('Antivirus Pro', 'Logiciel antivirus avancé', '2023',2),
+('Photoshop', "Logiciel de traitement d'image", '2023',4),
+("Système d'exploitation XYZ", "Nouveau système d'exploitation", '10.0',1);
 INSERT INTO type_intervention (nom, description) VALUES
 ('Installation logicielle', 'Installation de divers logiciels'),
 ('Réparation matériel', 'Réparation de divers équipements informatiques'),
 ('Mise à jour système', "Mise à jour de systèmes d'exploitation et logiciels"),
 ('Nettoyage informatique', 'Nettoyage physique et logiciel des systèmes informatiques');
-INSERT INTO technicien (id_utilisateur, expertise) VALUES
-(2, 'Réseaux'),
-(3, 'Maintenance');
+-- INSERT INTO technicien (id_utilisateur, expertise) VALUES
+-- (2, 'Réseaux'),
+-- (3, 'Maintenance');
 
-INSERT INTO admin (id_utilisateur, grade_admin) VALUES
-(3, 2);
+-- INSERT INTO admin (id_utilisateur, grade_admin) VALUES
+-- (3, 2);
 
-INSERT INTO client (id_utilisateur, info_additionnel) VALUES
-(1, 'Informations client Dupont'),
-(4, 'Informations client Petit');
+-- INSERT INTO client (id_utilisateur, info_additionnel) VALUES
+-- (1, 'Informations client Dupont'),
+-- (4, 'Informations client Petit');
 INSERT INTO intervention (date_debut, date_fin, status, description, id_technicien, id_type_intervention) VALUES
 ('2023-01-01 08:00:00', '2023-01-01 12:00:00', 'En cours', "Installation d'antivirus", 1, 1);
-INSERT INTO jonction_materiel_categorie (id_materiel, id_categorie) VALUES
-(1, 1);
+-- INSERT INTO jonction_materiel_categorie (id_materiel, id_categorie) VALUES
+-- (1, 1);
 
-INSERT INTO jonction_logiciel_categorie (id_logiciel, id_categorie) VALUES
-(1, 3);
+-- INSERT INTO jonction_logiciel_categorie (id_logiciel, id_categorie) VALUES
+-- (1, 3);
 
 
