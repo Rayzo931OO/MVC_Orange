@@ -73,6 +73,7 @@ BEGIN
     DELETE FROM client WHERE id_utilisateur = OLD.id_utilisateur;
     DELETE FROM technicien WHERE id_utilisateur = OLD.id_utilisateur;
     DELETE FROM admin WHERE id_utilisateur = OLD.id_utilisateur;
+    DELETE FROM user WHERE id_utilisateur = OLD.id_utilisateur;
 END$
 DELIMITER ;
 

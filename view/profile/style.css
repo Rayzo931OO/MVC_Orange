@@ -1,0 +1,36 @@
+.main__container{
+    margin-left: 100px;
+}
+.main__container__wrapper__content{
+    margin-left: 50px;
+}
+.imageFormulaire{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    row-gap: 10px;
+}
+.imageFormulaire .inputs{
+    display: grid;
+    row-gap: 10px;
+}
+.avatar {
+    border-radius: 100%;
+    margin-left: 50px;
+    overflow: hidden;
+    width: 100px;
+    height: 100px !important;
+    background-color: rgb(165, 165, 165);
+}
+
+.avatar img{
+
+    display: none;
+    max-width: 100px;
+    height: 100%;
+    object-fit: cover;
+
+}
+#Supprimer{
+    color: #ff0000;
+}

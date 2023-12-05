@@ -1,0 +1,74 @@
+.content {
+   display: grid;
+   grid-template-areas: "sidebar playground";
+   grid-template-columns: 1fr 1fr;
+   grid-template-rows: 300px minmax(0, 1fr);
+   gap: 30px;
+   width: 100%;
+   height: 100%;
+}
+.onTheSide{
+   grid-area: sidebar;
+   display: grid;
+   grid-template-rows: 1.2fr 0.8fr;
+   gap: 20px;
+}
+.enoncer{
+   display: grid;
+   place-items: left;
+   gap: 5px;
+   height: 100%;
+   width: 500px;
+   border-radius: 15px;
+}
+.enoncer h2{
+   font-weight: 700;
+   font-size: 20px;
+   margin-top: 30px;
+}
+.enoncer p.titre{
+   display: inline;
+   text-align: center;
+   color: var(--white);
+   padding: 15px;
+   width: 270px;
+   font-size: 18px;
+   font-weight: 600;
+}
+.enoncer p.text{
+   display: inline;
+   text-align: center;
+   color: #ffffff58;
+   width: 270px;
+   padding: 15px;
+   font-size: 14px;
+   font-weight: 400;
+}
+.enoncer a{
+   color: #000;
+   text-decoration: underline;
+   padding: 15px;
+}
+
+.playground {
+   grid-area: playground;
+   display: grid;
+   align-items: center;
+   line-height: 180%;
+   width: fit-content;
+   height: fit-content;
+   border-radius: 15px;
+   font-size: 16px;
+   color: var(--white);
+   overflow: hidden;
+}
+.playground .algo{
+   display: grid;
+   place-items: center;
+   height: 100%;
+   width: 100%;
+   overflow: auto;
+}
+.playground pre{
+   padding: 25px 0;
+}
