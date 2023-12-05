@@ -27,7 +27,7 @@ class Intervention
         $requete = "select * from intervention_view;";
         $req = $this->bdd->prepare($requete);
         $req->execute();
-        $res = $req->fetchAll();
+        return $req->fetchAll();
     }
 
     function selectInterventionById($id)
@@ -37,7 +37,7 @@ class Intervention
         $req->bindParam(':id_intervention', $id);
         $req = $this->bdd->prepare($req);
         $req->execute();
-        $res = $req->fetch();
+        return $req->fetch();
     }
 
     function selectLikeIntervention($mot)
@@ -48,7 +48,7 @@ class Intervention
         $req->bindParam(':status', $mot);
         $req = $this->bdd->prepare($req);
         $req->execute();
-        $res = $req->fetchAll();
+        return $req->fetchAll();
 
     }
 
@@ -65,7 +65,7 @@ class Intervention
         $req->bindParam(':id_intervention', $intervention['id_intervention']);
         $req = $this->bdd->prepare($req);
         $req->execute();
-        $res = $req->fetchAll();
+        return $req->fetchAll();
     }
 
     function deleteInterventionById($id)
@@ -75,7 +75,7 @@ class Intervention
         $req->bindParam(':id_intervention', $id);
         $req = $this->bdd->prepare($req);
         $req->execute();
-        $res = $req->fetch();
+        return $req->fetch();
     }
 
 }

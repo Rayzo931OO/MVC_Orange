@@ -24,7 +24,8 @@ class Categorie
         $requete = "select * from categorie;";
         $req = $this->bdd->prepare($requete);
         $req->execute();
-        $res = $req->fetchAll();
+        return $req->fetchAll();
+        
     }
 
     function selectCategorieById($id)
@@ -34,7 +35,7 @@ class Categorie
         $req->bindParam(':id_categorie', $id);
         $req = $this->bdd->prepare($req);
         $req->execute();
-        $res = $req->fetch();
+        return $req->fetch();
     }
 
     function selectLikeCategorie($mot)
@@ -45,7 +46,7 @@ class Categorie
         $req->bindParam(':type_description', $mot);
         $req = $this->bdd->prepare($req);
         $req->execute();
-        $res = $req->fetchAll();
+        return $req->fetchAll();
 
     }
 
@@ -59,7 +60,7 @@ class Categorie
         $req->bindParam(':id_categorie', $categorie['id_categorie']);
         $req = $this->bdd->prepare($req);
         $req->execute();
-        $res = $req->fetchAll();
+        return $req->fetchAll();
     }
 
     function deleteCategorieById($id)
@@ -69,7 +70,7 @@ class Categorie
         $req->bindParam(':id_categorie', $id);
         $req = $this->bdd->prepare($req);
         $req->execute();
-        $res = $req->fetch();
+        return $req->fetch();
     }
 
 }

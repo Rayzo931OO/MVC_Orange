@@ -28,7 +28,7 @@ class User
 		$requete = "select * from client_view;";
 		$req = $this->bdd->prepare($requete);
 		$req->execute();
-		$res = $req->fetchAll();
+		return $req->fetchAll();
 	}
 
 	public function allTechniciens()
@@ -37,7 +37,7 @@ class User
 		$requete = "select * from techniciens_view;";
 		$req = $this->bdd->prepare($requete);
 		$req->execute();
-		$res = $req->fetchAll();
+		return $req->fetchAll();
 	}
 
 	public function allAdmin()
@@ -46,7 +46,7 @@ class User
 		$requete = "select * from admin_view;";
 		$req = $this->bdd->prepare($requete);
 		$req->execute();
-		$res = $req->fetchAll();
+		return $req->fetchAll();
 	}
 
 	function selectUserById($id)
@@ -56,7 +56,7 @@ class User
 		$req->bindParam(':id_utilisateur', $id);
 		$req = $this->bdd->prepare($req);
 		$req->execute();
-		$res = $req->fetchAll();
+		return $req->fetchAll();
 	}
 	function selectWhereUser($email, $password)
 	{
@@ -66,7 +66,7 @@ class User
 		$req->bindParam(':password', $password);
 		$req = $this->bdd->prepare($req);
 		$req->execute();
-		$res = $req->fetchAll();
+		return $req->fetchAll();
 	}
 	function selectLikeUser($mot, $role)
 	{
@@ -75,7 +75,7 @@ class User
 		$req->bindParam(':mot', $mot);
 		$req = $this->bdd->prepare($req);
 		$req->execute();
-		$res = $req->fetchAll();
+		return $req->fetchAll();
 
 	}
 
@@ -93,7 +93,7 @@ class User
 		$req->bindParam(':id_utilisateur', $user['id']);	
 		$req = $this->bdd->prepare($req);
 		$req->execute();
-		$res = $req->fetchAll();
+		return $req->fetchAll();
 	}
 
 	function deleteUserById($id)
@@ -103,6 +103,6 @@ class User
 		$req->bindParam(':id_utilisateur', $id);
 		$req = $this->bdd->prepare($req);
 		$req->execute();
-		$res = $req->fetchAll();
+		return $req->fetchAll();
 	}
 }

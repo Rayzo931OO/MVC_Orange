@@ -23,7 +23,7 @@ class Materiel
         $requete = "select * from materiel;";
         $req = $this->bdd->prepare($requete);
         $req->execute();
-        $res = $req->fetchAll();
+        return $req->fetchAll();
     }
 
     function selectMaterielById($id)
@@ -33,7 +33,7 @@ class Materiel
         $req->bindParam(':id_materiel', $id);
         $req = $this->bdd->prepare($req);
         $req->execute();
-        $res = $req->fetch();
+        return $req->fetch();
     }
 
     function selectMaterielByCategorie($categorie)
@@ -43,7 +43,7 @@ class Materiel
         $req->bindParam(':id_categorie', $categorie);
         $req = $this->bdd->prepare($req);
         $req->execute();
-        $res = $req->fetchAll();
+        return $req->fetchAll();
     }
 
     function selectLikeMateriel($mot)
@@ -53,7 +53,7 @@ class Materiel
         $req->bindParam(':description', $mot);
         $req = $this->bdd->prepare($req);
         $req->execute();
-        $res = $req->fetchAll();
+        return $req->fetchAll();
 
     }
 
@@ -66,7 +66,7 @@ class Materiel
         $req->bindParam(':id_materiel', $materiel['id_materiel']);
         $req = $this->bdd->prepare($req);
         $req->execute();
-        $res = $req->fetchAll();
+        return $req->fetchAll();
     }
 
     function deleteMaterielById($id)
@@ -76,7 +76,7 @@ class Materiel
         $req->bindParam(':id_materiel', $id);
         $req = $this->bdd->prepare($req);
         $req->execute();
-        $res = $req->fetch();
+        return $req->fetch();
     }
 
 }

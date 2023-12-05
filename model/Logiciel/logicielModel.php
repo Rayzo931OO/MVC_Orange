@@ -24,7 +24,7 @@ class Logiciel
         $requete = "select * from logiciel;";
         $req = $this->bdd->prepare($requete);
         $req->execute();
-        $res = $req->fetchAll();
+        return $req->fetchAll();
     }
 
     function selectLogicielById($id)
@@ -34,7 +34,7 @@ class Logiciel
         $req->bindParam(':id_logiciel', $id);
         $req = $this->bdd->prepare($req);
         $req->execute();
-        $res = $req->fetch();
+        return $req->fetch();
     }
 
     function selectLogicielByCategorie($categorie)
@@ -44,7 +44,7 @@ class Logiciel
         $req->bindParam(':id_categorie', $categorie);
         $req = $this->bdd->prepare($req);
         $req->execute();
-        $res = $req->fetchAll();
+        return $req->fetchAll();
     }
 
     function selectLikeLogiciel($mot)
@@ -55,7 +55,7 @@ class Logiciel
         $req->bindParam(':version', $mot);
         $req = $this->bdd->prepare($req);
         $req->execute();
-        $res = $req->fetchAll();
+        return $req->fetchAll();
 
     }
 
@@ -69,7 +69,7 @@ class Logiciel
         $req->bindParam(':id_logiciel', $logiciel['id_logiciel']);
         $req = $this->bdd->prepare($req);
         $req->execute();
-        $res = $req->fetchAll();
+        return $req->fetchAll();
     }
 
     function deleteLogicielById($id)
@@ -79,7 +79,7 @@ class Logiciel
         $req->bindParam(':id_logiciel', $id);
         $req = $this->bdd->prepare($req);
         $req->execute();
-        $res = $req->fetch();
+        return $req->fetch();
     }
 
 }
