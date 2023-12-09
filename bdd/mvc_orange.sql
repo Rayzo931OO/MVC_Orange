@@ -73,7 +73,6 @@ BEGIN
     DELETE FROM client WHERE id_utilisateur = OLD.id_utilisateur;
     DELETE FROM technicien WHERE id_utilisateur = OLD.id_utilisateur;
     DELETE FROM admin WHERE id_utilisateur = OLD.id_utilisateur;
-    DELETE FROM user WHERE id_utilisateur = OLD.id_utilisateur;
 END$
 DELIMITER ;
 
@@ -82,76 +81,10 @@ CREATE INDEX idx_client_user ON client(id_utilisateur);
 CREATE INDEX idx_technicien_user ON technicien(id_utilisateur);
 CREATE INDEX idx_admin_user ON admin(id_utilisateur);
 
-
-CREATE TABLE intervention (
-  id_intervention INT PRIMARY KEY AUTO_INCREMENT,
-  date_debut DATETIME NOT NULL,
-  date_fin DATETIME,
-  date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  status VARCHAR(50) NOT NULL,
-  description VARCHAR(200) NOT NULL,
-  id_technicien INT NOT NULL,
-  id_type_intervention INT NOT NULL,
-  FOREIGN KEY (id_technicien) REFERENCES technicien(id_technicien)
-);
-
-CREATE TABLE archive_intervention (
-  id_intervention INT PRIMARY KEY,
-  date_debut DATETIME NOT NULL,
-  date_fin DATETIME,
-  date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  status VARCHAR(50) NOT NULL,
-  description VARCHAR(200) NOT NULL,
-  id_technicien INT NOT NULL,
-  id_type_intervention INT NOT NULL,
-  FOREIGN KEY (id_technicien) REFERENCES technicien(id_technicien)
-);
-
-CREATE TABLE type_intervention (
-  id_type_intervention INT PRIMARY KEY AUTO_INCREMENT,
-  id_intervention INT,
-  nom VARCHAR(50) NOT NULL,
-  description VARCHAR(200) NOT NULL,
-  FOREIGN KEY (id_intervention) REFERENCES intervention(id_intervention)
-);
-
-DELIMITER $
-CREATE FUNCTION create_intervention(
-    date_debut DATETIME,
-    date_fin DATETIME,
-    status VARCHAR(50),
-    description VARCHAR(200),
-    id_technicien INT,
-    id_type_intervention INT
-)
-RETURNS VARCHAR(200)
-BEGIN
-    INSERT INTO intervention (
-        date_debut,
-        date_fin,
-        status,
-        description,
-        id_technicien,
-        id_type_intervention
-    ) VALUES (
-        date_debut,
-        date_fin,
-        status,
-        description,
-        id_technicien,
-        id_type_intervention
-    );
-    RETURN CONCAT('Création faite, id=', last_insert_id());
-END$
-DELIMITER ;
-
 CREATE TABLE categorie (
   id_categorie INT PRIMARY KEY AUTO_INCREMENT,
   nom VARCHAR(50) NOT NULL,
-  description VARCHAR(100) NOT NULL,
-  type_categorie VARCHAR(50) NOT NULL
+  description VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE materiel (
@@ -171,22 +104,105 @@ CREATE TABLE logiciel (
   FOREIGN KEY (id_categorie) REFERENCES categorie(id_categorie)
 );
 
-
-CREATE TABLE jonction_materiel_categorie (
-  id_materiel INT NOT NULL,
-  id_categorie INT NOT NULL,
-  PRIMARY KEY (id_materiel, id_categorie),
-  FOREIGN KEY (id_materiel) REFERENCES materiel(id_materiel),
-  FOREIGN KEY (id_categorie) REFERENCES categorie(id_categorie)
-);
-
-CREATE TABLE jonction_logiciel_categorie (
-  id_logiciel INT NOT NULL,
-  id_categorie INT NOT NULL,
-  PRIMARY KEY (id_logiciel, id_categorie),
+CREATE TABLE intervention (
+  id_intervention INT PRIMARY KEY AUTO_INCREMENT,
+  date_debut DATETIME NOT NULL,
+  date_fin DATETIME,
+  date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  status VARCHAR(50) NOT NULL,
+  description VARCHAR(200) NOT NULL,
+  id_technicien INT NOT NULL,
+  id_materiel INT,
+  id_logiciel INT,
+  id_type_intervention INT NOT NULL,
+  FOREIGN KEY (id_technicien) REFERENCES technicien(id_technicien),
   FOREIGN KEY (id_logiciel) REFERENCES logiciel(id_logiciel),
-  FOREIGN KEY (id_categorie) REFERENCES categorie(id_categorie)
+  FOREIGN KEY (id_materiel) REFERENCES materiel(id_materiel)
 );
+
+CREATE TABLE type_intervention (
+  id_type_intervention INT PRIMARY KEY AUTO_INCREMENT,
+  id_intervention INT,
+  nom VARCHAR(50) NOT NULL,
+  description VARCHAR(200) NOT NULL,
+  FOREIGN KEY (id_intervention) REFERENCES intervention(id_intervention)
+);
+
+DELIMITER $
+CREATE TRIGGER before_delete_intervention
+BEFORE DELETE ON intervention FOR EACH ROW
+BEGIN
+    INSERT INTO intervention_archive SELECT * FROM intervention WHERE id_intervention = OLD.id_intervention;
+END$
+DELIMITER ;
+
+CREATE TABLE archive_intervention (
+  id_intervention INT PRIMARY KEY,
+  date_debut DATETIME NOT NULL,
+  date_fin DATETIME,
+  date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  status VARCHAR(50) NOT NULL,
+  description VARCHAR(200) NOT NULL,
+  id_materiel INT NOT NULL,
+  id_logiciel INT NOT NULL,
+  id_technicien INT NOT NULL,
+  id_type_intervention INT NOT NULL
+);
+
+DELIMITER $
+CREATE FUNCTION create_intervention(
+    date_debut DATETIME,
+    date_fin DATETIME,
+    status VARCHAR(50),
+    description VARCHAR(200),
+    id_technicien INT,
+    id_logiciel INT,
+    id_materiel INT,
+    id_type_intervention INT
+)
+RETURNS VARCHAR(200)
+BEGIN
+    INSERT INTO intervention (
+        date_debut,
+        date_fin,
+        status,
+        description,
+        id_technicien,
+        id_logiciel,
+        id_materiel,
+        id_type_intervention
+    ) VALUES (
+        date_debut,
+        date_fin,
+        status,
+        description,
+        id_technicien,
+        id_logiciel,
+        id_materiel,
+        id_type_intervention
+    );
+    RETURN CONCAT('Création faite, id=', last_insert_id());
+END$
+DELIMITER ;
+
+
+-- CREATE TABLE jonction_materiel_categorie (
+--   id_materiel INT NOT NULL,
+--   id_categorie INT NOT NULL,
+--   PRIMARY KEY (id_materiel, id_categorie),
+--   FOREIGN KEY (id_materiel) REFERENCES materiel(id_materiel),
+--   FOREIGN KEY (id_categorie) REFERENCES categorie(id_categorie)
+-- );
+
+-- CREATE TABLE jonction_logiciel_categorie (
+--   id_logiciel INT NOT NULL,
+--   id_categorie INT NOT NULL,
+--   PRIMARY KEY (id_logiciel, id_categorie),
+--   FOREIGN KEY (id_logiciel) REFERENCES logiciel(id_logiciel),
+--   FOREIGN KEY (id_categorie) REFERENCES categorie(id_categorie)
+-- );
 
 -- DELIMITER $
 -- CREATE TRIGGER insert_materiel
@@ -214,6 +230,8 @@ CREATE VIEW intervention_view AS (
         intervention.status,
         intervention.description AS interDescription,
         intervention.id_technicien,
+        intervention.id_logiciel,
+        intervention.id_materiel,
         type_intervention.id_type_intervention
     FROM intervention
     INNER JOIN type_intervention ON intervention.id_intervention = type_intervention.id_intervention
@@ -290,6 +308,15 @@ CREATE VIEW client_view AS (
 CREATE VIEW type_intervention_view AS (
    SELECT * FROM type_intervention
 );
+CREATE VIEW categorie_view AS (
+   SELECT * FROM categorie
+);
+CREATE VIEW materiel_view AS (
+   SELECT * FROM categorie
+);
+CREATE VIEW logiciel_view AS (
+   SELECT * FROM categorie
+);
 
 
 INSERT INTO user (nom, prenom, email, code_postal, adresse, telephone, mot_de_passe, role) VALUES
@@ -297,11 +324,11 @@ INSERT INTO user (nom, prenom, email, code_postal, adresse, telephone, mot_de_pa
 ('Martin', 'Alice', 'alice.martin@email.com', '69001', '456 Avenue de Lyon', '0987654321', 'motdepasse456', 'technicien'),
 ('Bernard', 'Lucas', 'lucas.bernard@email.com', '31000', '789 Rue de Toulouse', '1122334455', 'password789', 'admin1'),
 ('Petit', 'Chloé', 'chloe.petit@email.com', '33000', '321 Rue de Bordeaux', '2233445566', 'passe321', 'client');
-INSERT INTO categorie (nom, description, type_categorie) VALUES
-('Ordinateurs', 'Catégorie pour tous les ordinateurs', 'materiel'),
-('Imprimantes', 'Catégorie pour toutes les imprimantes', 'materiel'),
-('Logiciels de Sécurité', 'Catégorie pour les logiciels de sécurité', 'logiciel'),
-('Périphériques', 'Catégorie pour les périphériques informatiques', 'materiel');
+INSERT INTO categorie (nom, description) VALUES
+('Ordinateurs', 'Catégorie pour tous les ordinateurs'),
+('Imprimantes', 'Catégorie pour toutes les imprimantes'),
+('Logiciels de Sécurité', 'Catégorie pour les logiciels de sécurité'),
+('Périphériques', 'Catégorie pour les périphériques informatiques');
 INSERT INTO materiel (nom, description, id_categorie) VALUES
 ('Ordinateur Portable', 'Un ordinateur portable de haute performance',1),
 ('Imprimante Laser', 'Imprimante laser haute performance',2),
@@ -326,12 +353,10 @@ INSERT INTO type_intervention (nom, description) VALUES
 -- INSERT INTO client (id_utilisateur, info_additionnel) VALUES
 -- (1, 'Informations client Dupont'),
 -- (4, 'Informations client Petit');
-INSERT INTO intervention (date_debut, date_fin, status, description, id_technicien, id_type_intervention) VALUES
-('2023-01-01 08:00:00', '2023-01-01 12:00:00', 'En cours', "Installation d'antivirus", 1, 1);
+INSERT INTO intervention (date_debut, date_fin, status, description, id_technicien,id_materiel,id_logiciel, id_type_intervention) VALUES
+('2023-01-01 08:00:00', '2023-01-01 12:00:00', 'En cours', "Installation d'antivirus",1,1,null,1);
 -- INSERT INTO jonction_materiel_categorie (id_materiel, id_categorie) VALUES
 -- (1, 1);
 
 -- INSERT INTO jonction_logiciel_categorie (id_logiciel, id_categorie) VALUES
 -- (1, 3);
-
-
