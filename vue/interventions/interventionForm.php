@@ -16,7 +16,7 @@ echo '
 </div>';
 echo '
 <div>
-    <label for="id_logiciel">Les materiels :</label></br>
+    <label for="id_logiciel">Les logiciels :</label></br>
     <select name="id_logiciel" id="id_logiciel" required>';
             foreach ($logicielController->allLogiciel() as $logiciel) {
                 echo '<option value="' . $logiciel["id_logiciel"] . '">' . $logiciel["nom"] . '</option>';
@@ -25,7 +25,7 @@ echo '
 </div>';
 if($_SESSION["role"] == "technicien"){
     echo '<div>
-    <input type="hidden" name="technicien_id" id="technicien_id" value="' . $userController ->selectTechnicienById($_SESSION["id"]) . '" placeholder=" " required />
+    <input type="hidden" name="technicien_id" id="technicien_id" value="' . $userController ->selectTechnicienById($_SESSION["id"])["id_technicien"] . '" placeholder=" " required />
     </div>';
 }
 echo '

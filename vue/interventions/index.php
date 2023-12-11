@@ -60,40 +60,59 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                   <label for="technicien" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">Chercher un technicien :</label>
               </div>
               <div>
+                  <input type="text" class="peer" name="utilisateur" placeholder=" " id="utilisateur" required />
+                  <label for="technicien" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">Chercher un utilisateur :</label>
+              </div>
+              <div>
                   <button type="submit" id="RecherchezAdmin" name="RecherchezAdmin" value="RecherchezAdmin">Recherchez</button>
               </div>
           </form>
           ';
         } else if ($_SESSION["role"] == "technicien") {
-            echo '
-            <form class="formulaire" action="index.php" method="post">
-                <div>
-                    <input type="text" class="peer" name="search" placeholder=" " id="search" required />
-                    <label for="search" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">Chercher un materiel :</label>
-                </div>
-                <div>
-                    <button type="submit" id="Recherchez" name="Recherchez" value="Recherchez">Recherchez</button>
-                </div>
-            </form>
-            ';
+            // $materiels = $materielController->selectMaterielById($_POST["materiel"]);
+            $materiels = $materielController->allMateriel();
+            // var_dump($materiels);
+            $tableau = "";
+            // $tableau = "<br><table class='tableau' border-collapse='collapse'>
+            // <caption class='caption'>Un seul et unique materiel peut-être sélectionné</caption>
+            // <thead>
+            //     <tr>
+            //         <th>Sélection</th>
+            //         <th>Client</th>
+            //         <th>Nom</th>
+            //         <th>Description</th>
+            //         <th>Catégorie</th>
+            //     </tr>
+            // </thead>
+            // <tbody>";
+            // foreach ($materiels as $materiel) {
+            //     $tableau = $tableau . "<tr>
+            //     <td><input type='checkbox' value='" . $materiel['id_materiel'] . "' name='id_materiel' id='id_materiel' ></td>
+            //     <td>" . $materiel['nom'] . "</td>
+            //     <td>" . $materiel['description'] . "</td>
+            //     <td>" . $materiel['categorie'] . "</td>";
+            // }
+            // $tableau = $tableau . "</tbody></table>";
+            require_once('interventionForm.php');
         }
     }
     if (isset($_POST["RecherchezAdmin"])) {
         // $materiels = $materielController->selectLikeMateriel($_POST["search1"]);
         // $materiels = $materielController->selectMaterielById($_POST["materiel"]);
         $techniciens = $userController->selectLikeUser($_POST["technicien"], "technicien");
+        $users = $userController->selectLikeUser($_POST["utilisateur"], "client");
         $tableau = "";
-        // $tableau = "<br><table class='tableau' border-collapse='collapse'>
-        // <caption class='caption'>Un seul et unique materiel peut-être sélectionné</caption>
-        // <thead>
-        //     <tr>
-        //         <th>Sélection</th>
-        //         <th>Nom</th>
-        //         <th>Description</th>
-        //         <th>Catégorie</th>
-        //     </tr>
-        // </thead>
-        // <tbody>";
+        $tableau = "<br><table class='tableau' border-collapse='collapse'>
+        <caption class='caption'>Un seul et unique utilisateur peut-être sélectionné</caption>
+        <thead>
+            <tr>
+                <th>Sélection</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>";
         $tableau2 = "<br><table class='tableau' border-collapse='collapse'>
         <caption class='caption'>Un seul et unique technicien peut-être sélectionné</caption>
         <thead>
@@ -106,19 +125,14 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
             </tr>
         </thead>
         <tbody>";
-        // $tableau = $tableau . "<tr>
-        //     <td><input type='checkbox' value='" . $materiels['id_materiel'] . "' name='materiel_id' id='materiel_id' ></td>
-        //     <td>" . $materiels['nom'] . "</td>
-        //     <td>" . $materiels['description'] . "</td>
-        //     <td>" . $categorieController->selectCategorieById($materiels['id_categorie'])["nom"] . "</td>";
-        // foreach ($materiels as $materiel) {
+        foreach ($users as $user) {
 
-        // $tableau = $tableau . "<tr>
-        // <td><input type='checkbox' value='" . $materiel['id_materiel'] . "' name='materiel_id' id='materiel_id' ></td>
-        // <td>" . $materiel['nom'] . "</td>
-        // <td>" . $materiel['description'] . "</td>
-        // <td>" . $materiel['categorie'] . "</td>";
-        // }
+        $tableau = $tableau . "<tr>
+        <td><input type='checkbox' value='" . $user['id_utilisateur'] . "' name='id_utilisateur' id='id_utilisateur' ></td>
+        <td>" . $user['nom'] . "</td>
+        <td>" . $user['prenom'] . "</td>
+        <td>" . $user['email'] . "</td>";
+        }
         foreach ($techniciens as $technicien) {
             $tableau2 = $tableau2 . "<tr>
             <td><input type='checkbox' value='" . $userController->selectTechnicienById($technicien['id_utilisateur'])["id_technicien"] . "' name='id_technicien' id='id_technicien' ></td>
@@ -135,26 +149,26 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
     } else {
         $IsDisabled = "disabled";
     }
-    if (isset($_POST["Recherchez"])) {
-        $materiels = $materielController->selectMaterielById($_POST["materiel"]);
+    if (isset($_POST["Recherchez"]) && $_SESSION["role"] !== "client") {
+        $usersClient = $userController->selectLikeUser($_POST["client"], "client");
+        $tableau = "";
         $tableau = "<br><table class='tableau' border-collapse='collapse'>
         <caption class='caption'>Un seul et unique materiel peut-être sélectionné</caption>
         <thead>
             <tr>
                 <th>Sélection</th>
-                <th>Client</th>
                 <th>Nom</th>
-                <th>Description</th>
-                <th>Catégorie</th>
+                <th>Prenom</th>
+                <th>Email</th>
             </tr>
         </thead>
         <tbody>";
-        foreach ($materiels as $materiel) {
+        foreach ($usersClient as $userClient) {
             $tableau = $tableau . "<tr>
-            <td><input type='checkbox' value='" . $materiel['id_materiel'] . "' name='id_materiel' id='id_materiel' ></td>
-            <td>" . $materiel['nom'] . "</td>
-            <td>" . $materiel['description'] . "</td>
-            <td>" . $materiel['categorie'] . "</td>";
+            <td><input type='checkbox' value='" . $userClient['id_utilisateur'] . "' name='id_utilisateur' id='id_utilisateur' ></td>
+            <td>" . $userClient['nom'] . "</td>
+            <td>" . $userClient['prenom'] . "</td>
+            <td>" . $userClient['email'] . "</td>";
         }
         $tableau = $tableau . "</tbody></table>";
         require_once('interventionForm.php');
@@ -162,13 +176,16 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
         $IsDisabled = "disabled";
     }
     if (!isset($_POST["formIntervention"]) && !isset($_POST["Recherchez"]) && !isset($_POST["RecherchezAdmin"])) {
-        echo "<form class='formulaire' action='index.php' method='post'>
-        <div>
-            <button type='submit' name='formIntervention' value='formIntervention' />
-            Ajouter une Intervention
-            </button>
-        </div>
-        </form>";
+        if ($_SESSION["role"] !== "client") {
+            # code...
+            echo "<form class='formulaire' action='index.php' method='post'>
+            <div>
+                <button type='submit' name='formIntervention' value='formIntervention' />
+                Ajouter une Intervention
+                </button>
+            </div>
+            </form>";
+        }
 
         // FILTRE DEBUT ------------------------------------
 
@@ -201,6 +218,13 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
         //     </button>
         // </div>
         // </form>';
+        // echo '<form class="formulaire" action="index.php" method="post">
+        // <div style="display:grid;grid-auto-flow: column;align-items: center;gap: 20px;">
+        //     <button class="ASC_filter" type="submit" name="ASC_filter" value="ASC_filter">
+        //     ASC
+        //     </button>
+        // </div>
+        // </form>';
         // echo '
         // <form class="formulaire" action="index.php" method="post">
         //     <div style="display:grid;grid-auto-flow: column;align-items: center;gap: 20px;">
@@ -230,11 +254,14 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
             case isset($_POST["status_filter"]):
                 $interventions = $interventionsController->selectLikeInterventionStatus($_POST["status_filter"]);
                 break;
+            case isset($_POST["ASC_filter"]):
+                $interventions = $interventionsController->selectInterventionByAlphaOrdderASC();
+                break;
             default:
             if (substr($_SESSION["role"], 0, 5) == "admin") {
                 $interventions = $interventionsController->allIntervention();
             } else if ($_SESSION["role"] == "technicien") {
-                $interventions = $interventionsController->selectInterventionByTechnicien($_SESSION["id"]);
+                $interventions = $interventionsController->selectInterventionByTechnicien($userController->selectTechnicienById($_SESSION["id"])["id_technicien"]);
             } else if ($_SESSION["role"] == "client") {
                 $interventions = $interventionsController->selectInterventionByUserId($_SESSION["id"]);
             }

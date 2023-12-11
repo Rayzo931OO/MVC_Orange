@@ -122,9 +122,11 @@ CREATE TABLE intervention (
 --   status enum ('En cours', 'Termine', 'Annulé') NOT NULL,
   description VARCHAR(200) NOT NULL,
   id_technicien INT NOT NULL,
+  id_utilisateur INT NOT NULL,
   id_materiel INT,
   id_logiciel INT,
   id_type_intervention INT,
+  FOREIGN KEY (id_utilisateur) REFERENCES user(id_utilisateur),
   FOREIGN KEY (id_type_intervention) REFERENCES type_intervention(type_intervention_id),
   FOREIGN KEY (id_technicien) REFERENCES technicien(id_technicien),
   FOREIGN KEY (id_logiciel) REFERENCES logiciel(id_logiciel),
@@ -147,6 +149,7 @@ CREATE TABLE archive_intervention (
   date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   status VARCHAR(100) NOT NULL,
   description VARCHAR(200) NOT NULL,
+  id_utilisateur INT NOT NULL,
   id_materiel INT NOT NULL,
   id_logiciel INT NOT NULL,
   id_technicien INT NOT NULL,
@@ -162,6 +165,7 @@ CREATE FUNCTION create_intervention(
     id_technicien INT,
     id_logiciel INT,
     id_materiel INT,
+    id_utilisateur INT,
     id_type_intervention INT
 )
 RETURNS VARCHAR(200)
@@ -174,6 +178,7 @@ BEGIN
         id_technicien,
         id_logiciel,
         id_materiel,
+        id_utilisateur,
         id_type_intervention
     ) VALUES (
         date_debut,
@@ -183,6 +188,7 @@ BEGIN
         id_technicien,
         id_logiciel,
         id_materiel,
+        id_utilisateur,
         id_type_intervention
     );
     RETURN CONCAT('Création faite, id=', last_insert_id());
@@ -363,8 +369,8 @@ INSERT INTO type_intervention (type_intervention_nom, type_intervention_descript
 -- INSERT INTO client (id_utilisateur, info_additionnel) VALUES
 -- (1, 'Informations client Dupont'),
 -- (4, 'Informations client Petit');
-INSERT INTO intervention (date_debut, date_fin, status, description, id_technicien,id_materiel,id_logiciel, id_type_intervention) VALUES
-('2023-01-01 08:00:00', '2023-01-01 12:00:00', 'En cours', "Installation d'antivirus",1,1,null,1);
+INSERT INTO intervention (date_debut, date_fin, status, description, id_technicien,id_materiel,id_logiciel, id_type_intervention, id_utilisateur) VALUES
+('2023-01-01 08:00:00', '2023-01-01 12:00:00', 'En cours', "Installation d'antivirus",1,1,null,1,4);
 -- INSERT INTO jonction_materiel_categorie (id_materiel, id_categorie) VALUES
 -- (1, 1);
 

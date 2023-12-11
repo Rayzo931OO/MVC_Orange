@@ -5,16 +5,18 @@ echo "<br><table class='tableau' border-collapse='collapse'>
             <tr>
                 <th>Nom</th>
                 <th>Description</th>
+                <th>Version</th>
                 <th>Catégorie</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>";
 foreach ($logiciels as $logiciel) {
-   if (substr($_SESSION["role"], 0, 5) == "admin" || $_SESSION['role'] == "client") {
+   if (substr($_SESSION["role"], 0, 5) == "admin" || $_SESSION['role'] == "technicien") {
       echo "<tr>
       <td>" . $logiciel['nom'] . "</td>
       <td>" . $logiciel['description'] . "</td>
+      <td>" . $logiciel['version'] . "</td>
       <td>" . $categorieController->selectCategorieById($logiciel['id_categorie'])["nom"] . "</td>
       <td class='actions'>
       <button><a href='index.php?action=edit&id=" . $logiciel['id_logiciel'] . "'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'>

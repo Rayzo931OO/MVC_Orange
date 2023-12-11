@@ -10,7 +10,7 @@ echo "<br><table class='tableau' border-collapse='collapse'>
         </thead>
         <tbody>";
 foreach ($categories as $categorie) {
-   if (substr($_SESSION["role"], 0, 5) == "admin" || $_SESSION['role'] == "client") {
+   if (substr($_SESSION["role"], 0, 5) == "admin" || $_SESSION['role'] == "technicien") {
       echo "<tr>
       <td>" . $categorie['nom'] . "</td>
       <td>" . $categorie['description'] . "</td>

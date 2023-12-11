@@ -46,6 +46,11 @@
 			return $this->unModele->selectLikeInterventionStatus($mot) ;
 		}
 
+		public function selectInterventionByAlphaOrdderASC () {
+			//on realise des controles
+			return $this->unModele->selectInterventionByAlphaOrdderASC() ;
+		}
+
 		public function updateIntervention($Intervention)
 		{
 			$this->unModele->updateIntervention($Intervention);

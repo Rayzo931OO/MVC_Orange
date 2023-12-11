@@ -84,6 +84,13 @@ class Intervention
         return $req->fetchAll();
 
     }
+    function selectInterventionByAlphaOrdderASC()
+    {
+        $req = $this->bdd->prepare("SELECT * FROM intervention ORDER BY name ASC;");
+        $req->execute();
+        return $req->fetchAll();
+
+    }
 
     function updateIntervention($intervention)
     {
