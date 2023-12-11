@@ -65,4 +65,4 @@
         </div>
     </form>
 </details>
-<script src="/orange/templates/formConnexion/index.js"></script>
+<script src="/mvc_orange/templates/formConnexion/index.js"></script>

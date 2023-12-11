@@ -1,14 +1,12 @@
-<?php $title = "Logiciels";
-$h1 = "Listes des logiciels";
+<?php $title = "Categorie";
+$h1 = "Listes des categories";
 $isSidebar = "isSidebar";
 session_start();
 ob_start();
-define('BASE_PATH', str_replace('\vue\logiciels', "\\", __DIR__));
+define('BASE_PATH', str_replace('\vue\categories', "\\", __DIR__));
 require_once("../../controller/Connexion/connexionController.php");
-require_once("../../controller/Logiciel/logicielController.php");
 require_once("../../controller/Categorie/categorieController.php");
 $connexionController = new ControllerConnexion();
-$logicielController = new ControllerLogiciel($connexionController->getPDO());
 $categorieController = new ControllerCategorie($connexionController->getPDO());
 
 ?>
@@ -19,11 +17,11 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
     $id = $_GET['id'];
     switch ($action) {
         case 'edit':
-            $logiciel = $logicielController->selectLogicielById($id);
-            require_once('editLogicielForm.php');
+            $categorie = $categorieController->selectCategorieById($id);
+            require_once('editCategorieForm.php');
             break;
         case 'delete':
-            $logicielController->deleteLogicielById($id);
+            $categorieController->deleteCategorieById($id);
             header('Location: index.php');
             break;
         default:
@@ -31,7 +29,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
             break;
     }
 } else {
-    if (isset($_POST['formLogiciel'])) {
+    if (isset($_POST['formCategorie'])) {
         if (substr($_SESSION["role"], 0, 5) == "admin" || $_SESSION["role"] == "technicien") {
         //     echo '
         //   <form class="formulaire" action="index.php" method="post">
@@ -48,7 +46,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
             $tableau = '<div>
           <input type="hidden" name="id" id="id" value="' . $_SESSION["id"] . '" placeholder=" " required />
           </div>';
-          require_once('logicielForm.php');
+          require_once('categorieForm.php');
         }
     }
     if (isset($_POST["Recherchez"])) {
@@ -74,33 +72,34 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
         //               <td>" . $user['telephone'] . "</td></tr>";
         // }
         // $tableau = $tableau . "</tbody></table>";
-        // require_once('logicielForm.php');
+        // require_once('categorieForm.php');
     } else {
         // $IsDisabled = "disabled";
     }
-    if (!isset($_POST["formLogiciel"]) && !isset($_POST["Recherchez"])) {
+    if (!isset($_POST["formCategorie"]) && !isset($_POST["Recherchez"])) {
         echo "<form class='formulaire' action='index.php' method='post'>
         <div>
-            <button type='submit' name='formLogiciel' value='formLogiciel' />
-            Ajouter un logiciel
+            <button type='submit' name='formCategorie' value='formCategorie' />
+            Ajouter un categorie
             </button>
         </div>
         </form>";
-        $logiciels = $logicielController->AllLogiciel();
-        require_once('allLogiciels.php');
+        $categories = $categorieController->AllCategorie();
+        require_once('allCategories.php');
     }else {
         $tableau = "";
-        require_once('logicielForm.php');
+        require_once('categorieForm.php');
         $IsDisabled = "";
     }
     if (isset($_POST["Ajoutez"])) {
-        $logicielController->ajouterLogiciel($_POST);
+        $categorieController->ajouterCategorie($_POST["nom"], $_POST["description"]);
+
         header('Location: index.php');
     }
 }
 if (isset($_POST['Modifier'])) {
     var_dump($_POST);
-    $logicielController->updateLogiciel($_POST);
+    $categorieController->updateCategorie($_POST);
     header('Location: index.php');
 }
 ?>

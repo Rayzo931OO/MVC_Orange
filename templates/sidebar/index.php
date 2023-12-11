@@ -21,6 +21,9 @@
       </li>
       <li>
          <a href="/mvc_orange/vue/logiciels">Logiciels</a>
+      </li>
+      <li>
+         <a href="/mvc_orange/vue/categories">Categories</a>
       </li>';
       }
       ?>

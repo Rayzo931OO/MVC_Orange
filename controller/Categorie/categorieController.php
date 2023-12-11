@@ -8,11 +8,11 @@
 			$this->unModele = new Categorie($bdd);
 		}
 		/********************** Gestion de la promotion ***********/
-		public function ajouterCategorie($nom, $description, $type_description) {
+		public function ajouterCategorie($nom, $description) {
 			//controler les données avant insertion dans la table promotion
 
 			//on appelle la méthode du Modele
-			$this->unModele->ajouterCategorie($nom, $description, $type_description);
+			$this->unModele->ajouterCategorie($nom, $description);
 		}
 		public function allCategorie() {
 			$lesCategories = $this->unModele->allCategorie();

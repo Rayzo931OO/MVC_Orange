@@ -8,12 +8,11 @@ class Categorie
         $this->bdd = $bdd;
     }
 
-    public function ajouterCategorie($nom, $description, $type_description)
+    public function ajouterCategorie($nom, $description)
 	{
-		$req = $this->bdd->prepare("INSERT INTO categorie (nom, description, type_description) VALUES (:nom, :description, :type_description)");
+		$req = $this->bdd->prepare("INSERT INTO categorie (nom, description) VALUES (:nom, :description)");
 		$req->bindParam(':nom', $nom);
 		$req->bindParam(':description', $description);
-		$req->bindParam(':type_description', $type_description);
 		return $req->execute();
 	}
 
@@ -51,10 +50,9 @@ class Categorie
     function updateCategorie($categorie)
     {
         //ecriture de la requete
-        $req = $this->bdd->prepare("UPDATE categorie set nom= :nom, description= :description, type_description= :type_description where id_categorie= :id_categorie;");
+        $req = $this->bdd->prepare("UPDATE categorie set nom= :nom, description= :description where id_categorie= :id_categorie;");
         $req->bindParam(':nom', $categorie['nom']);
         $req->bindParam(':description', $categorie['description']);
-        $req->bindParam(':type_description', $categorie['type_description']);
         $req->bindParam(':id_categorie', $categorie['id_categorie']);
         $req->execute();
         return $req->fetchAll();

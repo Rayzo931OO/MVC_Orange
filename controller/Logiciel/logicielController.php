@@ -8,11 +8,11 @@
 			$this->unModele = new Logiciel($bdd);
 		}
 		/********************** Gestion de la promotion ***********/
-		public function ajouterLogiciel($nom, $description, $version) {
+		public function ajouterLogiciel($POST) {
 			//controler les données avant insertion dans la table promotion
 
 			//on appelle la méthode du Modele
-			$this->unModele->ajouterLogiciel($nom, $description, $version);
+			$this->unModele->ajouterLogiciel($POST["nom"], $POST["description"], $POST["version"], $POST["id_categorie"]);
 		}
 		public function allLogiciel() {
 			$lesLogiciels = $this->unModele->allLogiciel();

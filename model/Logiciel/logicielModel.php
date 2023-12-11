@@ -8,10 +8,11 @@ class Logiciel
         $this->bdd = $bdd;
     }
 
-    public function ajouterLogiciel($nom, $description, $version)
+    public function ajouterLogiciel($nom, $description, $version, $id_categorie)
 	{
         try {
-            $req = $this->bdd->prepare("INSERT INTO logiciel (nom, description, version) VALUES (:nom, :description, :version)");
+            $req = $this->bdd->prepare("INSERT INTO logiciel (nom, description, version, id_categorie) VALUES (:nom, :description, :version, :id_categorie)");
+            $req->bindParam(':id_categorie', $id_categorie);
             $req->bindParam(':nom', $nom);
             $req->bindParam(':description', $description);
             $req->bindParam(':version', $version);
@@ -67,13 +68,14 @@ class Logiciel
     function updateLogiciel($logiciel)
     {
         //ecriture de la requete
-        $req = $this->bdd->prepare("UPDATE logiciel set nom= :nom, description= :description, version= :version where id_logiciel= :id_logiciel;");
+        $req = $this->bdd->prepare("UPDATE logiciel set nom= :nom, description= :description, version= :version, id_categorie= :id_categorie where id_logiciel= :id_logiciel;");
         $req->bindParam(':nom', $logiciel['nom']);
         $req->bindParam(':description', $logiciel['description']);
         $req->bindParam(':version', $logiciel['version']);
+        $req->bindParam(':id_categorie', $logiciel['id_categorie']);
         $req->bindParam(':id_logiciel', $logiciel['id_logiciel']);
         $req->execute();
-        return $req->fetchAll();
+        return $req->fetch();
     }
 
     function deleteLogicielById($id)

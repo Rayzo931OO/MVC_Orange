@@ -1,9 +1,9 @@
-<link href="/orange/templates/footer/style.css" rel="stylesheet" />
+<link href="/mvc_orange/templates/footer/style.css" rel="stylesheet" />
 <footer>
 
 <div class="row1">
     <div class="infocontact">
-        <a href="/orange/contact">
+        <a href="/mvc_orange/contact">
         <svg xmlns="http://www.w3.org/2000/svg"
                         width="20" height="20" viewBox="0 0 47 47">
                         <g id="Icon_feather-help-circle" data-name="Icon feather-help-circle"
