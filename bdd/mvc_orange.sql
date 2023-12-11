@@ -11,6 +11,7 @@ CREATE TABLE user (
    adresse VARCHAR(255) NOT NULL,
    telephone VARCHAR(20) NOT NULL,
    mot_de_passe VARCHAR(255) NOT NULL,
+   avatar VARCHAR(400),
    date_inscription TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
    date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    role VARCHAR(20) NOT NULL
@@ -25,6 +26,7 @@ CREATE TABLE user_archive (
    adresse VARCHAR(255) NOT NULL,
    telephone VARCHAR(20) NOT NULL,
    mot_de_passe VARCHAR(255) NOT NULL,
+   avatar VARCHAR(400),
    date_inscription TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
    date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    role VARCHAR(20) NOT NULL
@@ -104,36 +106,36 @@ CREATE TABLE logiciel (
   FOREIGN KEY (id_categorie) REFERENCES categorie(id_categorie)
 );
 
+CREATE TABLE type_intervention (
+  type_intervention_id INT PRIMARY KEY AUTO_INCREMENT,
+  type_intervention_nom VARCHAR(50) NOT NULL,
+  type_intervention_description VARCHAR(200) NOT NULL
+);
+
 CREATE TABLE intervention (
   id_intervention INT PRIMARY KEY AUTO_INCREMENT,
   date_debut DATETIME NOT NULL,
   date_fin DATETIME,
   date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  status VARCHAR(50) NOT NULL,
+  status VARCHAR(100) NOT NULL,
+--   status enum ('En cours', 'Termine', 'Annulé') NOT NULL,
   description VARCHAR(200) NOT NULL,
   id_technicien INT NOT NULL,
   id_materiel INT,
   id_logiciel INT,
-  id_type_intervention INT NOT NULL,
+  id_type_intervention INT,
+  FOREIGN KEY (id_type_intervention) REFERENCES type_intervention(type_intervention_id),
   FOREIGN KEY (id_technicien) REFERENCES technicien(id_technicien),
   FOREIGN KEY (id_logiciel) REFERENCES logiciel(id_logiciel),
   FOREIGN KEY (id_materiel) REFERENCES materiel(id_materiel)
-);
-
-CREATE TABLE type_intervention (
-  id_type_intervention INT PRIMARY KEY AUTO_INCREMENT,
-  id_intervention INT,
-  nom VARCHAR(50) NOT NULL,
-  description VARCHAR(200) NOT NULL,
-  FOREIGN KEY (id_intervention) REFERENCES intervention(id_intervention)
 );
 
 DELIMITER $
 CREATE TRIGGER before_delete_intervention
 BEFORE DELETE ON intervention FOR EACH ROW
 BEGIN
-    INSERT INTO intervention_archive SELECT * FROM intervention WHERE id_intervention = OLD.id_intervention;
+    INSERT INTO archive_intervention SELECT * FROM intervention WHERE id_intervention = OLD.id_intervention;
 END$
 DELIMITER ;
 
@@ -143,7 +145,7 @@ CREATE TABLE archive_intervention (
   date_fin DATETIME,
   date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  status VARCHAR(50) NOT NULL,
+  status VARCHAR(100) NOT NULL,
   description VARCHAR(200) NOT NULL,
   id_materiel INT NOT NULL,
   id_logiciel INT NOT NULL,
@@ -220,22 +222,11 @@ DELIMITER ;
 -- END$
 -- DELIMITER ;
 
-CREATE VIEW intervention_view AS (
-    SELECT
-        intervention.id_intervention AS inter_id,
-        intervention.date_debut,
-        intervention.date_fin,
-        intervention.date_creation,
-        intervention.date_modification,
-        intervention.status,
-        intervention.description AS interDescription,
-        intervention.id_technicien,
-        intervention.id_logiciel,
-        intervention.id_materiel,
-        type_intervention.id_type_intervention
-    FROM intervention
-    INNER JOIN type_intervention ON intervention.id_intervention = type_intervention.id_intervention
-);
+
+CREATE VIEW intervention_view AS
+SELECT *
+FROM intervention
+JOIN type_intervention ON intervention.id_type_intervention = type_intervention.type_intervention_id;
 
 -- CREATE TABLE intervention (
 --   id_intervention INT PRIMARY KEY AUTO_INCREMENT,
@@ -250,6 +241,22 @@ CREATE VIEW intervention_view AS (
 --   FOREIGN KEY (id_technicien) REFERENCES technicien(id_technicien)
 -- )
 
+CREATE VIEW users_view AS (
+    SELECT
+        user.id_utilisateur AS user_id,
+        user.nom,
+        user.prenom,
+        user.email,
+        user.code_postal,
+        user.adresse,
+        user.telephone,
+        user.mot_de_passe,
+        user.date_inscription,
+        user.date_modification,
+        user.avatar,
+        user.role
+    FROM user
+);
 CREATE VIEW techniciens_view AS (
     SELECT
         user.id_utilisateur AS user_id,
@@ -262,6 +269,7 @@ CREATE VIEW techniciens_view AS (
         user.mot_de_passe,
         user.date_inscription,
         user.date_modification,
+        user.avatar,
         user.role,
         technicien.id_technicien,
         technicien.expertise
@@ -278,6 +286,7 @@ CREATE VIEW admin_view AS (
         user.adresse,
         user.telephone,
         user.mot_de_passe,
+        user.avatar,
         user.date_inscription,
         user.date_modification,
         user.role,
@@ -297,6 +306,7 @@ CREATE VIEW client_view AS (
         user.telephone,
         user.mot_de_passe,
         user.date_inscription,
+        user.avatar,
         user.date_modification,
         user.role,
         client.id_client,
@@ -319,11 +329,11 @@ CREATE VIEW logiciel_view AS (
 );
 
 
-INSERT INTO user (nom, prenom, email, code_postal, adresse, telephone, mot_de_passe, role) VALUES
-('Dupont', 'Jean', 'jean.dupont@email.com', '75001', '123 Rue de Paris', '0123456789', 'password123', 'client'),
-('Martin', 'Alice', 'alice.martin@email.com', '69001', '456 Avenue de Lyon', '0987654321', 'motdepasse456', 'technicien'),
-('Bernard', 'Lucas', 'lucas.bernard@email.com', '31000', '789 Rue de Toulouse', '1122334455', 'password789', 'admin1'),
-('Petit', 'Chloé', 'chloe.petit@email.com', '33000', '321 Rue de Bordeaux', '2233445566', 'passe321', 'client');
+INSERT INTO user (nom, prenom, email, code_postal, adresse, telephone, mot_de_passe, avatar, role) VALUES
+('Dupont', 'Jean', 'jean.dupont@email.com', '75001', '123 Rue de Paris', '0123456789', 'password123',null, 'client'),
+('Martin', 'Alice', 'alice.martin@email.com', '69001', '456 Avenue de Lyon', '0987654321', 'motdepasse456',null, 'technicien'),
+('Bernard', 'Lucas', 'lucas.bernard@email.com', '31000', '789 Rue de Toulouse', '1122334455', 'password789',null, 'admin1'),
+('Petit', 'Chloé', 'chloe.petit@email.com', '33000', '321 Rue de Bordeaux', '2233445566', 'passe321',null, 'client');
 INSERT INTO categorie (nom, description) VALUES
 ('Ordinateurs', 'Catégorie pour tous les ordinateurs'),
 ('Imprimantes', 'Catégorie pour toutes les imprimantes'),
@@ -338,7 +348,7 @@ INSERT INTO logiciel (nom, description, version, id_categorie) VALUES
 ('Antivirus Pro', 'Logiciel antivirus avancé', '2023',2),
 ('Photoshop', "Logiciel de traitement d'image", '2023',4),
 ("Système d'exploitation XYZ", "Nouveau système d'exploitation", '10.0',1);
-INSERT INTO type_intervention (nom, description) VALUES
+INSERT INTO type_intervention (type_intervention_nom, type_intervention_description) VALUES
 ('Installation logicielle', 'Installation de divers logiciels'),
 ('Réparation matériel', 'Réparation de divers équipements informatiques'),
 ('Mise à jour système', "Mise à jour de systèmes d'exploitation et logiciels"),

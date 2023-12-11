@@ -284,6 +284,27 @@ details[open] summary svg {
 
 /* FORMULAIRE CHAMPS ET BOUTON */
 
+select {
+   width: 100%;
+   height: 50px;
+   border: 1px solid #000;
+   border-radius: 5px;
+   font-size: 1.2rem;
+   font-weight: 500;
+   color: #000;
+   outline: none;
+   cursor: pointer;
+   transition: all 0.3s ease;
+}
+select option{
+   font-size: 1.2rem;
+   font-weight: 500;
+   color: #000;
+   outline: none;
+   cursor: pointer;
+   transition: all 0.3s ease;
+}
+
 /* Main */
 
 main {
