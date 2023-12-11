@@ -15,7 +15,7 @@ $userController = new ControllerUser($connexionController->getPDO());
 ?>
 <?php
 if (!isset($_SESSION['email'])) {
-    require_once("vue/accueil/index.php");
+    require_once("./vue/accueil/index.php");
     if (isset($_POST['seConnecter'])) {
         $email = $_POST['email'];
         $mdp = $_POST['password'];
