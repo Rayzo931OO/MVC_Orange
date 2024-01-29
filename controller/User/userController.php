@@ -83,4 +83,8 @@ class ControllerUser
 	{
 		$this->unModele->technicienExists($id_technicien);
 	}
+	function userLogout()
+	{
+		$this->unModele->userLogout();
+	}
 }

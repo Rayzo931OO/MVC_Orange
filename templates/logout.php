@@ -7,4 +7,3 @@ session_destroy();
 
 // Redirect the user to the login page or any other desired location
 header("Location: /mvc_orange/index.php");
-?>

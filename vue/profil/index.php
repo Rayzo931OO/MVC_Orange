@@ -1,7 +1,7 @@
 <?php
 $title = "Profil";
-$h1="Mon Profil";
-$isSidebar="isSidebar";
+$h1 = "Mon Profil";
+$isSidebar = "isSidebar";
 define('BASE_PATH', str_replace('\vue\profil', "\\", __DIR__));
 ob_start();
 session_start();
@@ -15,32 +15,33 @@ if (isset($_POST["Modifier"]) && isset($_FILES["avatar"])) {
     $targetDirectory = "../../src/images/";
     $targetFile = $targetDirectory . basename($_FILES["avatar"]["name"]);
     $uploadSuccess = move_uploaded_file($_FILES["avatar"]["tmp_name"], $targetFile);
-    if($uploadSuccess){
+    if ($uploadSuccess) {
         $_SESSION["avatar"] = $targetFile;
-    }else{
+    } else {
         echo "Erreur lors de l'upload";
-        $targetFile= null;
+        $targetFile = null;
     }
-    if(isset($_POST['Modifier'])){
+    if (isset($_POST['Modifier'])) {
         $userController->updateUser($_POST, $targetFile);
     }
-}else if(isset($_POST["Modifier"])){
-    if(isset($_POST['Modifier'])){
+} else if (isset($_POST["Modifier"])) {
+    if (isset($_POST['Modifier'])) {
         $userController->updateUser($_POST, null);
     }
 }
-if(isset($_POST["Supprimer"])){
+if (isset($_POST["Supprimer"])) {
     $userController->deleteUserById($_SESSION["id"]);
+    $userController->userLogout();
     header('Location: ../../index.php');
 }
 require_once("userProfileForm.php");
-    if (substr($_SESSION["role"], 0, 5) !== "admin"){
-        echo '<form class="formulaire" action="" method="post">
+if (substr($_SESSION["role"], 0, 5) !== "admin") {
+    echo '<form class="formulaire" action="" method="post">
         <div>
             <button type="submit" id="Supprimer" name="Supprimer">Supprimer mon compte</button>
         </div>
     </form>';
-    }
+}
 ?>
 <script src="./index.js"></script>
 <?php $content = ob_get_clean(); ?>

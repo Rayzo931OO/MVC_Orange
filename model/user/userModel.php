@@ -145,4 +145,9 @@ class User
 		$result = $req->fetch();
 		return $result ? true : false;
 	}
+	function userLogout(){
+		$_SESSION = array();
+		// Destroy the session
+		session_destroy();
+	}
 }

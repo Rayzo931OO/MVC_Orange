@@ -73,18 +73,20 @@ DELIMITER $
 CREATE TRIGGER before_delete_user
 BEFORE DELETE ON user FOR EACH ROW
 BEGIN
-    DECLARE role VARCHAR(50);
-    SELECT role INTO @role FROM user WHERE id_utilisateur = OLD.id_utilisateur;
-    SELECT @role INTO @debug_role; -- Debugging statement
-    IF @role = 'client' THEN
+    DECLARE roleUser VARCHAR(50);
+    DECLARE debug_role VARCHAR(50); -- Debugging statement
+    DECLARE debug_delete_client VARCHAR(50); -- Debugging statement
+    SELECT role INTO roleUser FROM user WHERE id_utilisateur = OLD.id_utilisateur;
+    SELECT roleUser INTO debug_role; -- Debugging statement
+    IF roleUser = 'client' THEN
         DELETE FROM intervention WHERE id_utilisateur = OLD.id_utilisateur;
         DELETE FROM client WHERE id_utilisateur = OLD.id_utilisateur;
-        SELECT 'Deleted client' INTO @debug_delete_client; -- Debugging statement
-    ELSEIF @role = 'technicien' THEN
+        SELECT 'Deleted client' INTO debug_delete_client; -- Debugging statement
+    ELSEIF roleUser = 'technicien' THEN
         UPDATE intervention SET id_technicien = NULL WHERE id_technicien = OLD.id_utilisateur;
         DELETE FROM technicien WHERE id_utilisateur = OLD.id_utilisateur;
-    ELSEIF @role LIKE 'admin%' THEN
-        IF @role != 'admin1' THEN
+    ELSEIF roleUser LIKE 'admin%' THEN
+        IF roleUser != 'admin1' THEN
             DELETE FROM admin WHERE id_utilisateur = OLD.id_utilisateur;
         END IF;
     END IF;
