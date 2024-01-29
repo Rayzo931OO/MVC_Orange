@@ -9,12 +9,12 @@ CREATE TABLE user (
    email VARCHAR(255) NOT NULL UNIQUE,
    code_postal VARCHAR(5) NOT NULL,
    adresse VARCHAR(255) NOT NULL,
-   telephone VARCHAR(20) NOT NULL,
+   telephone VARCHAR(50) NOT NULL,
    mot_de_passe VARCHAR(255) NOT NULL,
    avatar VARCHAR(400),
-   date_inscription TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   date_inscription TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
    date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-   role VARCHAR(20) NOT NULL
+   role ENUM("client","admin1","admin2","admin3","technicien") NOT NULL
 );
 
 CREATE TABLE user_archive (
@@ -24,12 +24,13 @@ CREATE TABLE user_archive (
    email VARCHAR(255) NOT NULL,
    code_postal VARCHAR(5) NOT NULL,
    adresse VARCHAR(255) NOT NULL,
-   telephone VARCHAR(20) NOT NULL,
+   telephone VARCHAR(50) NOT NULL,
    mot_de_passe VARCHAR(255) NOT NULL,
    avatar VARCHAR(400),
-   date_inscription TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-   date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-   role VARCHAR(20) NOT NULL
+   date_inscription TIMESTAMP NOT NULL,
+   date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+   date_archive TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+   role ENUM("client","admin1","admin2","admin3","technicien") NOT NULL
 );
 
 CREATE TABLE technicien (
@@ -106,28 +107,29 @@ CREATE TABLE logiciel (
   FOREIGN KEY (id_categorie) REFERENCES categorie(id_categorie)
 );
 
-CREATE TABLE type_intervention (
-  type_intervention_id INT PRIMARY KEY AUTO_INCREMENT,
-  type_intervention_nom VARCHAR(50) NOT NULL,
-  type_intervention_description VARCHAR(200) NOT NULL
+CREATE TABLE categorie_intervention (
+  categorie_intervention_id INT PRIMARY KEY AUTO_INCREMENT,
+  categorie_intervention_nom VARCHAR(50) NOT NULL,
+  categorie_intervention_description VARCHAR(200) NOT NULL
 );
 
 CREATE TABLE intervention (
   id_intervention INT PRIMARY KEY AUTO_INCREMENT,
-  date_debut DATETIME NOT NULL,
+  date_debut DATETIME,
   date_fin DATETIME,
-  date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
   date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   status VARCHAR(100) NOT NULL,
+  date_archive TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 --   status enum ('En cours', 'Termine', 'Annulé') NOT NULL,
   description VARCHAR(200) NOT NULL,
-  id_technicien INT NOT NULL,
+  id_technicien INT NULL,
   id_utilisateur INT NOT NULL,
   id_materiel INT,
   id_logiciel INT,
-  id_type_intervention INT,
+  id_categorie_intervention INT,
   FOREIGN KEY (id_utilisateur) REFERENCES user(id_utilisateur),
-  FOREIGN KEY (id_type_intervention) REFERENCES type_intervention(type_intervention_id),
+  FOREIGN KEY (id_categorie_intervention) REFERENCES categorie_intervention(categorie_intervention_id),
   FOREIGN KEY (id_technicien) REFERENCES technicien(id_technicien),
   FOREIGN KEY (id_logiciel) REFERENCES logiciel(id_logiciel),
   FOREIGN KEY (id_materiel) REFERENCES materiel(id_materiel)
@@ -143,17 +145,18 @@ DELIMITER ;
 
 CREATE TABLE archive_intervention (
   id_intervention INT PRIMARY KEY,
-  date_debut DATETIME NOT NULL,
+  date_debut DATETIME,
   date_fin DATETIME,
-  date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  date_creation TIMESTAMP NOT NULL,
+  date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  date_archive TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
   status VARCHAR(100) NOT NULL,
   description VARCHAR(200) NOT NULL,
   id_utilisateur INT NOT NULL,
   id_materiel INT NOT NULL,
   id_logiciel INT NOT NULL,
   id_technicien INT NOT NULL,
-  id_type_intervention INT NOT NULL
+  id_categorie_intervention INT NOT NULL
 );
 
 DELIMITER $
@@ -166,7 +169,7 @@ CREATE FUNCTION create_intervention(
     id_logiciel INT,
     id_materiel INT,
     id_utilisateur INT,
-    id_type_intervention INT
+    id_categorie_intervention INT
 )
 RETURNS VARCHAR(200)
 BEGIN
@@ -179,7 +182,7 @@ BEGIN
         id_logiciel,
         id_materiel,
         id_utilisateur,
-        id_type_intervention
+        id_categorie_intervention
     ) VALUES (
         date_debut,
         date_fin,
@@ -189,7 +192,7 @@ BEGIN
         id_logiciel,
         id_materiel,
         id_utilisateur,
-        id_type_intervention
+        id_categorie_intervention
     );
     RETURN CONCAT('Création faite, id=', last_insert_id());
 END$
@@ -232,7 +235,7 @@ DELIMITER ;
 CREATE VIEW intervention_view AS
 SELECT *
 FROM intervention
-JOIN type_intervention ON intervention.id_type_intervention = type_intervention.type_intervention_id;
+JOIN categorie_intervention ON intervention.id_categorie_intervention = categorie_intervention.categorie_intervention_id;
 
 -- CREATE TABLE intervention (
 --   id_intervention INT PRIMARY KEY AUTO_INCREMENT,
@@ -243,7 +246,7 @@ JOIN type_intervention ON intervention.id_type_intervention = type_intervention.
 --   status VARCHAR(50) NOT NULL,
 --   description VARCHAR(200) NOT NULL,
 --   id_technicien INT NOT NULL,
---   id_type_intervention INT NOT NULL,
+--   id_categorie_intervention INT NOT NULL,
 --   FOREIGN KEY (id_technicien) REFERENCES technicien(id_technicien)
 -- )
 
@@ -321,8 +324,8 @@ CREATE VIEW client_view AS (
     INNER JOIN client ON user.id_utilisateur = client.id_utilisateur
 );
 
-CREATE VIEW type_intervention_view AS (
-   SELECT * FROM type_intervention
+CREATE VIEW categorie_intervention_view AS (
+   SELECT * FROM categorie_intervention
 );
 CREATE VIEW categorie_view AS (
    SELECT * FROM categorie
@@ -354,7 +357,7 @@ INSERT INTO logiciel (nom, description, version, id_categorie) VALUES
 ('Antivirus Pro', 'Logiciel antivirus avancé', '2023',2),
 ('Photoshop', "Logiciel de traitement d'image", '2023',4),
 ("Système d'exploitation XYZ", "Nouveau système d'exploitation", '10.0',1);
-INSERT INTO type_intervention (type_intervention_nom, type_intervention_description) VALUES
+INSERT INTO categorie_intervention (categorie_intervention_nom, categorie_intervention_description) VALUES
 ('Installation logicielle', 'Installation de divers logiciels'),
 ('Réparation matériel', 'Réparation de divers équipements informatiques'),
 ('Mise à jour système', "Mise à jour de systèmes d'exploitation et logiciels"),
@@ -369,8 +372,8 @@ INSERT INTO type_intervention (type_intervention_nom, type_intervention_descript
 -- INSERT INTO client (id_utilisateur, info_additionnel) VALUES
 -- (1, 'Informations client Dupont'),
 -- (4, 'Informations client Petit');
-INSERT INTO intervention (date_debut, date_fin, status, description, id_technicien,id_materiel,id_logiciel, id_type_intervention, id_utilisateur) VALUES
-('2023-01-01 08:00:00', '2023-01-01 12:00:00', 'En cours', "Installation d'antivirus",1,1,null,1,4);
+INSERT INTO intervention (date_debut, date_fin, status, description, id_technicien,id_materiel,id_logiciel, id_categorie_intervention, id_utilisateur) VALUES
+('2023-01-01 08:00:00', '2023-01-01 12:00:00', 'En cours', "Installation d'antivirus",null,1,null,1,4);
 -- INSERT INTO jonction_materiel_categorie (id_materiel, id_categorie) VALUES
 -- (1, 1);
 

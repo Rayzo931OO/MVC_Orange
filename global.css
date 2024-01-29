@@ -344,7 +344,7 @@ main {
    gap: 20px;
    width: 500px;
    max-width: 1200px;
-   max-height: 800px;
+   max-height: fit-content;
 }
 
 .main__container form.formulaire div {

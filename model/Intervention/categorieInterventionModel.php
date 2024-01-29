@@ -1,6 +1,6 @@
 <?php
 
-class TypeIntervention
+class CategorieIntervention
 {
     private $bdd;
     public function __construct($bdd)
@@ -8,29 +8,29 @@ class TypeIntervention
         $this->bdd = $bdd;
     }
 
-    public function ajouterTypeIntervention($date_debut, $date_fin, $status, $description, $id_technicien, $id_type_intervention)
+    public function ajouterCategorieIntervention($date_debut, $date_fin, $status, $description, $id_technicien, $id_categorie_intervention)
     {
-        $req = $this->bdd->prepare("select create_intervention( :date_debut, :date_fin, :status, :description, :id_technicien, :id_type_intervention);");
+        $req = $this->bdd->prepare("select create_intervention( :date_debut, :date_fin, :status, :description, :id_technicien, :id_categorie_intervention);");
         $req->bindParam(':date_debut', $date_debut);
         $req->bindParam(':date_fin', $date_fin);
         $req->bindParam(':status', $status);
         $req->bindParam(':description', $description);
         $req->bindParam(':id_technicien', $id_technicien);
-        $req->bindParam(':id_type_intervention', $id_type_intervention);
+        $req->bindParam(':id_categorie_intervention', $id_categorie_intervention);
 
         return $req->execute();
     }
 
-    public function allTypeIntervention()
+    public function allCategorieIntervention()
     {
         //ecriture de la requete
-        $requete = "select * from type_intervention_view;";
+        $requete = "select * from categorie_intervention_view;";
         $req = $this->bdd->prepare($requete);
         $req->execute();
         return $req->fetchAll();
     }
 
-    function selectTypeInterventionById($id)
+    function selectCategorieInterventionById($id)
     {
         //ecriture de la requete
         $req = $this->bdd->prepare("SELECT * from intervention where id_intervention= :id_intervention;");
@@ -39,7 +39,7 @@ class TypeIntervention
         return $req->fetch();
     }
 
-    function selectLikeTypeIntervention($mot)
+    function selectLikeCategorieIntervention($mot)
     {
         $mot = "%" . $mot . "%";
         $req = $this->bdd->prepare("SELECT * from type_intervervention where nom like :nom or description like :description");
@@ -50,22 +50,22 @@ class TypeIntervention
 
     }
 
-    function updateTypeIntervention($intervention)
+    function updateCategorieIntervention($intervention)
     {
         //ecriture de la requete
-        $req = $this->bdd->prepare("UPDATE intervention set date_debut= :date_debut, date_fin= :date_fin, status= :status, description= :description, id_technicien= :id_technicien, id_type_intervention= :id_type_intervention where id_intervention= :id_intervention;");
+        $req = $this->bdd->prepare("UPDATE intervention set date_debut= :date_debut, date_fin= :date_fin, status= :status, description= :description, id_technicien= :id_technicien, id_categorie_intervention= :id_categorie_intervention where id_intervention= :id_intervention;");
         $req->bindParam(':date_debut', $intervention['date_debut']);
         $req->bindParam(':date_fin', $intervention['date_fin']);
         $req->bindParam(':status', $intervention['status']);
         $req->bindParam(':description', $intervention['description']);
         $req->bindParam(':id_technicien', $intervention['id_technicien']);
-        $req->bindParam(':id_type_intervention', $intervention['id_type_intervention']);
+        $req->bindParam(':id_categorie_intervention', $intervention['id_categorie_intervention']);
         $req->bindParam(':id_intervention', $intervention['id_intervention']);
         $req->execute();
         return $req->fetchAll();
     }
 
-    function deleteTypeInterventionById($id)
+    function deleteCategorieInterventionById($id)
     {
         //ecriture de la requete
         $req = $this->bdd->prepare("DELETE from intervention where id_intervention= :id_intervention;");

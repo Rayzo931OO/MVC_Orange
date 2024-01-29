@@ -98,7 +98,6 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
     }
 }
 if (isset($_POST['Modifier'])) {
-    var_dump($_POST);
     $categorieController->updateCategorie($_POST);
     header('Location: index.php');
 }

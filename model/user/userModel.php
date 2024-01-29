@@ -91,7 +91,6 @@ class User
 		$req->bindParam(':mot', $mot);
 		$req->execute();
 		return $req->fetchAll();
-
 	}
 
 	function updateUser($user, $avatar)
@@ -114,17 +113,17 @@ class User
 			// var_dump($req->rowCount()); // Check how many rows were affected
 
 			return $result; // Returns true if one or more rows were updated
-	  } catch (PDOException $e) {
+		} catch (PDOException $e) {
 			error_log("Error in updateUser: " . $e->getMessage());
-			var_dump("Error in updateUser: ".$e->getMessage());
+			var_dump("Error in updateUser: " . $e->getMessage());
 			return false;
-	  }
+		}
 	}
 
 	function deleteUserById($id)
 	{
 		//ecriture de la requete
-		$req =  $this->bdd->prepare ("DELETE from user where id_utilisateur= :id_utilisateur;");
+		$req =  $this->bdd->prepare("DELETE from user where id_utilisateur= :id_utilisateur;");
 		$req->bindParam(':id_utilisateur', $id);
 		$req->execute();
 		return $req->fetchAll();
@@ -137,5 +136,13 @@ class User
 		$req->bindParam(':id_utilisateur', $id);
 		$req->execute();
 		return $req->fetchAll();
+	}
+	function technicienExists($id_technicien)
+	{
+		$req = $this->bdd->prepare("SELECT * FROM technicien WHERE id_technicien = :id_technicien");
+		$req->bindParam(':id_technicien', $id_technicien);
+		$req->execute();
+		$result = $req->fetch();
+		return $result ? true : false;
 	}
 }

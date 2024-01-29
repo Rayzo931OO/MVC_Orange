@@ -99,7 +99,6 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
     }
 }
 if (isset($_POST['Modifier'])) {
-    var_dump($_POST);
     $logicielController->updateLogiciel($_POST);
     header('Location: index.php');
 }

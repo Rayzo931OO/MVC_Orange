@@ -8,18 +8,39 @@ class Intervention
         $this->bdd = $bdd;
     }
 
-    public function ajouterIntervention($date_debut, $date_fin, $status, $description, $id_technicien, $id_materiel,$id_logiciel,  $id_type_intervention)
+    public function ajouterInterventionAdmin($id_client,$date_debut, $date_fin, $status, $description, $id_materiel,$id_logiciel,  $id_categorie_intervention, $id_technicien)
     {
 
-        $req = $this->bdd->prepare("select create_intervention( :date_debut, :date_fin, :status, :description, :id_technicien, :id_logiciel, :id_materiel, :id_type_intervention);");
+        $req = $this->bdd->prepare("select create_intervention( :date_debut, :date_fin, :status, :description, :id_technicien, :id_logiciel, :id_materiel,:id_utilisateur, :id_categorie_intervention);");
+        $req->bindParam(':id_utilisateur', $id_client);
         $req->bindParam(':date_debut', $date_debut);
         $req->bindParam(':date_fin', $date_fin);
         $req->bindParam(':status', $status);
         $req->bindParam(':description', $description);
-        $req->bindParam(':id_technicien', $id_technicien);
         $req->bindParam(':id_logiciel', $id_logiciel);
         $req->bindParam(':id_materiel', $id_materiel);
-        $req->bindParam(':id_type_intervention', $id_type_intervention);
+        $req->bindParam(':id_technicien', $id_technicien);
+        $req->bindParam(':id_categorie_intervention', $id_categorie_intervention);
+
+        return $req->execute();
+    }
+    public function ajouterInterventionClient($id_client,$description, $id_materiel,$id_logiciel,  $id_categorie_intervention)
+    {
+        $date_debut = null;
+        $date_fin = null;
+        $status = "En cours";
+        $id_technicien = null;
+
+        $req = $this->bdd->prepare("select create_intervention( :date_debut, :date_fin, :status, :description, :id_technicien, :id_logiciel, :id_materiel, :id_utilisateur, :id_categorie_intervention);");
+        $req->bindParam(':id_utilisateur', $id_client);
+        $req->bindParam(':date_debut', $date_debut);
+        $req->bindParam(':date_fin', $date_fin);
+        $req->bindParam(':status', $status);
+        $req->bindParam(':description', $description);
+        $req->bindParam(':id_logiciel', $id_logiciel);
+        $req->bindParam(':id_materiel', $id_materiel);
+        $req->bindParam(':id_technicien', $id_technicien);
+        $req->bindParam(':id_categorie_intervention', $id_categorie_intervention);
 
         return $req->execute();
     }
@@ -45,6 +66,13 @@ class Intervention
 		//ecriture de la requete
 		$req = $this->bdd->prepare("SELECT * from intervention where id_technicien= :id_technicien;");
 		$req->bindParam(':id_technicien', $id);
+		$req->execute();
+		return $req->fetchAll();
+	}
+    function selectInterventionNonAssigner()
+	{
+		//ecriture de la requete
+		$req = $this->bdd->prepare("SELECT * from intervention where id_technicien IS NULL;");
 		$req->execute();
 		return $req->fetchAll();
 	}
@@ -84,7 +112,7 @@ class Intervention
         return $req->fetchAll();
 
     }
-    function selectInterventionByAlphaOrdderASC()
+    function selectInterventionByAlphaOrderASC()
     {
         $req = $this->bdd->prepare("SELECT * FROM intervention ORDER BY name ASC;");
         $req->execute();
@@ -92,7 +120,32 @@ class Intervention
 
     }
 
-    function updateIntervention($intervention)
+    function updateInterventionTechnicien($intervention)
+    {
+        $dateTimeDebut = new DateTime($intervention['date_debut']);
+        $dateTimeFin = new DateTime($intervention['date_fin']);
+        $dateTimeDebutFormated = $dateTimeDebut->format("Y-m-d H:i:s");
+        $dateTimeFinFormated = $dateTimeFin->format("Y-m-d H:i:s");
+
+        try {
+			$req = $this->bdd->prepare("UPDATE intervention set date_debut= :date_debut, date_fin= :date_fin, status= :status where id_intervention= :id_intervention;");
+            $req->bindParam(':date_debut', $dateTimeDebutFormated);
+            $req->bindParam(':date_fin', $dateTimeFinFormated);
+            $req->bindParam(':status', $intervention['status']);
+            $req->bindParam(':id_intervention', $intervention['id_intervention']);
+			$req->execute();
+			$result = $req->fetch();
+			// var_dump($result); // Check how many rows were affected
+			// var_dump($req->rowCount()); // Check how many rows were affected
+
+			return $result; // Returns true if one or more rows were updated
+	  } catch (PDOException $e) {
+			error_log("Error in updateIntervention: " . $e->getMessage());
+			var_dump("Error in updateIntervention: ".$e->getMessage());
+			return false;
+	  }
+    }
+    function updateInterventionAdmin($intervention)
     {
         $dateTimeDebut = new DateTime($intervention['date_debut']);
         $dateTimeFin = new DateTime($intervention['date_fin']);
@@ -107,7 +160,7 @@ class Intervention
         }
 
         try {
-			$req = $this->bdd->prepare("UPDATE intervention set date_debut= :date_debut, date_fin= :date_fin, status= :status, description= :description, id_materiel= :id_materiel, id_logiciel= :id_logiciel, id_technicien= :id_technicien, id_type_intervention= :id_type_intervention where id_intervention= :id_intervention;");
+			$req = $this->bdd->prepare("UPDATE intervention set date_debut= :date_debut, date_fin= :date_fin, status= :status, description= :description, id_materiel= :id_materiel, id_logiciel= :id_logiciel, id_technicien= :id_technicien, id_categorie_intervention= :id_categorie_intervention where id_intervention= :id_intervention;");
             $req->bindParam(':date_debut', $dateTimeDebutFormated);
             $req->bindParam(':date_fin', $dateTimeFinFormated);
             $req->bindParam(':status', $intervention['status']);
@@ -115,7 +168,7 @@ class Intervention
             $req->bindParam(':id_logiciel', $intervention['id_logiciel']);
             $req->bindParam(':description', $intervention['description']);
             $req->bindParam(':id_technicien', $intervention['id_technicien']);
-            $req->bindParam(':id_type_intervention', $intervention['id_type_intervention']);
+            $req->bindParam(':id_categorie_intervention', $intervention['id_categorie_intervention']);
             $req->bindParam(':id_intervention', $intervention['id_intervention']);
 			$req->execute();
 			$result = $req->fetch();
@@ -137,6 +190,13 @@ class Intervention
         $req->bindParam(':id_intervention', $id);
         $req->execute();
         return $req->fetch();
+    }
+    function assignerTechnicienAIntervention($id_intervention, $id_technicien)
+    {
+        $req = $this->bdd->prepare("UPDATE intervention SET id_technicien = :id_technicien WHERE id_intervention = :id_intervention");
+        $req->bindParam(':id_technicien', $id_technicien);
+        $req->bindParam(':id_intervention', $id_intervention);
+        $req->execute();
     }
 
 }
