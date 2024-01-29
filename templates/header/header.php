@@ -29,7 +29,7 @@
                 </a>
             </li>
             <li class="buttonSecondary">
-                <a href="/mvc_orange/contact/">
+                <a href="/mvc_orange/vue/aide-et-contact/">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 47 47">
                         <g id="Icon_feather-help-circle" data-name="Icon feather-help-circle" transform="translate(-1.5 -1.5)">
                             <path id="Tracé_1" data-name="Tracé 1" d="M47,25A22,22,0,1,1,25,3,22,22,0,0,1,47,25Z" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
@@ -45,7 +45,7 @@
         if (isset($_SESSION['email'])) {
             echo '
                 <div class="buttonPrimary">
-            <a href="/mvc_orange/account/profil/">
+            <a href="/mvc_orange/vue/profil/">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 40 40">
                     <path id="Icon_awesome-user-circle" data-name="Icon awesome-user-circle" d="M20,.563a20,20,0,1,0,20,20A20,20,0,0,0,20,.563ZM20,8.3a7.1,7.1,0,1,1-7.1,7.1A7.1,7.1,0,0,1,20,8.3Zm0,27.742a15.454,15.454,0,0,1-11.815-5.5,8.991,8.991,0,0,1,7.944-4.823,1.973,1.973,0,0,1,.573.089,10.678,10.678,0,0,0,3.3.556,10.637,10.637,0,0,0,3.3-.556,1.973,1.973,0,0,1,.573-.089,8.991,8.991,0,0,1,7.944,4.823A15.454,15.454,0,0,1,20,36.046Z" transform="translate(0 -0.563)" fill="#fff" />
                 </svg>
@@ -53,6 +53,17 @@
             </a>
         </div>
 				';
+        }else{
+            echo '
+            <div class="buttonPrimary">
+        <a href="/mvc_orange/vue/login/">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 40 40">
+                <path id="Icon_awesome-user-circle" data-name="Icon awesome-user-circle" d="M20,.563a20,20,0,1,0,20,20A20,20,0,0,0,20,.563ZM20,8.3a7.1,7.1,0,1,1-7.1,7.1A7.1,7.1,0,0,1,20,8.3Zm0,27.742a15.454,15.454,0,0,1-11.815-5.5,8.991,8.991,0,0,1,7.944-4.823,1.973,1.973,0,0,1,.573.089,10.678,10.678,0,0,0,3.3.556,10.637,10.637,0,0,0,3.3-.556,1.973,1.973,0,0,1,.573-.089,8.991,8.991,0,0,1,7.944,4.823A15.454,15.454,0,0,1,20,36.046Z" transform="translate(0 -0.563)" fill="#fff" />
+            </svg>
+            <div>Connexion</div>
+        </a>
+    </div>
+            ';
         }
         ?>
 

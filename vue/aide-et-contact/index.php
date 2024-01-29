@@ -1,9 +1,9 @@
 <?php
 $title = "Informations légales et contact";
 $h1 = "Informations légales et contact";
+define('BASE_PATH', str_replace('\vue\aide-et-contact', "\\", __DIR__));
 ob_start();
 session_start();
-ob_start();
 ?>
 
 <main>
@@ -47,4 +47,4 @@ ob_start();
         </div>
 </main>
 <?php $content = ob_get_clean(); ?>
-<?php require('../templates/layout.php') ?>
+<?php require('../../templates/layout.php') ?>
