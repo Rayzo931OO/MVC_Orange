@@ -126,7 +126,7 @@ class User
 		$req =  $this->bdd->prepare("DELETE from user where id_utilisateur= :id_utilisateur;");
 		$req->bindParam(':id_utilisateur', $id);
 		$req->execute();
-		return $req->fetchAll();
+		return $req->fetch();
 	}
 
 	function selectInterventionByUserId($id)

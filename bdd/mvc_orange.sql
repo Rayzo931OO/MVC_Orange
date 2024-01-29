@@ -14,6 +14,7 @@ CREATE TABLE user (
    avatar VARCHAR(400),
    date_inscription TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
    date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+   date_archive TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
    role ENUM("client","admin1","admin2","admin3","technicien") NOT NULL
 );
 
@@ -72,10 +73,22 @@ DELIMITER $
 CREATE TRIGGER before_delete_user
 BEFORE DELETE ON user FOR EACH ROW
 BEGIN
+    DECLARE role VARCHAR(50);
+    SELECT role INTO @role FROM user WHERE id_utilisateur = OLD.id_utilisateur;
+    SELECT @role INTO @debug_role; -- Debugging statement
+    IF @role = 'client' THEN
+        DELETE FROM intervention WHERE id_utilisateur = OLD.id_utilisateur;
+        DELETE FROM client WHERE id_utilisateur = OLD.id_utilisateur;
+        SELECT 'Deleted client' INTO @debug_delete_client; -- Debugging statement
+    ELSEIF @role = 'technicien' THEN
+        UPDATE intervention SET id_technicien = NULL WHERE id_technicien = OLD.id_utilisateur;
+        DELETE FROM technicien WHERE id_utilisateur = OLD.id_utilisateur;
+    ELSEIF @role LIKE 'admin%' THEN
+        IF @role != 'admin1' THEN
+            DELETE FROM admin WHERE id_utilisateur = OLD.id_utilisateur;
+        END IF;
+    END IF;
     INSERT INTO user_archive SELECT * FROM user WHERE id_utilisateur = OLD.id_utilisateur;
-    DELETE FROM client WHERE id_utilisateur = OLD.id_utilisateur;
-    DELETE FROM technicien WHERE id_utilisateur = OLD.id_utilisateur;
-    DELETE FROM admin WHERE id_utilisateur = OLD.id_utilisateur;
 END$
 DELIMITER ;
 

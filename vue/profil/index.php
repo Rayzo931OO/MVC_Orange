@@ -29,17 +29,12 @@ if (isset($_POST["Modifier"]) && isset($_FILES["avatar"])) {
         $userController->updateUser($_POST, null);
     }
 }
-// echo "<form class='formulaire' action='index.php' method='post'>
-// <div>
-//     <button type='submit' name='formUtilisateur' value='formUtilisateur' />
-//     Ajouter un utilisateur
-//     </button>
-// </div>
-// </form>";
+if(isset($_POST["Supprimer"])){
+    $userController->deleteUserById($_SESSION["id"]);
+    header('Location: ../../index.php');
+}
 require_once("userProfileForm.php");
-?>
-<?php
-    if (substr($_SESSION["role"], 0, 5) == "admin"){
+    if (substr($_SESSION["role"], 0, 5) !== "admin"){
         echo '<form class="formulaire" action="" method="post">
         <div>
             <button type="submit" id="Supprimer" name="Supprimer">Supprimer mon compte</button>
