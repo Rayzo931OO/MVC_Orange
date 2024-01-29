@@ -135,6 +135,6 @@ if (!isset($_SESSION['email'])) {
         </div>
     </form>
 </details>
-<?php $content = ob_get_clean(); ?>
 <script src="/mvc_orange/templates/formConnexion/index.js"></script>
+<?php $content = ob_get_clean(); ?>
 <?php require('../../templates/layout.php') ?>
