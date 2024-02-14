@@ -28,7 +28,7 @@
       }
       ?>
       <li>
-         <a href="/mvc_orange/templates/logout.php">Déconnections</a>
+         <a href="/mvc_orange/templates/logout.php">Déconnexion</a>
       </li>
    </ul>
 </nav>
