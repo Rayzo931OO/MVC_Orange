@@ -140,6 +140,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
         <td>" . $user['email'] . "</td>";
         }
         foreach ($techniciens as $technicien) {
+            var_dump($userController->selectTechnicienById($technicien['id_utilisateur'])["id_technicien"]);
             $tableau2 = $tableau2 . "<tr>
             <td><input type='radio' value='" . $userController->selectTechnicienById($technicien['id_utilisateur'])["id_technicien"] . "' name='id_technicien'";
             if ($technicien["id_utilisateur"] == $techniciens[0]["id_utilisateur"]) {

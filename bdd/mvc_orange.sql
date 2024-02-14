@@ -15,7 +15,7 @@ CREATE TABLE user (
    date_inscription TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
    date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    date_archive TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-   role ENUM("client","admin1","admin2","admin3","technicien") NOT NULL
+   role ENUM("client","admin","technicien") NOT NULL
 );
 
 CREATE TABLE user_archive (
@@ -31,65 +31,13 @@ CREATE TABLE user_archive (
    date_inscription TIMESTAMP NOT NULL,
    date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
    date_archive TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-   role ENUM("client","admin1","admin2","admin3","technicien") NOT NULL
+   role ENUM("client","admin","technicien") NOT NULL
 );
-
-CREATE TABLE technicien (
-   id_technicien INT PRIMARY KEY AUTO_INCREMENT,
-   id_utilisateur INT,
-   expertise VARCHAR(255),
-   FOREIGN KEY (id_utilisateur) REFERENCES user(id_utilisateur)
-);
-
-CREATE TABLE admin (
-   id_admin INT PRIMARY KEY AUTO_INCREMENT,
-   id_utilisateur INT,
-   grade_admin INT,
-   FOREIGN KEY (id_utilisateur) REFERENCES user(id_utilisateur)
-);
-
-CREATE TABLE client (
-   id_client INT PRIMARY KEY AUTO_INCREMENT,
-   id_utilisateur INT,
-   info_additionnel VARCHAR(255),
-   FOREIGN KEY (id_utilisateur) REFERENCES user(id_utilisateur)
-);
-
-DELIMITER $
-CREATE TRIGGER after_insert_user
-AFTER INSERT ON user FOR EACH ROW
-BEGIN
-    IF NEW.role = 'client' THEN
-        INSERT INTO client (id_utilisateur, info_additionnel) VALUES (NEW.id_utilisateur, "info_additionnel");
-    ELSEIF NEW.role = 'technicien' THEN
-        INSERT INTO technicien (id_utilisateur, expertise) VALUES (NEW.id_utilisateur, "expertise");
-    ELSEIF NEW.role LIKE 'admin%' THEN
-        INSERT INTO admin (id_utilisateur, grade_admin) VALUES (NEW.id_utilisateur, SUBSTRING(NEW.role, 6));
-    END IF;
-END$
-DELIMITER ;
 
 DELIMITER $
 CREATE TRIGGER before_delete_user
 BEFORE DELETE ON user FOR EACH ROW
 BEGIN
-    DECLARE roleUser VARCHAR(50);
-    DECLARE debug_role VARCHAR(50); -- Debugging statement
-    DECLARE debug_delete_client VARCHAR(50); -- Debugging statement
-    SELECT role INTO roleUser FROM user WHERE id_utilisateur = OLD.id_utilisateur;
-    SELECT roleUser INTO debug_role; -- Debugging statement
-    IF roleUser = 'client' THEN
-        DELETE FROM intervention WHERE id_utilisateur = OLD.id_utilisateur;
-        DELETE FROM client WHERE id_utilisateur = OLD.id_utilisateur;
-        SELECT 'Deleted client' INTO debug_delete_client; -- Debugging statement
-    ELSEIF roleUser = 'technicien' THEN
-        UPDATE intervention SET id_technicien = NULL WHERE id_technicien = OLD.id_utilisateur;
-        DELETE FROM technicien WHERE id_utilisateur = OLD.id_utilisateur;
-    ELSEIF roleUser LIKE 'admin%' THEN
-        IF roleUser != 'admin1' THEN
-            DELETE FROM admin WHERE id_utilisateur = OLD.id_utilisateur;
-        END IF;
-    END IF;
     INSERT INTO user_archive SELECT * FROM user WHERE id_utilisateur = OLD.id_utilisateur;
 END$
 DELIMITER ;
@@ -145,7 +93,7 @@ CREATE TABLE intervention (
   id_categorie_intervention INT,
   FOREIGN KEY (id_utilisateur) REFERENCES user(id_utilisateur),
   FOREIGN KEY (id_categorie_intervention) REFERENCES categorie_intervention(categorie_intervention_id),
-  FOREIGN KEY (id_technicien) REFERENCES technicien(id_technicien),
+  FOREIGN KEY (id_technicien) REFERENCES user(id_utilisateur),
   FOREIGN KEY (id_logiciel) REFERENCES logiciel(id_logiciel),
   FOREIGN KEY (id_materiel) REFERENCES materiel(id_materiel)
 );
