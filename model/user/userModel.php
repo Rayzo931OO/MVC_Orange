@@ -69,7 +69,7 @@ class User
 	function selectTechnicienById($id)
 	{
 		//ecriture de la requete
-		$req = $this->bdd->prepare("SELECT * from technicien where id_utilisateur= :id_utilisateur;");
+		$req = $this->bdd->prepare("SELECT * from user where id_utilisateur= :id_utilisateur;");
 		$req->bindParam(':id_utilisateur', $id);
 		$req->execute();
 		return $req->fetch();

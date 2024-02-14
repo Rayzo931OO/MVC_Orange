@@ -17,7 +17,7 @@ if (substr($_SESSION["role"], 0, 5) == "admin") {
 if ($_SESSION["role"] == "technicien") {
     $isAdmin = false;
     $currentTechnicien = $userController->selectTechnicienById($_SESSION["id"]);
-    if ($currentTechnicien["id_technicien"] == $intervention["id_technicien"]) {
+    if ($currentTechnicien["id_utilisateur"] == $intervention["id_utilisateur"]) {
         $assigned = true;
     }
 }

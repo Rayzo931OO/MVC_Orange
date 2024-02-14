@@ -269,13 +269,14 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                 $interventions = $interventionsController->selectInterventionByAlphaOrderASC();
                 break;
             default:
-                if (substr($_SESSION["role"], 0, 5) == "admin") {
+                if ($_SESSION["role"] == "admin") {
                     $interventions = $interventionsController->allIntervention();
                 } else if ($_SESSION["role"] == "technicien") {
-                    $interventions = $interventionsController->selectInterventionByTechnicien($userController->selectTechnicienById($_SESSION["id"])["id_technicien"]);
+                    $interventions = $interventionsController->selectInterventionByTechnicien($userController->selectTechnicienById($_SESSION["id"])["id_utilisateur"]);
                     $unAssignedInterventions = $interventionsController->selectInterventionNonAssigner();
                 } else if ($_SESSION["role"] == "client") {
                     $interventions = $interventionsController->selectInterventionByUserId($_SESSION["id"]);
+                    var_dump($interventions);
                 }
                 break;
         }
