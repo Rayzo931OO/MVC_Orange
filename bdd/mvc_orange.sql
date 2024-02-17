@@ -11,7 +11,7 @@ CREATE TABLE user (
    adresse VARCHAR(255) NOT NULL,
    telephone VARCHAR(50) NOT NULL,
    mot_de_passe VARCHAR(255) NOT NULL,
-   avatar VARCHAR(400),
+  --  avatar VARCHAR(400),
    date_inscription TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
    date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    date_archive TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -27,7 +27,7 @@ CREATE TABLE user_archive (
    adresse VARCHAR(255) NOT NULL,
    telephone VARCHAR(50) NOT NULL,
    mot_de_passe VARCHAR(255) NOT NULL,
-   avatar VARCHAR(400),
+  --  avatar VARCHAR(400),
    date_inscription TIMESTAMP NOT NULL,
    date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
    date_archive TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -244,11 +244,11 @@ CREATE VIEW logiciel_view AS (
 );
 
 
-INSERT INTO user (nom, prenom, email, code_postal, adresse, telephone, mot_de_passe, avatar, role) VALUES
-('Dupont', 'Jean', 'client1@email.com', '75001', '123 Rue de Paris', '0123456789', 'password123',null, 'client'),
-('Martin', 'Alice', 'technicien@email.com', '69001', '456 Avenue de Lyon', '0987654321', 'password123',null, 'technicien'),
-('Bernard', 'Lucas', 'admin@email.com', '31000', '789 Rue de Toulouse', '1122334455', 'password123',null, 'admin'),
-('Petit', 'Chloé', 'client2@email.com', '33000', '321 Rue de Bordeaux', '2233445566', 'password123',null, 'client');
+INSERT INTO user (nom, prenom, email, code_postal, adresse, telephone, mot_de_passe, role) VALUES
+('Dupont', 'Jean', 'client1@email.com', '75001', '123 Rue de Paris', '0123456789', 'password123', 'client'),
+('Martin', 'Alice', 'technicien@email.com', '69001', '456 Avenue de Lyon', '0987654321', 'password123', 'technicien'),
+('Bernard', 'Lucas', 'admin@email.com', '31000', '789 Rue de Toulouse', '1122334455', 'password123', 'admin'),
+('Petit', 'Chloé', 'client2@email.com', '33000', '321 Rue de Bordeaux', '2233445566', 'password123', 'client');
 INSERT INTO categorie (nom, description) VALUES
 ('Ordinateurs', 'Catégorie pour tous les ordinateurs'),
 ('Imprimantes', 'Catégorie pour toutes les imprimantes'),

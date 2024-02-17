@@ -11,24 +11,10 @@ $connexionController = new ControllerConnexion();
 $userController = new ControllerUser($connexionController->getPDO());
 ?>
 <?php
-if (isset($_POST["Modifier"]) && isset($_FILES["avatar"])) {
-    $targetDirectory = "../../src/images/";
-    $targetFile = $targetDirectory . basename($_FILES["avatar"]["name"]);
-    $uploadSuccess = move_uploaded_file($_FILES["avatar"]["tmp_name"], $targetFile);
-    if ($uploadSuccess) {
-        $_SESSION["avatar"] = $targetFile;
-    } else {
-        echo "Erreur lors de l'upload";
-        $targetFile = null;
-    }
-    if (isset($_POST['Modifier'])) {
-        $userController->updateUser($_POST, $targetFile);
-    }
-} else if (isset($_POST["Modifier"])) {
-    if (isset($_POST['Modifier'])) {
+if (isset($_POST["Modifier"])) {
+    var_dump($_POST);   
         $userController->updateUser($_POST, null);
     }
-}
 if (isset($_POST["Supprimer"])) {
     $userController->deleteUserById($_SESSION["id"]);
     $userController->userLogout();

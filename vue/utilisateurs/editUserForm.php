@@ -1,31 +1,11 @@
 <?php
-$class = "none";
-if ($user["avatar"] != null) {
-    $class = "block";
-}
 echo '
 
 
 <form class="formulaire" action="" method="post">
-<picture>
-<div class="imageFormulaire">
-    <div class="avatar" id="avatar">
-        <img id="preview" style="display:'.$class.'" src="'.$user["avatar"].'" alt="Aperçu de l\'image">
-    </div>
-    <div class="inputs">
-        <label for="image">Choisir une image :</label>
-        <input type="file" id="avatar" name="avatar">
-        <p>Ajoutez votre Photo de Profil</p>
-        <button type="button" id="delete" style="display:none;">Supprimer l\'image</button>
-    </div>
-</div>
-</picture>
-<div>
-<input type="hidden" value="'.$user["avatar"].'" name="avatar" id="avatar">
-</div>
-';
 
-echo '<div>
+
+<div>
 <label for="role">Role</label></br>
 <select name="role" id="role" value="' . $user["role"] . '" required>';
 if($user["role"]=="client") echo "<option value='client' selected='true'> Client </option>";

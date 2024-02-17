@@ -1,23 +1,7 @@
 <?php
-$class = "none";
-if ($_SESSION["avatar"] != null) {
-    $class = "block";
-}
+// var_dump($_SESSION);
 echo '
 <form class="formulaire" action="index.php" method="post" enctype="multipart/form-data">
-<picture>
-<div class="imageFormulaire">
-    <div class="avatar" id="avatar">
-        <img id="preview" style="display:'.$class.'" src="'.$_SESSION["avatar"].'" alt="Aperçu de l\'image">
-    </div>
-    <div class="inputs">
-        <label for="image">Choisir une image :</label>
-        <input type="file" id="avatar" name="avatar">
-        <p>Ajoutez votre Photo de Profil</p>
-        <button type="button" id="delete" style="display:none;">Supprimer l\'image</button>
-    </div>
-</div>
-</picture>
 <div>
 <input type="text" id="nom" name="nom" value="'.$_SESSION["nom"].'" class="peer" placeholder=" " required>
 <label for="nom" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">Nom </label>
@@ -37,8 +21,8 @@ echo '
     téléphone </label>
 </div>
 <div>
-<input type="text" id="codePostal" name="codePostal" value="'.$_SESSION["codePostal"].'" class="peer" placeholder=" " required>
-<label for="codePostal" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">Code Postal
+<input type="text" id="code_postal" name="code_postal" value="'.$_SESSION["code_postal"].'" class="peer" placeholder=" " required>
+<label for="code_postal" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">Code Postal
 </label>
 </div>
 <div>

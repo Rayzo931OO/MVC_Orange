@@ -19,7 +19,7 @@ if (isset($_POST['ajouterUtilisateur'])) {
     $userController->ajouterUser($_POST);
 }
 if (isset($_POST['Modifier'])) {
-    $userController->updateUser($_POST, $_POST['avatar']);
+    $userController->updateUser($_POST, null);
     // var_dump($result);
     header('Location: index.php');
 }

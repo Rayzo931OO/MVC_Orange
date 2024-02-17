@@ -21,34 +21,50 @@ if (!isset($_SESSION['email'])) {
         } else {
             echo "Bienvenue " . $unUser['nom'] . "  " . $unUser['prenom'];
             // sauvegarder les données dans la session
-            $_SESSION['email'] = $email;
+            $_SESSION['email'] = $unUser['email'];
             $_SESSION['nom'] = $unUser['nom'];
             $_SESSION['prenom'] = $unUser['prenom'];
             $_SESSION['role'] = $unUser['role'];
             $_SESSION["telephone"] = $unUser["telephone"];
             $_SESSION["adresse"] = $unUser["adresse"];
-            $_SESSION["codePostal"] = $unUser["code_postal"];
+            $_SESSION["code_postal"] = $unUser["code_postal"];
             $_SESSION["id"] = $unUser["id_utilisateur"];
-            $_SESSION["avatar"] = $unUser["avatar"];
+            // $_SESSION["avatar"] = $unUser["avatar"];
             //recharger la page
             header("Location: ../profil");
         }
     } else if (isset($_POST['sInscrire'])) {
+        // var_dump($_POST);
         $nom = $_POST['nom'];
         $prenom = $_POST['prenom'];
         $email = $_POST['email'];
-        $password = $_POST['password'];
-        $userController->ajouterUser($_POST);
-        $unUser = $connexionController->verifConnexion($email, $mdp);
+        $password = $_POST['mot_de_passe'];
+        $role= "client";
+
+        $_POST['role'] = $role;
+
+        // var_dump($_POST);
+        try{
+            $userController->ajouterUser($_POST);
+            
+
+        }catch(PDOException $exp){
+            echo $exp;
+        }
+        $unUser = $connexionController->verifConnexion($email, $password);
         if ($unUser == null) {
             echo "<br/> Veuillez vérifier vos identifiants";
         } else {
             // echo "Bienvenue " . $unUser['nom'] . "  " . $unUser['prenom'];
             // sauvegarder les données dans la session
-            $_SESSION['email'] = $email;
+            $_SESSION['email'] =$unUser['email'];
             $_SESSION['nom'] = $unUser['nom'];
             $_SESSION['prenom'] = $unUser['prenom'];
             $_SESSION['role'] = $unUser['role'];
+            $_SESSION["telephone"] = $unUser["telephone"];
+            $_SESSION["adresse"] = $unUser["adresse"];
+            $_SESSION["code_postal"] = $unUser["code_postal"];
+            $_SESSION["id"] = $unUser["id_utilisateur"];
             //recharger la page
             //recharger la page
             header("Location: ../profil");
@@ -80,12 +96,12 @@ if (!isset($_SESSION['email'])) {
             </select>
         </div> -->
         <div>
-            <input type="text" role="number" class="peer" name="tel" id="tel" placeholder=" " required />
-            <label for="tel" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">N° de mobile Orange</label>
+            <input type="text" role="number" class="peer" name="telephone" id="telephone" placeholder=" " required />
+            <label for="telephone" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">N° de mobile Orange</label>
         </div>
         <div>
-            <input type="password" class="peer" name="password" placeholder=" " id="password" required />
-            <label for="password" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">Mot de passe</label>
+            <input type="password" class="peer" name="mot_de_passe" placeholder=" " id="mot_de_passe" required />
+            <label for="mot_de_passe" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">Mot de passe</label>
         </div>
         <div>
             <input type="password" class="peer" name="passwordConfirm" placeholder=" " id="passwordConfirm" required />
@@ -104,8 +120,8 @@ if (!isset($_SESSION['email'])) {
             <label for="adresse" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">Adresse</label>
         </div>
         <div>
-            <input type="number" class="peer" name="codePostal" id="codePostal" placeholder=" " required />
-            <label for="codePostal" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">Code Postal</label>
+            <input type="number" class="peer" name="code_postal" id="code_postal" placeholder=" " required />
+            <label for="code_postal" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">Code Postal</label>
         </div>
         <div>
             <button type="submit" name="sInscrire" value="S'inscrire" />

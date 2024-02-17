@@ -93,25 +93,24 @@ class User
 		return $req->fetchAll();
 	}
 
-	function updateUser($user, $avatar)
+	function updateUser($user, $null)
 	{
-		// var_dump($user);
+		var_dump($user);
 		try {
-			$req = $this->bdd->prepare("UPDATE user SET nom= :nom, prenom= :prenom, email= :email, code_postal= :codePostal, adresse= :adresse, telephone= :telephone, avatar= :avatar, role= :role WHERE id_utilisateur= :id_utilisateur;");
+			$req = $this->bdd->prepare("UPDATE user SET nom= :nom, prenom= :prenom, email= :email, code_postal= :code_postal, adresse= :adresse, telephone= :telephone WHERE id_utilisateur= :id_utilisateur;");
 			$req->bindParam(':nom', $user['nom']);
 			$req->bindParam(':prenom', $user['prenom']);
 			$req->bindParam(':email', $user['email']);
-			$req->bindParam(':codePostal', $user['codePostal']);
+			$req->bindParam(':code_postal', $user['code_postal']);
 			$req->bindParam(':adresse', $user['adresse']);
 			$req->bindParam(':telephone', $user['telephone']);
-			$req->bindParam(':avatar', $avatar);
+			// $req->bindParam(':avatar', $avatar);
 			$req->bindParam(':id_utilisateur', $user['id_utilisateur']);
-			$req->bindParam(':role', $user['role']);
 			$req->execute();
 			$result = $req->fetch();
 			// var_dump($result); // Check how many rows were affected
 			// var_dump($req->rowCount()); // Check how many rows were affected
-
+			var_dump($result);
 			return $result; // Returns true if one or more rows were updated
 		} catch (PDOException $e) {
 			error_log("Error in updateUser: " . $e->getMessage());
