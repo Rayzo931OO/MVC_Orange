@@ -43,9 +43,6 @@ END$
 DELIMITER ;
 
 CREATE INDEX idx_user_email ON user(email);
-CREATE INDEX idx_client_user ON client(id_utilisateur);
-CREATE INDEX idx_technicien_user ON technicien(id_utilisateur);
-CREATE INDEX idx_admin_user ON admin(id_utilisateur);
 
 CREATE TABLE categorie (
   id_categorie INT PRIMARY KEY AUTO_INCREMENT,
@@ -214,77 +211,23 @@ JOIN categorie_intervention ON intervention.id_categorie_intervention = categori
 -- )
 
 CREATE VIEW users_view AS (
-    SELECT
-        user.id_utilisateur AS user_id,
-        user.nom,
-        user.prenom,
-        user.email,
-        user.code_postal,
-        user.adresse,
-        user.telephone,
-        user.mot_de_passe,
-        user.date_inscription,
-        user.date_modification,
-        user.avatar,
-        user.role
+    SELECT *
     FROM user
 );
 CREATE VIEW techniciens_view AS (
-    SELECT
-        user.id_utilisateur AS user_id,
-        user.nom,
-        user.prenom,
-        user.email,
-        user.code_postal,
-        user.adresse,
-        user.telephone,
-        user.mot_de_passe,
-        user.date_inscription,
-        user.date_modification,
-        user.avatar,
-        user.role,
-        technicien.id_technicien,
-        technicien.expertise
+    SELECT *
     FROM user
-    INNER JOIN technicien ON user.id_utilisateur = technicien.id_utilisateur
+    WHERE role = 'technicien'
 );
 CREATE VIEW admin_view AS (
-    SELECT
-        user.id_utilisateur AS user_id,
-        user.nom,
-        user.prenom,
-        user.email,
-        user.code_postal,
-        user.adresse,
-        user.telephone,
-        user.mot_de_passe,
-        user.avatar,
-        user.date_inscription,
-        user.date_modification,
-        user.role,
-        admin.id_admin,
-        admin.grade_admin
+    SELECT *
     FROM user
-    INNER JOIN admin ON user.id_utilisateur = admin.id_utilisateur
+    WHERE role = 'admin'
 );
 CREATE VIEW client_view AS (
-    SELECT
-        user.id_utilisateur AS user_id,
-        user.nom,
-        user.prenom,
-        user.email,
-        user.code_postal,
-        user.adresse,
-        user.telephone,
-        user.mot_de_passe,
-        user.date_inscription,
-        user.avatar,
-        user.date_modification,
-        user.role,
-        client.id_client,
-        client.info_additionnel
+    SELECT *
     FROM user
-    INNER JOIN client ON user.id_utilisateur = client.id_utilisateur
+    WHERE role = 'client'
 );
 
 CREATE VIEW categorie_intervention_view AS (
@@ -302,10 +245,10 @@ CREATE VIEW logiciel_view AS (
 
 
 INSERT INTO user (nom, prenom, email, code_postal, adresse, telephone, mot_de_passe, avatar, role) VALUES
-('Dupont', 'Jean', 'jean.dupont@email.com', '75001', '123 Rue de Paris', '0123456789', 'password123',null, 'client'),
-('Martin', 'Alice', 'alice.martin@email.com', '69001', '456 Avenue de Lyon', '0987654321', 'motdepasse456',null, 'technicien'),
-('Bernard', 'Lucas', 'lucas.bernard@email.com', '31000', '789 Rue de Toulouse', '1122334455', 'password789',null, 'admin1'),
-('Petit', 'Chloé', 'chloe.petit@email.com', '33000', '321 Rue de Bordeaux', '2233445566', 'passe321',null, 'client');
+('Dupont', 'Jean', 'client1@email.com', '75001', '123 Rue de Paris', '0123456789', 'password123',null, 'client'),
+('Martin', 'Alice', 'technicien@email.com', '69001', '456 Avenue de Lyon', '0987654321', 'password123',null, 'technicien'),
+('Bernard', 'Lucas', 'admin@email.com', '31000', '789 Rue de Toulouse', '1122334455', 'password123',null, 'admin'),
+('Petit', 'Chloé', 'client2@email.com', '33000', '321 Rue de Bordeaux', '2233445566', 'password123',null, 'client');
 INSERT INTO categorie (nom, description) VALUES
 ('Ordinateurs', 'Catégorie pour tous les ordinateurs'),
 ('Imprimantes', 'Catégorie pour toutes les imprimantes'),
