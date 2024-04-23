@@ -1,5 +1,5 @@
 <?php
-	require_once (BASE_PATH."/model/Materiel/materielModel.php");
+	require_once (BASE_PATH."../../model/Materiel/materielModel.php");
 	class ControllerMateriel {
 		private $unModele ;
 		public function __construct ($bdd){

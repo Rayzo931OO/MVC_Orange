@@ -1,5 +1,5 @@
 <?php
-	require_once (BASE_PATH."/model/Connexion/connexionModel.php");
+	require_once (BASE_PATH."../../model/Connexion/connexionModel.php");
 	class ControllerConnexion {
 		private $unModele ;
 		public function __construct (){
