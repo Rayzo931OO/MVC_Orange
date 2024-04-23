@@ -1,4 +1,4 @@
-<link href="/MVC_Orange/templates/style.css" rel="stylesheet" />
+<link href="/MVC_Orange/templates/sidebar/style.css" rel="stylesheet" />
 <nav class="sidebar">
    <ul>
       <li>
