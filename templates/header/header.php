@@ -1,9 +1,9 @@
-<link href="/MVC_Orange/templates/header/style.css" rel="stylesheet" />
+<link href="/templates/header/style.css" rel="stylesheet" />
 <header>
 
     <nav class="navBar">
         <div class="logo">
-            <a href="/MVC_Orange/">
+            <a href="/">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="80" height="80" viewBox="0 0 283.5 283.5" enable-background="new 0 0 283.5 283.5" xml:space="preserve">
 <g>
 	<rect x="0" y="0" fill="#FF7900" width="283.5" height="283.5"/>
@@ -21,7 +21,7 @@
         </div>
         <ul>
             <li class="buttonSecondary">
-                <a href="/MVC_Orange/">
+                <a href="/">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 56.582 44">
                         <path id="Icon_awesome-home" data-name="Icon awesome-home" d="M27.54,13.668,9.43,28.584v16.1A1.572,1.572,0,0,0,11,46.254l11.007-.028a1.572,1.572,0,0,0,1.564-1.572v-9.4a1.572,1.572,0,0,1,1.572-1.572h6.286A1.572,1.572,0,0,1,33,35.252v9.394a1.572,1.572,0,0,0,1.572,1.577l11,.03a1.572,1.572,0,0,0,1.572-1.572V28.573l-18.106-14.9A1.2,1.2,0,0,0,27.54,13.668ZM56.146,23.806l-8.212-6.769V3.432a1.179,1.179,0,0,0-1.179-1.179h-5.5a1.179,1.179,0,0,0-1.179,1.179v7.132L31.282,3.329a4.715,4.715,0,0,0-5.992,0L.427,23.806a1.179,1.179,0,0,0-.157,1.66l2.5,3.045a1.179,1.179,0,0,0,1.661.16l23.1-19.03a1.2,1.2,0,0,1,1.5,0l23.106,19.03a1.179,1.179,0,0,0,1.66-.157l2.5-3.045a1.179,1.179,0,0,0-.167-1.663Z" transform="translate(0.001 -2.254)" fill="#fff" />
                     </svg>
@@ -29,7 +29,7 @@
                 </a>
             </li>
             <li class="buttonSecondary">
-                <a href="/MVC_Orange/vue/aide-et-contact/">
+                <a href="/vue/aide-et-contact/">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 47 47">
                         <g id="Icon_feather-help-circle" data-name="Icon feather-help-circle" transform="translate(-1.5 -1.5)">
                             <path id="Tracé_1" data-name="Tracé 1" d="M47,25A22,22,0,1,1,25,3,22,22,0,0,1,47,25Z" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
@@ -45,7 +45,7 @@
         if (isset($_SESSION['email'])) {
             echo '
                 <div class="buttonPrimary">
-            <a href="/MVC_Orange/vue/profil/">
+            <a href="/vue/profil/">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 40 40">
                     <path id="Icon_awesome-user-circle" data-name="Icon awesome-user-circle" d="M20,.563a20,20,0,1,0,20,20A20,20,0,0,0,20,.563ZM20,8.3a7.1,7.1,0,1,1-7.1,7.1A7.1,7.1,0,0,1,20,8.3Zm0,27.742a15.454,15.454,0,0,1-11.815-5.5,8.991,8.991,0,0,1,7.944-4.823,1.973,1.973,0,0,1,.573.089,10.678,10.678,0,0,0,3.3.556,10.637,10.637,0,0,0,3.3-.556,1.973,1.973,0,0,1,.573-.089,8.991,8.991,0,0,1,7.944,4.823A15.454,15.454,0,0,1,20,36.046Z" transform="translate(0 -0.563)" fill="#fff" />
                 </svg>
@@ -56,7 +56,7 @@
         }else{
             echo '
             <div class="buttonPrimary">
-        <a href="/MVC_Orange/vue/login/">
+        <a href="/vue/login/">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 40 40">
                 <path id="Icon_awesome-user-circle" data-name="Icon awesome-user-circle" d="M20,.563a20,20,0,1,0,20,20A20,20,0,0,0,20,.563ZM20,8.3a7.1,7.1,0,1,1-7.1,7.1A7.1,7.1,0,0,1,20,8.3Zm0,27.742a15.454,15.454,0,0,1-11.815-5.5,8.991,8.991,0,0,1,7.944-4.823,1.973,1.973,0,0,1,.573.089,10.678,10.678,0,0,0,3.3.556,10.637,10.637,0,0,0,3.3-.556,1.973,1.973,0,0,1,.573-.089,8.991,8.991,0,0,1,7.944,4.823A15.454,15.454,0,0,1,20,36.046Z" transform="translate(0 -0.563)" fill="#fff" />
             </svg>
