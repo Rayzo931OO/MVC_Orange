@@ -1,7 +1,6 @@
 <?php
 $title = "Informations légales et contact";
 $h1 = "Informations légales et contact";
-define('BASE_PATH', str_replace('\vue\aide-et-contact', "\\", __DIR__));
 ob_start();
 session_start();
 ?>

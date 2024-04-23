@@ -2,7 +2,6 @@
 $title = 'Utilisateurs';
 $h1 = 'Utilisateurs';
 $isSidebar = 'isSidebar';
-define('BASE_PATH', str_replace('\vue\utilisateurs', "\\", __DIR__));
 ob_start();
 session_start();
 require_once("../../controller/User/userController.php");

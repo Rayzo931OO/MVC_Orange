@@ -3,7 +3,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 $title = "Accueil Orange Tech";
 $h1 = "Pour vous identifier";
-define('BASE_PATH', str_replace('\vue\login', "\\", __DIR__));
 ob_start();
 session_start();
 require_once("../../controller/User/userController.php");

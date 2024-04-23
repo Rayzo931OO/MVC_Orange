@@ -2,7 +2,6 @@
 $title = "Interventions";
 $h1 = "Listes des Interventions";
 $isSidebar = "isSidebar";
-define('BASE_PATH', str_replace('\vue\interventions', "\\", __DIR__));
 ob_start();
 session_start();
 require_once("../../controller/User/userController.php");

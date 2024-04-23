@@ -3,7 +3,6 @@ $h1 = "Listes des categories";
 $isSidebar = "isSidebar";
 session_start();
 ob_start();
-define('BASE_PATH', str_replace('\vue\categories', "\\", __DIR__));
 require_once("../../controller/Connexion/connexionController.php");
 require_once("../../controller/Categorie/categorieController.php");
 $connexionController = new ControllerConnexion();

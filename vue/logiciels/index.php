@@ -3,7 +3,6 @@ $h1 = "Listes des logiciels";
 $isSidebar = "isSidebar";
 session_start();
 ob_start();
-define('BASE_PATH', str_replace('\vue\logiciels', "\\", __DIR__));
 require_once("../../controller/Connexion/connexionController.php");
 require_once("../../controller/Logiciel/logicielController.php");
 require_once("../../controller/Categorie/categorieController.php");

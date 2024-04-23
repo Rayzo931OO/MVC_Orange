@@ -2,7 +2,6 @@
 $title = "Profil";
 $h1 = "Mon Profil";
 $isSidebar = "isSidebar";
-define('BASE_PATH', str_replace('\vue\profil', "\\", __DIR__));
 ob_start();
 session_start();
 require_once("../../controller/User/userController.php");
@@ -12,7 +11,7 @@ $userController = new ControllerUser($connexionController->getPDO());
 ?>
 <?php
 if (isset($_POST["Modifier"])) {
-    var_dump($_POST);   
+    var_dump($_POST);
         $userController->updateUser($_POST, null);
     }
 if (isset($_POST["Supprimer"])) {
