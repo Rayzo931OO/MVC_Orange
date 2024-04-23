@@ -19,6 +19,7 @@
    <div class="body">
 
       <?php require(__DIR__ . '/header/header.php'); ?>
+      <?php var_dump(__DIR__) ?>
       <main>
          <div class="main__container">
             <h1><?= $h1 ?></h1>
