@@ -1,5 +1,5 @@
 <?php
-	require_once (BASE_PATH."../../model/Categorie/categorieModel.php");
+	require_once ("../../model/Categorie/categorieModel.php");
 	class ControllerCategorie {
 		private $unModele ;
 		public function __construct ($bdd){

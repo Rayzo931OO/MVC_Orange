@@ -1,5 +1,5 @@
 <?php
-require_once(BASE_PATH . "../../model/Intervention/interventionModel.php");
+require_once("../../model/Intervention/interventionModel.php");
 class ControllerIntervention
 {
 	private $unModele;

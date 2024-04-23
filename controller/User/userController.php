@@ -1,5 +1,5 @@
 <?php
-require_once(BASE_PATH . "../../model/user/userModel.php");
+require_once("../../model/user/userModel.php");
 class ControllerUser
 {
 	private $unModele;

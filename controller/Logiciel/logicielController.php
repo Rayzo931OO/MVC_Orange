@@ -1,5 +1,5 @@
 <?php
-	require_once (BASE_PATH."../../model/Logiciel/logicielModel.php");
+	require_once ("../../model/Logiciel/logicielModel.php");
 	class ControllerLogiciel {
 		private $unModele ;
 		public function __construct ($bdd){
