@@ -1,4 +1,4 @@
-<link href="/mvc_orange/templates/footer/style.css" rel="stylesheet" />
+<link href="style.css" rel="stylesheet" />
 <footer>
 
 <div class="row1">

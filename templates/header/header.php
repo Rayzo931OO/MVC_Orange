@@ -1,4 +1,4 @@
-<link href="/mvc_orange/templates/header/style.css" rel="stylesheet" />
+<link href="style.css" rel="stylesheet" />
 <header>
 
     <nav class="navBar">

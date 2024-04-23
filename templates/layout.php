@@ -10,9 +10,9 @@
    <title>
       <?= $title ?>
    </title>
-   <link href="/mvc_orange/global.css" rel="stylesheet" />
+   <link href="../global.css" rel="stylesheet" />
 
-   <link href="./style.css" rel="stylesheet" />
+   <link href="style.css" rel="stylesheet" />
 </head>
 
 <body>
