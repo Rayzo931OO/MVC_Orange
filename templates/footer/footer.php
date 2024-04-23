@@ -3,7 +3,7 @@
 
 <div class="row1">
     <div class="infocontact">
-        <a href="/contact">
+        <a href="/MVC_Orange/contact">
         <svg xmlns="http://www.w3.org/2000/svg"
                         width="20" height="20" viewBox="0 0 47 47">
                         <g id="Icon_feather-help-circle" data-name="Icon feather-help-circle"
