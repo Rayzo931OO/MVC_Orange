@@ -5,9 +5,9 @@ class ConnexionModele
 
    public function __construct()
    {
-      $url = "mysql:host=localhost:3306;dbname=mvc_orange;charset=utf8mb4";
-      $user = "root";
-      $mdp = "";
+      $url = "mysql:host=172.20.0.142:3307;dbname=mvc_orange;charset=utf8mb4";
+      $user = "admin";
+      $mdp = "groupe4123";
       try {
          $this->unPDO = new PDO($url, $user, $mdp);
       } catch (PDOException $exp) {
