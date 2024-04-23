@@ -2,33 +2,33 @@
 <nav class="sidebar">
    <ul>
       <li>
-         <a href="/mvc_orange/vue/profil/">Profile</a>
+         <a href="/vue/profil/">Profile</a>
       </li>
       <li>
-         <a href="/mvc_orange/vue/interventions">Interventions</a>
+         <a href="/vue/interventions">Interventions</a>
       </li>
       <?php
       if (substr($_SESSION["role"], 0, 5) == "admin") {
          echo '<li>
-            <a href="/mvc_orange/vue/utilisateurs">Utilisateurs</a>
+            <a href="/vue/utilisateurs">Utilisateurs</a>
          </li>';
       }
       ?>
       <?php
       if (substr($_SESSION["role"], 0, 5) == "admin" || $_SESSION["role"] == "technicien" ) {
          echo '<li>
-         <a href="/mvc_orange/vue/materiels">Materiels</a>
+         <a href="/vue/materiels">Materiels</a>
       </li>
       <li>
-         <a href="/mvc_orange/vue/logiciels">Logiciels</a>
+         <a href="/vue/logiciels">Logiciels</a>
       </li>
       <li>
-         <a href="/mvc_orange/vue/categories">Categories</a>
+         <a href="/vue/categories">Categories</a>
       </li>';
       }
       ?>
       <li>
-         <a href="/mvc_orange/templates/logout.php">Déconnexion</a>
+         <a href="/templates/logout.php">Déconnexion</a>
       </li>
    </ul>
 </nav>
