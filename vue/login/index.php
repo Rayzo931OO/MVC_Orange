@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 $title = "Accueil Orange Tech";
 $h1 = "Pour vous identifier";
 define('BASE_PATH', str_replace('\vue\login', "\\", __DIR__));
@@ -46,7 +48,7 @@ if (!isset($_SESSION['email'])) {
         // var_dump($_POST);
         try{
             $userController->ajouterUser($_POST);
-            
+
 
         }catch(PDOException $exp){
             echo $exp;
