@@ -1,0 +1,86 @@
+.main__container{
+    margin-left: 100px;
+}
+.main__container__wrapper__content{
+    margin-left: 50px;
+}
+.imageFormulaire{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    row-gap: 10px;
+}
+.imageFormulaire .inputs{
+    display: grid;
+    row-gap: 10px;
+}
+.filters{
+    display: grid;
+    grid-auto-flow: column;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.filter_btn{
+    width: fit-content !important;
+    height: fit-content !important;
+    border: none !important;
+    margin: 0 0 !important;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+.filter_btn:hover{
+    scale: 1.1;
+    background-color: transparent !important;
+}
+
+.avatar {
+    border-radius: 100%;
+    margin-left: 50px;
+    overflow: hidden;
+    width: 100px;
+    height: 100px !important;
+    background-color: rgb(165, 165, 165);
+}
+
+.avatar img{
+
+    display: none;
+    max-width: 100px;
+    height: 100%;
+    object-fit: cover;
+
+}
+#Supprimer{
+    color: #ff0000;
+}
+.message{
+    width: 500px;
+}
+th{
+    text-align: center;
+    margin-bottom: 5px;
+}
+.caption{
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+.actions{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+}
+.tableau{
+    border-collapse: collapse;
+}
+.tableau td, .tableau th{
+    border: 1px solid black;
+    padding: 5px;
+    text-align: center;
+    vertical-align: middle;
+}
+.tableau button:hover svg{
+    fill: var(--orange);
+}

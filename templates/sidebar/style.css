@@ -1,0 +1,7 @@
+.sidebar{
+   border-right: 1px solid var(--orange);
+   display: grid;
+   grid-template-columns: 1fr;
+   grid-auto-flow: row;
+   gap: 20px;
+}

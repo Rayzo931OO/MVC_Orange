@@ -1,0 +1,491 @@
+:root {
+   --light: #1c1e20;
+   --dark: black;
+   --white: white;
+   --orange: #ff8000;
+   --border: rgba(255, 255, 255, 0.3) 1px solid;
+   --red: #ff0000;
+}
+
+@font-face {
+   font-family: 'TTInterphasesProVariable';
+   src: url('./src/fonts/TT-Interphases-Pro-Trial-2-000/TT Interphases Pro Trial 2-000/TT_Interphases_Pro_Trial_Variable.ttf');
+   font-style: normal;
+   font-display: swap;
+}
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+   margin: 0;
+   padding: 0;
+   border: 0;
+   font-size: 100%;
+   font: inherit;
+   vertical-align: baseline;
+   font-family: 'TTInterphasesProVariable', serif;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+   display: block;
+}
+
+body {
+   background-color: var(--white);
+   line-height: 1;
+}
+
+body::-webkit-scrollbar,
+body::-webkit-scrollbar-thumb {
+   width: 5px;
+   border-radius: 0px;
+   background-clip: padding-box;
+   border: 0px solid transparent;
+   color: rgb(255, 255, 255);
+}
+
+body::-webkit-scrollbar-thumb {
+   box-shadow: inset 0 0 0 5px;
+}
+
+ol,
+ul {
+   list-style: none;
+}
+
+blockquote,
+q {
+   quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+   content: '';
+   content: none;
+}
+
+table {
+   border-collapse: collapse;
+   border-spacing: 0;
+}
+
+li {
+   list-style-type: none;
+   margin: 0;
+   padding: 0;
+   overflow: hidden;
+}
+
+a {
+   text-decoration: none;
+   color: var(--white);
+}
+
+h1 {
+   font-size: 3.5rem;
+   font-weight: 600;
+   color: var(--black);
+}
+
+h3 {
+   font-size: 1.2rem;
+   font-weight: 600;
+   color: var(--white);
+}
+
+pre {
+   white-space: pre;
+   font-family: monospace;
+}
+
+.body {
+   display: grid;
+   grid-template-columns: 1fr;
+   gap: 50px;
+   overflow: hidden;
+}
+
+/* .buttonPrimary{
+   background-color: var(--white);
+   color: var(--light);
+   border: none;
+   border-radius: 5px;
+   padding: 15px 30px;
+   font-size: 1rem;
+   font-weight: 600;
+   cursor: pointer;
+   transition: all 0.3s ease;
+}
+.buttonPrimary:hover{
+   transform: scale(1.1);
+}
+.buttonSecondary{
+   background-color: var(--light);
+   color: var(--white);
+   border: var(--border);
+   border-radius: 30px;
+   padding: 15px 30px;
+   font-size: 1rem;
+   font-weight: 600;
+   cursor: pointer;
+   transition: all 0.3s ease;
+}
+.buttonSecondary a{
+   color: var(--white);
+   font-size: 14px;
+   font-weight: 500;
+}
+.buttonPrimary a{
+   color: var(--light);
+   font-size: 14px;
+   font-weight: 500;
+} */
+
+summary {
+   cursor: pointer;
+   list-style: none;
+   font-size: 1.2rem;
+   font-weight: 600;
+   width: fit-content;
+   height: fit-content;
+   display: grid;
+   grid-auto-flow: column;
+   place-items: center;
+}
+
+details[open] summary~* {
+   animation: toggle 0.1s ease-in-out;
+}
+
+@keyframes toggle {
+   0% {
+      opacity: 0;
+      transform: translateY(-10px);
+   }
+
+   100% {
+      opacity: 1;
+      transform: translateY(0px);
+   }
+}
+
+details summary::-webkit-details-marker {
+   display: none;
+}
+
+summary::marker {
+   display: none;
+   opacity: 0;
+   list-style-type: none;
+   list-style: none;
+}
+
+details summary svg {
+   margin-left: 30px;
+   width: 20px;
+   height: 20px;
+   transition: all 0.3s ease;
+}
+
+details[open] summary svg {
+   transform: rotate(-90deg);
+}
+
+/* FORMULAIRE CHAMPS ET BOUTON */
+
+select {
+   width: 100%;
+   height: 50px;
+   border: 1px solid #000;
+   border-radius: 5px;
+   font-size: 1.2rem;
+   font-weight: 500;
+   color: #000;
+   outline: none;
+   cursor: pointer;
+   transition: all 0.3s ease;
+}
+select option{
+   font-size: 1.2rem;
+   font-weight: 500;
+   color: #000;
+   outline: none;
+   cursor: pointer;
+   transition: all 0.3s ease;
+}
+
+/* Main */
+
+main {
+   display: grid;
+   grid-template-columns: 1fr;
+   /* padding: 0 30px 0 30px; */
+   place-items: center;
+   padding-top: 80px;
+   min-height: calc(100vh - 80px);
+   max-height: fit-content;
+}
+
+.main__container {
+   display: grid;
+   grid-template-columns: 1fr;
+   width: 80%;
+   min-width: 350px;
+   height: 100%;
+   min-height: fit-content;
+   margin: 100px 0 0 0;
+   /* padding: 100px 0 250px 0; */
+   grid-template-rows: max-content max-content max-content;
+   gap: 50px;
+   /* overflow: hidden; */
+}
+
+.main__container h1 {
+   /* padding: 100px 0 30px 0; */
+}
+
+
+/* input label + field */
+
+.main__container form {
+   margin: 10px 0 10px 0;
+   display: grid;
+   gap: 20px;
+   width: 500px;
+   max-width: 1200px;
+   max-height: fit-content;
+}
+
+.main__container form.formulaire div {
+   position: relative;
+   margin-top: 15px;
+   margin-left: 100px;
+   height: fit-content;
+}
+
+.main__container form div input {
+   display: block;
+   padding-left: 0;
+   padding-right: 0;
+   padding-top: 0.625rem;
+   padding-bottom: 0.625rem;
+   background-color: transparent;
+   color: #000000;
+   font-size: 1rem;
+   line-height: 1.5rem;
+   width: 100%;
+   border-width: 0;
+   border-bottom: 1px solid #000000;
+   border-color: #000000;
+   appearance: none;
+}
+.main__container form div textarea {
+   display: block;
+   padding-left: 0;
+   padding-right: 0;
+   padding-top: 0.625rem;
+   padding-bottom: 0.625rem;
+   background-color: transparent;
+   color: #000000;
+   font-size: 1rem;
+   line-height: 1.5rem;
+   width: 100%;
+   border-width: 0;
+   border-bottom: 1px solid #000000;
+   border-color: #000000;
+   appearance: none;
+}
+
+.main__container form div label {
+   position: absolute;
+   top: 0.75rem;
+   transition-duration: 300ms;
+   --transform-translate-y: -1.5rem;
+   --transform-translate-x: 0px;
+   color: #000000;
+   font-size: 1.25rem;
+   line-height: 1.75rem;
+   font-weight: 600;
+   font-size: inherit;
+   min-width: 80px;
+   transform-origin: 0;
+   transform: translate(var(--transform-translate-x), var(--transform-translate-y));
+}
+
+.main__container form input:focus {
+   outline: none;
+   border-bottom: 1px solid #000000;
+}
+
+.peer:placeholder-shown~.peer-placeholder-shown\:scale-100 {
+   transform: translate(0, 0) scaleX(1) scaleY(1);
+}
+
+.peer:focus~.peer-focus\:-translate-y-6 {
+   --translate-y: -1.5rem
+      /* -24px */
+   ;
+   --translate-x: 0px;
+   transform: translate(var(--translate-x), var(--translate-y));
+   left: 0;
+}
+
+
+
+.main__container form button {
+   width: 100%;
+   height: 50px;
+   border: 1px solid #000;
+   border-radius: 5px;
+   font-size: 1.2rem;
+   font-weight: 500;
+   color: #000;
+   outline: none;
+   cursor: pointer;
+   transition: all 0.3s ease;
+}
+
+.main__container form button:hover {
+   background-color: #000;
+   color: #fff;
+}
+
+/* Sidebar */
+
+.isSidebar {
+   display: grid;
+   grid-template-columns: minmax(200px, 0.4fr) minmax(100px, 1.6fr);
+   gap: 50px;
+   /* overflow: hidden; */
+}
+
+.isSidebar .sidebar ul {
+   display: grid;
+   grid-template-columns: 1fr;
+   grid-auto-rows: min-content;
+   gap: 50px;
+   margin-top: 50px;
+   /* overflow: hidden; */
+}
+
+.isSidebar .sidebar ul li {
+   margin-left: 20%;
+   width: fit-content;
+   padding: 5px 0 5px 0;
+}
+
+.isSidebar .sidebar ul a {
+   color: #000;
+   font-size: 1.2rem;
+   font-weight: 600;
+   position: relative;
+   overflow: visible;
+}
+.isSidebar .sidebar ul a:before{
+   position: absolute;
+   content: "";
+   width: 0;
+   bottom: -1px;
+   left: 0;
+   height: 1px;
+   background-color: var(--orange);
+   transition: all 0.3s ease;
+}
+.isSidebar .sidebar ul a:hover:before {
+   width: 100%;
+}
+
+.isSidebar .formulaire div {
+   margin-left: 0 !important;
+}
