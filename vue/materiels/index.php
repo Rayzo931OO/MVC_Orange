@@ -103,4 +103,4 @@ if (isset($_POST['Modifier'])) {
 }
 ?>
 <?php $content = ob_get_clean(); ?>
-<?php require('../../templates/layout.php') ?>
+<?php require_once '../../templates/layout.php' ?>

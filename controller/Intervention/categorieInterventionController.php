@@ -1,5 +1,5 @@
 <?php
-require_once("../../model/Intervention/categorieInterventionModel.php");
+require_once "../../model/Intervention/categorieInterventionModel.php";
 class ControllerCategorieIntervention
 {
    private $unModele;
@@ -15,7 +15,7 @@ class ControllerCategorieIntervention
       //controler les données avant insertion dans la table promotion
 
       //on appelle la méthode du Modele
-      $this->unModele->ajouterCategorieIntervention($POST["date_debut"], $POST["date_fin"], $POST["status"], $POST["description"], $POST["id_technicien"], $POST["id_categorie_intervention"]);
+      $this->unModele->ajouterCategorieIntervention($POST["date_inter"], $POST["status"], $POST["description"], $POST["id_technicien"], $POST["id_categorie_intervention"]);
    }
    public function allCategorieIntervention()
    {

@@ -255,11 +255,8 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
         // FILTRE FIN ------------------------------------
 
         switch (true) {
-            case isset($_POST["date_debut_filter"]):
-                $interventions = $interventionsController->selectLikeInterventionDateDebut($_POST["date_debut_filter"]);
-                break;
-            case isset($_POST["date_fin_filter"]):
-                $interventions = $interventionsController->selectLikeInterventionDateFin($_POST["date_fin_filter"]);
+            case isset($_POST["date_inter_filter"]):
+                $interventions = $interventionsController->selectLikeInterventionDateDebut($_POST["date_inter_filter"]);
                 break;
             case isset($_POST["status_filter"]):
                 $interventions = $interventionsController->selectLikeInterventionStatus($_POST["status_filter"]);
@@ -294,4 +291,4 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
 }
 ?>
 <?php $content = ob_get_clean(); ?>
-<?php require('../../templates/layout.php') ?>
+<?php require_once '../../templates/layout.php' ?>

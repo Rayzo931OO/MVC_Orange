@@ -4,11 +4,9 @@ $currentMateriel = $materielController->selectMaterielById($intervention['id_mat
 $currentLogiciel = $logicielController->selectLogicielById($intervention['id_logiciel']);
 $minDate = $today['year'] . '-' . $today['mon'] . '-' . $today['mday'];
 
-$dateTimeDebut = new DateTime($intervention["date_debut"]);
+$dateTimeDebut = new DateTime($intervention["date_inter"]);
 $formattedDateTimeDebut = $dateTimeDebut->format("Y-m-d\TH:i:s");
 
-$dateTimeFin = new DateTime($intervention["date_fin"]);
-$formattedDateTimeFin = $dateTimeFin->format("Y-m-d\TH:i:s");
 $assigned = false;
 $isAdmin = false;
 if (substr($_SESSION["role"], 0, 5) == "admin") {
@@ -90,7 +88,6 @@ if ($isAdmin) {
         }
         echo '</select></div>';
     }
-
     // echo '<div>
     //     <input type="text" class="peer" id="fournisseur" name="fournisseur" value="' . $intervention["fournisseur"] . '" placeholder=" " required>
     //     <label for="fournisseur" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">
@@ -98,16 +95,10 @@ if ($isAdmin) {
     //     </label>
     // </div>';
     echo '<div>
-    <input type="datetime-local" min="' . $minDate . '" class="peer" value="' . $formattedDateTimeDebut . '" id="date_debut" name="date_debut" placeholder=" " required>
-    <label for="date_debut" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">
-        Debut
+    <input type="datetime-local" min="' . $minDate . '" class="peer" value="' . $formattedDateTimeDebut . '" id="date_inter" name="date_inter" placeholder=" " required>
+    <label for="date_inter" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">
+        Date
     </label>
-</div>
-<div>
-<input type="datetime-local" min="' . $minDate . '" class="peer" value="' . $formattedDateTimeFin . '" id="date_fin" name="date_fin" placeholder=" " required>
-<label for="date_fin" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">
-    Fin
-</label>
 </div>';
     echo '<div><label for="status">Statut de l\'intervention</label></br>
 <select name="status" id="status" value="' . $intervention["status"] . '"';
@@ -192,21 +183,14 @@ if ($isAdmin) {
     }
 
     echo '<div>
-    <input type="datetime-local" min="' . $minDate . '" class="peer" value="' . $formattedDateTimeDebut . '" id="date_debut" name="date_debut" placeholder=" "';
+    <input type="datetime-local" min="' . $minDate . '" class="peer" value="' . $formattedDateTimeDebut . '" id="date_inter" name="date_inter" placeholder=" "';
     echo $assigned ? 'required' : 'disabled';
     echo '>
-    <label for="date_debut" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">
-        Debut
+    <label for="date_inter" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">
+        Date
     </label>
 </div>
-<div>
-<input type="datetime-local" min="' . $minDate . '" class="peer" value="' . $formattedDateTimeFin . '" id="date_fin" name="date_fin" placeholder=" "';
-    echo $assigned ? 'required' : 'disabled';
-    echo '>
-<label for="date_fin" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">
-    Fin
-</label>
-</div>';
+<div>';
     echo '<div><label for="status">Statut de l\'intervention</label></br>
 <select name="status" id="status" value="' . $intervention["status"] . '"';
     echo $assigned ? 'required' : 'disabled';

@@ -49,16 +49,10 @@ echo '</select>
 if (substr($_SESSION["role"], 0, 5) == "admin") {
     echo '
 <div>
-    <input type="datetime-local" min="' . $minDate . '" class="peer" id="date_debut" name="date_debut" placeholder=" ">
-    <label for="date_debut" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">
-        Debut
+    <input type="datetime-local" min="' . $minDate . '" class="peer" id="date_inter" name="date_inter" placeholder=" ">
+    <label for="date_inter" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">
+        Date
     </label>
-</div>
-<div>
-<input type="datetime-local" min="' . $minDate . '" class="peer" id="date_fin" name="date_fin" placeholder=" ">
-<label for="date_fin" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">
-    Fin
-</label>
 </div>';
 
     echo '

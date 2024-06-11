@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -11,19 +10,16 @@
       <?= $title ?>
    </title>
    <link href="/global.css" rel="stylesheet" />
-
-   <link href="/templates/style.css" rel="stylesheet" />
 </head>
 
 <body>
    <div class="body">
-
-      <?php require(__DIR__ . '/header/header.php'); ?>
+      <?php require_once(__DIR__ . '/header/header.php'); ?>
       <main>
          <div class="main__container">
             <h1><?= $h1 ?></h1>
             <div class="main__container__wrapper <?= isset($isSidebar)? $isSidebar : ''; ?>">
-               <?php isset($isSidebar) && require(__DIR__ . '/sidebar/index.php'); ?>
+               <?php isset($isSidebar) && require_once(__DIR__ . '/sidebar/index.php'); ?>
                <div class="main__container__wrapper__content">
                   <?= $content ?>
                </div>
@@ -31,7 +27,7 @@
          </div>
       </main>
    </div>
-   <?php require(__DIR__ . '/footer/footer.php'); ?>
+   <?php require_once(__DIR__ . '/footer/footer.php'); ?>
 </body>
 
 </html>

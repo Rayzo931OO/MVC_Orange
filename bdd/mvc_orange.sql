@@ -91,8 +91,7 @@ CREATE TABLE archive_intervention (
 
 DELIMITER $
 CREATE FUNCTION create_intervention(
-    date_debut DATETIME,
-    date_fin DATETIME,
+    date_inter DATETIME,
     status VARCHAR(50),
     description VARCHAR(200),
     id_technicien INT,
@@ -103,8 +102,7 @@ CREATE FUNCTION create_intervention(
 RETURNS VARCHAR(200)
 BEGIN
     INSERT INTO intervention (
-        date_debut,
-        date_fin,
+        date_inter,
         status,
         description,
         id_technicien,
@@ -112,8 +110,7 @@ BEGIN
         id_materiel,
         id_client
     ) VALUES (
-        date_debut,
-        date_fin,
+        date_inter,
         status,
         description,
         id_technicien,

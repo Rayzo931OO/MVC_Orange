@@ -18,12 +18,6 @@
       if (substr($_SESSION["role"], 0, 5) == "admin" || $_SESSION["role"] == "technicien" ) {
          echo '<li>
          <a href="/vue/materiels">Materiels</a>
-      </li>
-      <li>
-         <a href="/vue/logiciels">Logiciels</a>
-      </li>
-      <li>
-         <a href="/vue/categories">Categories</a>
       </li>';
       }
       ?>

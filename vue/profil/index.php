@@ -30,4 +30,4 @@ if (substr($_SESSION["role"], 0, 5) !== "admin") {
 ?>
 <script src="./index.js"></script>
 <?php $content = ob_get_clean(); ?>
-<?php require('../../templates/layout.php') ?>
+<?php require_once '../../templates/layout.php' ?>

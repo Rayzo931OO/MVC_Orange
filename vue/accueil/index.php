@@ -31,4 +31,4 @@ session_start();
 
     <?php $content = ob_get_clean(); ?>
 <!-- importation du composent de "model de vue" qui agence tout les autre elements -->
-<?php require('../../templates/layout.php') ?>
+<?php require_once '../../templates/layout.php' ?>

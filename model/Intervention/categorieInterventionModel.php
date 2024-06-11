@@ -8,11 +8,10 @@ class CategorieIntervention
         $this->bdd = $bdd;
     }
 
-    public function ajouterCategorieIntervention($date_debut, $date_fin, $status, $description, $id_technicien, $id_categorie_intervention)
+    public function ajouterCategorieIntervention($date_inter, $status, $description, $id_technicien, $id_categorie_intervention)
     {
-        $req = $this->bdd->prepare("select create_intervention( :date_debut, :date_fin, :status, :description, :id_technicien, :id_categorie_intervention);");
-        $req->bindParam(':date_debut', $date_debut);
-        $req->bindParam(':date_fin', $date_fin);
+        $req = $this->bdd->prepare("select create_intervention( :date_inter, :status, :description, :id_technicien, :id_categorie_intervention);");
+        $req->bindParam(':date_inter', $date_inter);
         $req->bindParam(':status', $status);
         $req->bindParam(':description', $description);
         $req->bindParam(':id_technicien', $id_technicien);
@@ -53,9 +52,8 @@ class CategorieIntervention
     function updateCategorieIntervention($intervention)
     {
         //ecriture de la requete
-        $req = $this->bdd->prepare("UPDATE intervention set date_debut= :date_debut, date_fin= :date_fin, status= :status, description= :description, id_technicien= :id_technicien, id_categorie_intervention= :id_categorie_intervention where id_intervention= :id_intervention;");
-        $req->bindParam(':date_debut', $intervention['date_debut']);
-        $req->bindParam(':date_fin', $intervention['date_fin']);
+        $req = $this->bdd->prepare("UPDATE intervention set date_inter= :date_inter, status= :status, description= :description, id_technicien= :id_technicien, id_categorie_intervention= :id_categorie_intervention where id_intervention= :id_intervention;");
+        $req->bindParam(':date_inter', $intervention['date_inter']);
         $req->bindParam(':status', $intervention['status']);
         $req->bindParam(':description', $intervention['description']);
         $req->bindParam(':id_technicien', $intervention['id_technicien']);

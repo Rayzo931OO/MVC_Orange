@@ -8,8 +8,7 @@ if (count($interventions) > 0) {
         <tr>
             <th>Materiel</th>
             <th>Technicien</th>
-            <th>Debut</th>
-            <th>Fin</th>
+            <th>Date</th>
             <th>Statut de l'intervention</th>
             <th>Description</th><th>Actions</th>";
     echo "</tr>
@@ -32,8 +31,7 @@ if (count($interventions) > 0) {
             echo "Non assigner ";
         }
         echo "</td>";
-        echo "<td>" . $intervention['date_debut'] . "</td>
-          <td>" . $intervention['date_fin'] . "</td>
+        echo "<td>" . $intervention['date_inter'] . "</td>
           <td>" . $intervention['status'] . "</td>
           <td>" . $intervention['description'] . "</td><td class='actions'>";
 
@@ -64,8 +62,7 @@ if ($_SESSION["role"] == "technicien") {
             <tr>
                 <th>Materiel</th>
                 <th>Technicien</th>
-                <th>Debut</th>
-                <th>Fin</th>
+                <th>Date</th>
                 <th>Statut de l'intervention</th>
                 <th>Description</th><th>Actions</th>";
         echo "</tr>
@@ -89,8 +86,7 @@ if ($_SESSION["role"] == "technicien") {
                 echo "Non assigner ";
             }
             echo "</td>";
-            echo "<td>" . $unAssignedIntervention['date_debut'] . "</td>
-              <td>" . $unAssignedIntervention['date_fin'] . "</td>
+            echo "<td>" . $unAssignedIntervention['date_inter'] . "</td>
               <td>" . $unAssignedIntervention['status'] . "</td>
               <td>" . $unAssignedIntervention['description'] . "</td><td class='actions'>";
 

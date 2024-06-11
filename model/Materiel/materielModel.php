@@ -70,6 +70,7 @@ class Materiel
             $req->execute();
             return $req->fetchAll();
         } catch (Exception $e) {
+            var_dump($e);
             return false;
         }
     }
