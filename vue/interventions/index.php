@@ -9,7 +9,6 @@ require_once "../../controller/Connexion/connexionController.php";
 require_once "../../controller/Intervention/interventionController.php";
 require_once "../../controller/Intervention/categorieInterventionController.php";
 require_once "../../controller/Materiel/materielController.php";
-require_once "../../controller/logiciel/logicielController.php";
 require_once "../../controller/categorie/categorieController.php";
 $connexionController = new ControllerConnexion();
 $userController = new ControllerUser($connexionController->getPDO());
