@@ -4,18 +4,17 @@ $h1 = "Listes des Interventions";
 $isSidebar = "isSidebar";
 ob_start();
 session_start();
-require_once("../../controller/User/userController.php");
-require_once("../../controller/Connexion/connexionController.php");
-require_once("../../controller/Intervention/interventionController.php");
-require_once("../../controller/Intervention/categorieInterventionController.php");
-require_once("../../controller/Materiel/materielController.php");
-require_once("../../controller/logiciel/logicielController.php");
-require_once("../../controller/categorie/categorieController.php");
+require_once "../../controller/User/userController.php";
+require_once "../../controller/Connexion/connexionController.php";
+require_once "../../controller/Intervention/interventionController.php";
+require_once "../../controller/Intervention/categorieInterventionController.php";
+require_once "../../controller/Materiel/materielController.php";
+require_once "../../controller/logiciel/logicielController.php";
+require_once "../../controller/categorie/categorieController.php";
 $connexionController = new ControllerConnexion();
 $userController = new ControllerUser($connexionController->getPDO());
 $interventionsController = new ControllerIntervention($connexionController->getPDO());
 $materielController = new ControllerMateriel($connexionController->getPDO());
-$logicielController = new ControllerLogiciel($connexionController->getPDO());
 $categorieController = new ControllerCategorie($connexionController->getPDO());
 $categorieInterventionController = new ControllerCategorieIntervention($connexionController->getPDO());
 
@@ -52,7 +51,6 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
     if (isset($_POST['addIntervention'])) {
         if ($_SESSION["role"] == "client") {
             $materiels = $materielController->allMateriel();
-            $logiciel = $logicielController->allLogiciel();
 
             $tableau = '<input type="hidden" class="peer" name="id_client" placeholder=" " id="id_client" required value="' . $_SESSION["id"] . '"/>';
             require_once('interventionForm.php');
