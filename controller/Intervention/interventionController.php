@@ -3,7 +3,6 @@ require_once("../../model/Intervention/interventionModel.php");
 class ControllerIntervention
 {
 	private $unModele;
-	private $bdd;
 	public function __construct($bdd)
 	{
 
@@ -16,14 +15,14 @@ class ControllerIntervention
 		//controler les données avant insertion dans la table promotion
 
 		//on appelle la méthode du Modele
-		$this->unModele->ajouterInterventionClient($POST["id_client"], $POST["description"], $POST["id_materiel"], $POST["id_logiciel"], $POST["id_categorie_intervention"]);
+		$this->unModele->ajouterInterventionClient($POST["id_client"],$POST["description"], $POST["id_materiel"]);
 	}
 	public function ajouterInterventionAdmin($POST)
 	{
 		//controler les données avant insertion dans la table promotion
 
 		//on appelle la méthode du Modele
-		$this->unModele->ajouterInterventionAdmin($POST["id_client"],$POST["date_inter"], $POST["status"], $POST["description"], $POST["id_materiel"], $POST["id_logiciel"], $POST["id_categorie_intervention"], $POST["id_technicien"]);
+		$this->unModele->ajouterInterventionAdmin($POST["id_client"],$POST["date_inter"], $POST["status"], $POST["description"], $POST["id_materiel"], $POST["id_technicien"]);
 	}
 	public function allIntervention()
 	{

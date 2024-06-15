@@ -66,9 +66,13 @@ class ControllerUser
 		return $this->unModele->selectLikeUser($mot, $role);
 	}
 
-	public function updateUser($user, $null)
+	public function updateUser($user)
 	{
-		$this->unModele->updateUser($user, $null);
+		$this->unModele->updateUser($user);
+	}
+	public function updateUserWithRole($user)
+	{
+		$this->unModele->updateUserWithRole($user);
 	}
 
 	public function deleteUserById($id)

@@ -95,7 +95,6 @@ CREATE FUNCTION create_intervention(
     status VARCHAR(50),
     description VARCHAR(200),
     id_technicien INT,
-    id_logiciel INT,
     id_materiel INT,
     id_client INT
 )
@@ -106,7 +105,6 @@ BEGIN
         status,
         description,
         id_technicien,
-        id_logiciel,
         id_materiel,
         id_client
     ) VALUES (
@@ -114,13 +112,59 @@ BEGIN
         status,
         description,
         id_technicien,
-        id_logiciel,
         id_materiel,
         id_client
     );
     RETURN CONCAT('Création faite, id=', last_insert_id());
 END$
 DELIMITER ;
+
+DELIMITER $
+CREATE FUNCTION update_user(
+   u_id_utilisateur INT,
+   u_nom VARCHAR(255),
+   u_prenom VARCHAR(255) ,
+   u_code_postal VARCHAR(5),
+   u_adresse VARCHAR(255),
+   u_telephone VARCHAR(50)
+)
+RETURNS BOOLEAN
+BEGIN
+    UPDATE user
+    SET nom = u_nom,
+        prenom = u_prenom,
+        code_postal = u_code_postal,
+        adresse = u_adresse,
+        telephone = u_telephone
+    WHERE id_utilisateur = u_id_utilisateur;
+    RETURN true;
+END$
+DELIMITER ;
+
+DELIMITER $
+CREATE FUNCTION update_user_with_role(
+   u_id_utilisateur INT,
+   u_nom VARCHAR(255),
+   u_prenom VARCHAR(255) ,
+   u_code_postal VARCHAR(5),
+   u_adresse VARCHAR(255),
+   u_telephone VARCHAR(50),
+   u_role ENUM("client","admin","technicien")
+)
+RETURNS BOOLEAN
+BEGIN
+    UPDATE user
+    SET nom = u_nom,
+        prenom = u_prenom,
+        code_postal = u_code_postal,
+        adresse = u_adresse,
+        telephone = u_telephone,
+        role = u_role
+    WHERE id_utilisateur = u_id_utilisateur;
+    RETURN true;
+END$
+DELIMITER ;
+
 
 CREATE VIEW intervention_view AS
 SELECT *

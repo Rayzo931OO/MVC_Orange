@@ -11,8 +11,7 @@ $userController = new ControllerUser($connexionController->getPDO());
 ?>
 <?php
 if (isset($_POST["Modifier"])) {
-    var_dump($_POST);
-        $userController->updateUser($_POST, null);
+        $userController->updateUser($_POST);
     }
 if (isset($_POST["Supprimer"])) {
     $userController->deleteUserById($_SESSION["id"]);

@@ -7,7 +7,6 @@ session_start();
 require_once "../../controller/User/userController.php";
 require_once "../../controller/Connexion/connexionController.php";
 require_once "../../controller/Intervention/interventionController.php";
-require_once "../../controller/Intervention/categorieInterventionController.php";
 require_once "../../controller/Materiel/materielController.php";
 require_once "../../controller/categorie/categorieController.php";
 $connexionController = new ControllerConnexion();
@@ -15,7 +14,6 @@ $userController = new ControllerUser($connexionController->getPDO());
 $interventionsController = new ControllerIntervention($connexionController->getPDO());
 $materielController = new ControllerMateriel($connexionController->getPDO());
 $categorieController = new ControllerCategorie($connexionController->getPDO());
-$categorieInterventionController = new ControllerCategorieIntervention($connexionController->getPDO());
 
 ?>
 <?php
@@ -52,7 +50,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
             $materiels = $materielController->allMateriel();
 
             $tableau = '<input type="hidden" class="peer" name="id_client" placeholder=" " id="id_client" required value="' . $_SESSION["id"] . '"/>';
-            require_once('interventionForm.php');
+            require_once('/interventionForm.php');
         } else if (substr($_SESSION["role"], 0, 5) == "admin") {
             // $materiels = $materielController->selectMaterielById($_POST["materiel"]);
             $materiels = $materielController->allMateriel();
@@ -92,7 +90,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
         </div>
     </form>
     ';
-            require_once('interventionForm.php');
+            require_once('./interventionForm.php');
         }
     }
     if (isset($_POST["RecherchezAdmin"])) {
@@ -136,9 +134,10 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
         <td>" . $user['email'] . "</td>";
         }
         foreach ($techniciens as $technicien) {
+            // var_dump($userController->selectTechnicienById($technicien['id_utilisateur']));
             // var_dump($userController->selectTechnicienById($technicien['id_utilisateur'])["id_technicien"]);
             $tableau2 = $tableau2 . "<tr>
-            <td><input type='radio' value='" . $userController->selectTechnicienById($technicien['id_utilisateur'])["id_technicien"] . "' name='id_technicien'";
+            <td><input type='radio' value='" . $technicien['id_utilisateur'] . "' name='id_technicien'";
             if ($technicien["id_utilisateur"] == $techniciens[0]["id_utilisateur"]) {
                 $tableau2 = $tableau2 . "checked";
             }
@@ -277,10 +276,10 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
         require_once('allInterventions.php');
     }
     if (isset($_POST["Ajoutez"])) {
-        if($_SESSION["role"] == "client"){
+        if ($_SESSION["role"] == "client") {
             $_POST["id_utilisateur"] = $_SESSION["id"];
             $interventionsController->ajouterInterventionClient($_POST);
-        }else if (substr($_SESSION["role"], 0, 5) == "admin") {
+        } else if (substr($_SESSION["role"], 0, 5) == "admin") {
             $interventionsController->ajouterInterventionAdmin($_POST);
         }
         header('Location: index.php');

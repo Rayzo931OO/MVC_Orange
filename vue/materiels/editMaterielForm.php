@@ -11,22 +11,23 @@ echo '
 <div>
 <input type="textarea" class="peer" name="description" value="' . $materiel["description"] . '" placeholder="Décrivez se produit" id="description" required />
 </div>
-<div>
-<label for="id_categorie">Catégorie</label></br>';
+<div>';
 
-echo '<div>
-<label for="id_categorie">La categorie</label></br>
-<select name="id_categorie" id="id_categorie" value="' . $materiel["id_categorie"] . '" >';
-foreach ($categorieController->allcategorie() as $categorie) {
-    echo '<option value="' . $categorie["id_categorie"] . '"';
-    if($materiel["id_categorie"] == $categorie["id_categorie"]){
-        echo 'selected="true">';
-    }else {
-        echo '>';
-    }
-    echo $categorie["nom"] . '</option>';
-}
-echo '</select></div>';
+//  Categorie
+// echo '<label for="id_categorie">Catégorie</label></br>';
+// echo '<div>
+// <label for="id_categorie">La categorie</label></br>
+// <select name="id_categorie" id="id_categorie" value="' . $materiel["id_categorie"] . '" >';
+// foreach ($categorieController->allcategorie() as $categorie) {
+//     echo '<option value="' . $categorie["id_categorie"] . '"';
+//     if($materiel["id_categorie"] == $categorie["id_categorie"]){
+//         echo 'selected="true">';
+//     }else {
+//         echo '>';
+//     }
+//     echo $categorie["nom"] . '</option>';
+// }
+// echo '</select></div>';
 
 echo '
 </select>

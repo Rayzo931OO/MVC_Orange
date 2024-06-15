@@ -93,25 +93,50 @@ class User
 		return $req->fetchAll();
 	}
 
-	function updateUser($user, $null)
+	function updateUser($user)
 	{
-		var_dump($user);
 		try {
-			$req = $this->bdd->prepare("UPDATE user SET nom= :nom, prenom= :prenom, email= :email, code_postal= :code_postal, adresse= :adresse, telephone= :telephone WHERE id_utilisateur= :id_utilisateur;");
+			$req = $this->bdd->prepare("select update_user( :id_utilisateur, :nom, :prenom, :code_postal, :adresse, :telephone);");
+			$req->bindParam(':id_utilisateur', $user['id']);
 			$req->bindParam(':nom', $user['nom']);
 			$req->bindParam(':prenom', $user['prenom']);
-			$req->bindParam(':email', $user['email']);
 			$req->bindParam(':code_postal', $user['code_postal']);
 			$req->bindParam(':adresse', $user['adresse']);
 			$req->bindParam(':telephone', $user['telephone']);
-			// $req->bindParam(':avatar', $avatar);
-			$req->bindParam(':id_utilisateur', $user['id_utilisateur']);
+
 			$req->execute();
 			$result = $req->fetch();
 			// var_dump($result); // Check how many rows were affected
 			// var_dump($req->rowCount()); // Check how many rows were affected
-			var_dump($result);
+			if ($result) {
+				$_SESSION["nom"] = $user['nom'];
+				$_SESSION["prenom"] = $user['prenom'];
+				$_SESSION["code_postal"] = $user['code_postal'];
+				$_SESSION["adresse"] = $user['adresse'];
+				$_SESSION["telephone"] = $user['telephone'];
+			}
 			return $result; // Returns true if one or more rows were updated
+		} catch (PDOException $e) {
+			error_log("Error in updateUser: " . $e->getMessage());
+			var_dump("Error in updateUser: " . $e->getMessage());
+			return false;
+		}
+	}
+
+	function updateUserWithRole($user)
+	{
+		try {
+			$req = $this->bdd->prepare("select update_user_with_role( :id_utilisateur, :nom, :prenom, :code_postal, :adresse, :telephone, :role);");
+			$req->bindParam(':id_utilisateur', $user['id']);
+			$req->bindParam(':nom', $user['nom']);
+			$req->bindParam(':prenom', $user['prenom']);
+			$req->bindParam(':code_postal', $user['code_postal']);
+			$req->bindParam(':adresse', $user['adresse']);
+			$req->bindParam(':telephone', $user['telephone']);
+			$req->bindParam(':role', $user['role']);
+
+			$req->execute();
+			return $req->fetch();
 		} catch (PDOException $e) {
 			error_log("Error in updateUser: " . $e->getMessage());
 			var_dump("Error in updateUser: " . $e->getMessage());
@@ -144,7 +169,8 @@ class User
 		$result = $req->fetch();
 		return $result ? true : false;
 	}
-	function userLogout(){
+	function userLogout()
+	{
 		$_SESSION = array();
 		// Destroy the session
 		session_destroy();

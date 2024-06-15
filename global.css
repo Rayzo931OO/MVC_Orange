@@ -489,3 +489,21 @@ main {
 .isSidebar .formulaire div {
    margin-left: 0 !important;
 }
+.tableau{
+   border-collapse: collapse;
+}
+.tableau td, .tableau th{
+   border: 1px solid black;
+   padding: 5px;
+   text-align: center;
+   vertical-align: middle;
+}
+.tableau button:hover svg{
+   fill: var(--orange);
+}
+.tableau button.delete:hover  svg{
+   fill: var(--red);
+}
+.tableau button:hover{
+   background-color: var(--dark);
+}

@@ -60,12 +60,10 @@ class Materiel
     {
 
         try {
-            $req = $this->bdd->prepare("UPDATE materiel set nom= :nom, description= :description, id_categorie= :id_categorie where id_materiel= :id_materiel;");
+            $req = $this->bdd->prepare("UPDATE materiel set nom= :nom, description= :description where id_materiel= :id_materiel;");
             $req->bindParam(':id_materiel', $materiel['id_materiel']);
             $req->bindParam(':nom', $materiel['nom']);
             $req->bindParam(':description', $materiel['description']);
-            $req->bindParam(':id_materiel', $materiel['id_materiel']);
-            $req->bindParam(':id_categorie', $materiel['id_categorie']);
             return $req->execute(); // return true si tout est ok sinon false
         } catch (Exception $e) {
             var_dump($e);

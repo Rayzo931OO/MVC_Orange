@@ -18,9 +18,9 @@ if (isset($_POST['ajouterUtilisateur'])) {
     $userController->ajouterUser($_POST);
 }
 if (isset($_POST['Modifier'])) {
-    $userController->updateUser($_POST, null);
+    $userController->updateUserWithRole($_POST);
     // var_dump($result);
-    header('Location: index.php');
+    // header('Location: index.php');
 }
 if (isset($_GET['action']) && isset($_GET['id'])) {
     $action = $_GET['action'];
