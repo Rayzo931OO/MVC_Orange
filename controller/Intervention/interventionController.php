@@ -71,9 +71,9 @@ class ControllerIntervention
 		return $this->unModele->selectInterventionByAlphaOrderASC();
 	}
 
-	public function updateInterventionTechnicien($Intervention)
+	public function updateInterventionTechnicien($Intervention, $role)
 	{
-		$this->unModele->updateInterventionTechnicien($Intervention);
+		$this->unModele->updateInterventionTechnicien($Intervention, $role);
 	}
 
 	public function deleteInterventionById($id)

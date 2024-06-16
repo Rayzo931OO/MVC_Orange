@@ -103,59 +103,52 @@ class Intervention
 
     }
 
-    function updateInterventionTechnicien($intervention)
+    function updateInterventionTechnicien($intervention, $role)
     {
-        $dateTimeDebut = new DateTime($intervention['date_inter']);
-        $dateTimeDebutFormated = $dateTimeDebut->format("Y-m-d H:i:s");
-
-        try {
-			$req = $this->bdd->prepare("UPDATE intervention set date_inter= :date_inter, status= :status where id_intervention= :id_intervention;");
-            $req->bindParam(':date_inter', $dateTimeDebutFormated);
-            $req->bindParam(':status', $intervention['status']);
-            $req->bindParam(':id_intervention', $intervention['id_intervention']);
-			$req->execute();
-			$result = $req->fetch();
-			// var_dump($result); // Check how many rows were affected
-			// var_dump($req->rowCount()); // Check how many rows were affected
-
-			return $result; // Returns true if one or more rows were updated
-	  } catch (PDOException $e) {
-			error_log("Error in updateIntervention: " . $e->getMessage());
-			var_dump("Error in updateIntervention: ".$e->getMessage());
-			return false;
-	  }
-    }
-    function updateInterventionAdmin($intervention)
-    {
-        $dateInter = new DateTime($intervention['date_inter']);
-        $dateInterFormated = $dateInter->format("Y-m-d H:i:s");
-
-        if ($intervention['id_materiel'] == "") {
-            $intervention['id_materiel'] = null;
+        // var_dump($intervention);
+        // var_dump($role);
+        $dateTimeInter = new DateTime($intervention['date_inter']);
+        $dateTimeInterFormated = $dateTimeInter->format("Y-m-d H:i:s");
+        if($role == "admin"){
+            try {
+                $req = $this->bdd->prepare("UPDATE intervention set date_inter= :date_inter, status= :status, description= :description, id_materiel= :id_materiel, id_technicien= :id_technicien where id_intervention= :id_intervention;");
+                $req->bindParam(':date_inter', $dateTimeInterFormated);
+                $req->bindParam(':status', $intervention['status']);
+                $req->bindParam(':id_materiel', $intervention['id_materiel']);
+                $req->bindParam(':description', $intervention['description']);
+                $req->bindParam(':id_technicien', $intervention['id_technicien']);
+                $req->bindParam(':id_intervention', $intervention['id_intervention']);
+                $req->execute();
+                $result = $req->fetch();
+                // var_dump($result); // Check how many rows were affected
+                // var_dump($req->rowCount()); // Check how many rows were affected
+    
+                return $result; // Returns true if one or more rows were updated
+          } catch (PDOException $e) {
+                error_log("Error in updateIntervention: " . $e->getMessage());
+                var_dump("Error in updateIntervention: ".$e->getMessage());
+                return false;
+          }
+        }else if($role == "technicien"){
+            try {
+                $req = $this->bdd->prepare("UPDATE intervention set date_inter= :date_inter, status= :status where id_intervention= :id_intervention;");
+                $req->bindParam(':date_inter', $dateTimeInterFormated);
+                $req->bindParam(':status', $intervention['status']);
+                $req->bindParam(':id_intervention', $intervention['id_intervention']);
+                $req->execute();
+                $result = $req->fetch();
+                // var_dump($result); // Check how many rows were affected
+                // var_dump($req->rowCount()); // Check how many rows were affected
+    
+                return $result; // Returns true if one or more rows were updated
+          } catch (PDOException $e) {
+                error_log("Error in updateIntervention: " . $e->getMessage());
+                var_dump("Error in updateIntervention: ".$e->getMessage());
+                return false;
+          }
         }
-        if ($intervention['id_logiciel'] == "") {
-            $intervention['id_logiciel'] = null;
-        }
 
-        try {
-			$req = $this->bdd->prepare("UPDATE intervention set date_inter= :date_inter, status= :status, description= :description, id_materiel= :id_materiel, id_technicien= :id_technicien where id_intervention= :id_intervention;");
-            $req->bindParam(':date_inter', $dateInterFormated);
-            $req->bindParam(':status', $intervention['status']);
-            $req->bindParam(':id_materiel', $intervention['id_materiel']);
-            $req->bindParam(':description', $intervention['description']);
-            $req->bindParam(':id_technicien', $intervention['id_technicien']);
-            $req->bindParam(':id_intervention', $intervention['id_intervention']);
-			$req->execute();
-			$result = $req->fetch();
-			// var_dump($result); // Check how many rows were affected
-			// var_dump($req->rowCount()); // Check how many rows were affected
-
-			return $result; // Returns true if one or more rows were updated
-	  } catch (PDOException $e) {
-			error_log("Error in updateIntervention: " . $e->getMessage());
-			var_dump("Error in updateIntervention: ".$e->getMessage());
-			return false;
-	  }
+        
     }
 
     function deleteInterventionById($id)

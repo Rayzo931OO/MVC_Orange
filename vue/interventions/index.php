@@ -20,9 +20,10 @@ $categorieController = new ControllerCategorie($connexionController->getPDO());
 $IsDisabled = "";
 if (isset($_POST['Modifier'])) {
     // var_dump($_POST);
-    $interventionsController->updateInterventionTechnicien($_POST);
+    $interventionsController->updateInterventionTechnicien($_POST, $_SESSION['role']);
     // header('Location: index.php');
 }
+// var_dump($_SESSION);
 if (isset($_POST['Assigner'])) {
     $currentTechnicien = $userController->selectTechnicienById($_SESSION["id"]);
     $interventionsController->assignerTechnicienAIntervention($_POST["id_intervention"], $currentTechnicien["id_utilisateur"]);
