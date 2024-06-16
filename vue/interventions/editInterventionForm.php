@@ -15,7 +15,7 @@ if (substr($_SESSION["role"], 0, 5) == "admin") {
 if ($_SESSION["role"] == "technicien") {
     $isAdmin = false;
     $currentTechnicien = $userController->selectTechnicienById($_SESSION["id"]);
-    if ($currentTechnicien["id_utilisateur"] == $intervention["id_utilisateur"]) {
+    if ($currentTechnicien["id_utilisateur"] == $intervention["id_technicien"]) {
         $assigned = true;
     }
 }
@@ -41,7 +41,7 @@ function generateSelectOptions($items, $currentItem, $idField, $nameField) {
 
 echo '<div>
 <label for="id_materiel">Le materiel</label></br>
-<select name="id_materiel" id="id_materiel" ' . ($formEnabled ? '' : 'disabled') . '>
+<select name="id_materiel" id="id_materiel" ' . ($formEnabled && ($_SESSION["role"] == "admin" || $_SESSION["role"] == "client") ? '' : 'disabled') . '>
 ' . generateSelectOptions($materielController->allMateriel(), $currentMateriel, 'id_materiel', 'nom') . '
 </select>
 </div>';
@@ -63,7 +63,7 @@ echo '<div>
 
 echo '<div>
 <label for="description">Description</label></br>
-<textarea id="description" name="description" placeholder="Problème de.... identifier..." ' . ($formEnabled ? 'required' : 'disabled') . '>' . $intervention["description"] . '</textarea>
+<textarea id="description" name="description" placeholder="Problème de.... identifier..." ' . ($formEnabled && ($_SESSION["role"] == "admin" || $_SESSION["role"] == "client") ? 'required' : 'disabled') . '>' . $intervention["description"] . '</textarea>
 </div>';
 
 if ($formEnabled) {

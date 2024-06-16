@@ -48,8 +48,8 @@ class Intervention
     function selectInterventionByUserId($id)
 	{
 		//ecriture de la requete
-		$req = $this->bdd->prepare("SELECT * from intervention where id_utilisateur= :id_utilisateur;");
-		$req->bindParam(':id_utilisateur', $id);
+		$req = $this->bdd->prepare("SELECT * from intervention where id_client= :id_client;");
+		$req->bindParam(':id_client', $id);
 		$req->execute();
 		return $req->fetchAll();
 	}

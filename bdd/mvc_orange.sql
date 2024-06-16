@@ -34,6 +34,15 @@ CREATE TABLE user_archive (
    role ENUM("client","admin","technicien") NOT NULL
 );
 
+/**
+ * Ce déclencheur est exécuté avant la suppression d'une ligne dans la table "user".
+ * Il effectue les actions suivantes :
+ * 1. Insère la ligne à supprimer dans la table "user_archive".
+ * 2. Supprime les interventions liées en fonction du rôle de l'utilisateur.
+ *    - Si le rôle est "client", supprime les interventions où l'utilisateur est le client.
+ *    - Si le rôle est "technicien", supprime les interventions où l'utilisateur est le technicien.
+ *    - Si le rôle est "admin", aucune action spécifique n'est effectuée.
+ */
 DELIMITER $
 CREATE TRIGGER before_delete_user
 BEFORE DELETE ON user FOR EACH ROW
@@ -63,8 +72,8 @@ CREATE TABLE intervention (
   id_technicien INT NULL,
   id_client INT NOT NULL,
   id_materiel INT,
-  FOREIGN KEY (id_client) REFERENCES user(id_utilisateur),
-  FOREIGN KEY (id_technicien) REFERENCES user(id_utilisateur),
+  FOREIGN KEY (id_client) REFERENCES user(id_utilisateur) ON DELETE CASCADE,
+  FOREIGN KEY (id_technicien) REFERENCES user(id_utilisateur) ON DELETE CASCADE,
   FOREIGN KEY (id_materiel) REFERENCES materiel(id_materiel)
 );
 

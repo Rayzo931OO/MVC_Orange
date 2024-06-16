@@ -21,12 +21,12 @@ $IsDisabled = "";
 if (isset($_POST['Modifier'])) {
     // var_dump($_POST);
     $interventionsController->updateInterventionTechnicien($_POST);
-    header('Location: index.php');
+    // header('Location: index.php');
 }
 if (isset($_POST['Assigner'])) {
     $currentTechnicien = $userController->selectTechnicienById($_SESSION["id"]);
-    $interventionsController->assignerTechnicienAIntervention($_POST["id_intervention"], $currentTechnicien["id_technicien"]);
-    header('Location: index.php');
+    $interventionsController->assignerTechnicienAIntervention($_POST["id_intervention"], $currentTechnicien["id_utilisateur"]);
+    // header('Location: index.php');
 }
 if (isset($_GET['action']) && isset($_GET['id'])) {
     $action = $_GET['action'];
@@ -50,7 +50,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
             $materiels = $materielController->allMateriel();
 
             $tableau = '<input type="hidden" class="peer" name="id_client" placeholder=" " id="id_client" required value="' . $_SESSION["id"] . '"/>';
-            require_once('/interventionForm.php');
+            require_once('./interventionForm.php');
         } else if (substr($_SESSION["role"], 0, 5) == "admin") {
             // $materiels = $materielController->selectMaterielById($_POST["materiel"]);
             $materiels = $materielController->allMateriel();
@@ -93,7 +93,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
             require_once('./interventionForm.php');
         }
     }
-    if (isset($_POST["RecherchezAdmin"])) {
+    if (isset($_POST["RecherchezAdmin"]) && $_SESSION["role"] === "admin") {
         // $materiels = $materielController->selectLikeMateriel($_POST["search1"]);
         // $materiels = $materielController->selectMaterielById($_POST["materiel"]);
         $techniciens = $userController->selectLikeUser($_POST["technicien"], "technicien");
