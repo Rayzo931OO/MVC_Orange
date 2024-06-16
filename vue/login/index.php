@@ -97,7 +97,7 @@ if (!isset($_SESSION['email'])) {
             </select>
         </div> -->
         <div>
-            <input type="text" role="number" class="peer" name="telephone" id="telephone" placeholder=" " required />
+        <input type="tel" id="telephone" name="telephone" class="peer" placeholder=" " pattern="^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4}|\d{2}(?:[\s.-]?\d{3}){2})$" required>
             <label for="telephone" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">N° de mobile Orange</label>
         </div>
         <div>

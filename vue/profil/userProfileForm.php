@@ -16,7 +16,7 @@ echo '
 </label>
 </div>
 <div>
-<input type="text" id="telephone" name="telephone" value="'.$_SESSION["telephone"].'" class="peer" placeholder=" " required>
+<input type="tel" id="telephone" name="telephone" class="peer" placeholder=" " value="'.$_SESSION["telephone"].'" value="' . $user["telephone"] . '" pattern="^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4}|\d{2}(?:[\s.-]?\d{3}){2})$" required>
 <label for="telephone" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">Numéro de
     téléphone </label>
 </div>
