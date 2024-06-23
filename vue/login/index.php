@@ -27,6 +27,7 @@ if (!isset($_SESSION['email'])) {
             $_SESSION['prenom'] = $unUser['prenom'];
             $_SESSION['role'] = $unUser['role'];
             $_SESSION["telephone"] = $unUser["telephone"];
+            $_SESSION["sexe"] = $unUser["sexe"];
             $_SESSION["adresse"] = $unUser["adresse"];
             $_SESSION["code_postal"] = $unUser["code_postal"];
             $_SESSION["id"] = $unUser["id_utilisateur"];
@@ -63,6 +64,7 @@ if (!isset($_SESSION['email'])) {
             $_SESSION['prenom'] = $unUser['prenom'];
             $_SESSION['role'] = $unUser['role'];
             $_SESSION["telephone"] = $unUser["telephone"];
+            $_SESSION["sexe"] = $unUser["sexe"];
             $_SESSION["adresse"] = $unUser["adresse"];
             $_SESSION["code_postal"] = $unUser["code_postal"];
             $_SESSION["id"] = $unUser["id_utilisateur"];
@@ -99,6 +101,11 @@ if (!isset($_SESSION['email'])) {
         <div>
         <input type="tel" id="telephone" name="telephone" class="peer" placeholder=" " pattern="^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4}|\d{2}(?:[\s.-]?\d{3}){2})$" required>
             <label for="telephone" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">N° de mobile Orange</label>
+        </div>
+        <div>
+        <select type="sexe" id="sexe" name="sexe" required>
+            <option value="homme">Homme</option>
+            <option value="femme">Femme</option></select>
         </div>
         <div>
             <input type="password" class="peer" name="mot_de_passe" placeholder=" " id="mot_de_passe" required />

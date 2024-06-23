@@ -9,7 +9,7 @@ $formattedDateTimeDebut = $dateTimeDebut->format("Y-m-d\TH:i:s");
 
 $assigned = false;
 $isAdmin = false;
-if (substr($_SESSION["role"], 0, 5) == "admin") {
+if (substr($_SESSION["role"], 0, 5) == "admin" || $_SESSION["role"] == "superviseur") {
     $isAdmin = true;
 }
 if ($_SESSION["role"] == "technicien") {
@@ -41,7 +41,7 @@ function generateSelectOptions($items, $currentItem, $idField, $nameField) {
 
 echo '<div>
 <label for="id_materiel">Le materiel</label></br>
-<select name="id_materiel" id="id_materiel" ' . ($formEnabled && ($_SESSION["role"] == "admin" || $_SESSION["role"] == "client") ? '' : 'disabled') . '>
+<select name="id_materiel" id="id_materiel" ' . ($formEnabled && ($_SESSION["role"] == "admin" || $_SESSION["role"] == "superviseur" || $_SESSION["role"] == "client") ? '' : 'disabled') . '>
 ' . generateSelectOptions($materielController->allMateriel(), $currentMateriel, 'id_materiel', 'nom') . '
 </select>
 </div>';
@@ -63,7 +63,15 @@ echo '<div>
 
 echo '<div>
 <label for="description">Description</label></br>
-<textarea id="description" name="description" placeholder="Problème de.... identifier..." ' . ($formEnabled && ($_SESSION["role"] == "admin" || $_SESSION["role"] == "client") ? 'required' : 'disabled') . '>' . $intervention["description"] . '</textarea>
+<textarea id="description" name="description" placeholder="Problème de.... identifier..." ' . ($formEnabled && ($_SESSION["role"] == "admin" || $_SESSION["role"] == "superviseur" || $_SESSION["role"] == "client") ? 'required' : 'disabled') . '>' . $intervention["description"] . '</textarea>
+</div>';
+
+echo '<div>
+<label for="status">Priorite de l\'intervention</label></br>
+<select name="priorite" id="priorite" ' . ($formEnabled ? 'required' : 'disabled') . '>
+    <option value="urgente"' . ($intervention["priorite"] == "Urgente" ? ' selected="true"' : '') . '> Urgente </option>
+    <option value="mineur"' . ($intervention["priorite"] == "Mineur" ? ' selected="true"' : '') . '> Mineur </option>
+</select>
 </div>';
 
 if ($formEnabled) {

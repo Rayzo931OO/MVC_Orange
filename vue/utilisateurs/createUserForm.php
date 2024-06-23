@@ -6,9 +6,8 @@ echo "<form class='formulaire' action='index.php' method='post'>
             <option value='' disabled selected hidden>le role est:</option>
             <option value='client'>Client</option>
             <option value='technicien'>Technicien</option>
-            <option value='admin1'>Admin grade 1</option>
-            <option value='admin2'>Admin grade 2</option>
-            <option value='admin3'>Admin grade 3</option>
+            <option value='admin'>Admin</option>
+            <option value='superviseur'>Superviseur</option>
         </select>
     </div>
         <div>
@@ -18,6 +17,11 @@ echo "<form class='formulaire' action='index.php' method='post'>
         <div>
             <input type='tel' role='telephone' class='peer' name='telephone' id='telephone' placeholder=' ' required />
             <label for='telephone' class='peer-placeholder-shown:scale-100 peer-focus:-translate-y-6'>N° de mobile Orange</label>
+        </div>
+        <div>
+            <select name='sexe' for='sexe' required>
+            <option value='homme'>Homme</option>
+            <option value='femme'>Femme</option></select>
         </div>
         <div>
             <input type='password' role='password' class='peer' name='mot_de_passe' placeholder=' ' id='mot_de_passe' required />

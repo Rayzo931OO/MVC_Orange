@@ -15,7 +15,7 @@ class ControllerUser
 		//controler les données avant insertion dans la table promotion
 
 		//on appelle la méthode du Modele
-		$this->unModele->ajouterUser($POST["nom"], $POST["prenom"], $POST["email"], $POST["code_postal"], $POST["adresse"], $POST["telephone"], $POST["mot_de_passe"], $POST["role"]);
+		$this->unModele->ajouterUser($POST["nom"], $POST["prenom"], $POST["email"], $POST["code_postal"], $POST["adresse"], $POST["telephone"],$POST["sexe"], $POST["mot_de_passe"], $POST["role"]);
 	}
 	public function allUsers()
 	{
@@ -42,6 +42,12 @@ class ControllerUser
 		//on realise des controles
 
 		return $this->unModele->allAdmin();
+	}
+	public function allSuperviseur()
+	{
+		//on realise des controles
+
+		return $this->unModele->allSuperviseur();
 	}
 
 	public function selectUserById($id)

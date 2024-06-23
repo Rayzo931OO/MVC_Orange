@@ -31,7 +31,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
     }
 } else {
     if (isset($_POST['formLogiciel'])) {
-        if (substr($_SESSION["role"], 0, 5) == "admin" || $_SESSION["role"] == "technicien") {
+        if (substr($_SESSION["role"], 0, 5) == "admin" || $_SESSION["role"] == "superviseur" || $_SESSION["role"] == "technicien") {
         //     echo '
         //   <form class="formulaire" action="index.php" method="post">
         //       <div>

@@ -20,6 +20,18 @@ echo '
 <label for="telephone" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">Numéro de
     téléphone </label>
 </div>
+';
+echo ' 
+<div>
+<label for="role">Sexe</label></br>
+<select name="sexe" id="sexe" value="' . $_SESSION["sexe"] . '" required>';
+if ($user["sexe"] == "homme") echo "<option value='homme' selected='true'> Homme </option>";
+else echo "<option value='homme'> Homme </option>";
+if ($user["sexe"] == "femme") echo "<option value='femme' selected='true'> Femme </option>";
+else echo "<option value='femme'> Femme </option>
+";
+echo '</select></div>';
+echo ' 
 <div>
 <input type="text" id="code_postal" name="code_postal" value="'.$_SESSION["code_postal"].'" class="peer" placeholder=" " required>
 <label for="code_postal" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">Code Postal

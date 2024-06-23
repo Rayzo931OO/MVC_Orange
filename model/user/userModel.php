@@ -8,15 +8,16 @@ class User
 		$this->bdd = $bdd;
 	}
 
-	public function ajouterUser($nom, $prenom, $email, $code_postal, $adresse, $telephone, $mot_de_passe, $role)
+	public function ajouterUser($nom, $prenom, $email, $code_postal, $adresse, $telephone,$sexe, $mot_de_passe, $role)
 	{
-		$req = $this->bdd->prepare("INSERT INTO user (nom, prenom, email, code_postal, adresse, telephone, mot_de_passe, role) VALUES (:nom, :prenom, :email, :code_postal, :adresse, :telephone, :mot_de_passe, :role)");
+		$req = $this->bdd->prepare("INSERT INTO user (nom, prenom, email, code_postal, adresse, telephone,sexe, mot_de_passe, role) VALUES (:nom, :prenom, :email, :code_postal, :adresse, :telephone, :sexe, :mot_de_passe, :role)");
 		$req->bindParam(':nom', $nom);
 		$req->bindParam(':prenom', $prenom);
 		$req->bindParam(':email', $email);
 		$req->bindParam(':code_postal', $code_postal);
 		$req->bindParam(':adresse', $adresse);
 		$req->bindParam(':telephone', $telephone);
+		$req->bindParam(':sexe', $sexe);
 		$req->bindParam(':mot_de_passe', $mot_de_passe);
 		$req->bindParam(':role', $role);
 
@@ -58,6 +59,15 @@ class User
 		return $req->fetchAll();
 	}
 
+	public function allSuperviseur()
+	{
+		//ecriture de la requete
+		$requete = "select * from superviseur_view;";
+		$req = $this->bdd->prepare($requete);
+		$req->execute();
+		return $req->fetchAll();
+	}
+
 	function selectUserById($id)
 	{
 		//ecriture de la requete
@@ -86,7 +96,7 @@ class User
 	function selectLikeUser($mot, $role)
 	{
 		$mot = "%" . $mot . "%";
-		$req = $this->bdd->prepare("SELECT * from user where role= :role and (nom like :mot or prenom like :mot or  email like :mot or telephone like :mot);");
+		$req = $this->bdd->prepare("SELECT * from user where role= :role and (nom like :mot or prenom like :mot or  email like :mot or telephone like :mot or sexe like :mot);");
 		$req->bindParam(':role', $role);
 		$req->bindParam(':mot', $mot);
 		$req->execute();
@@ -96,13 +106,14 @@ class User
 	function updateUser($user)
 	{
 		try {
-			$req = $this->bdd->prepare("select update_user( :id_utilisateur, :nom, :prenom, :code_postal, :adresse, :telephone);");
+			$req = $this->bdd->prepare("select update_user( :id_utilisateur, :nom, :prenom, :code_postal, :adresse, :telephone, :sexe);");
 			$req->bindParam(':id_utilisateur', $user['id']);
 			$req->bindParam(':nom', $user['nom']);
 			$req->bindParam(':prenom', $user['prenom']);
 			$req->bindParam(':code_postal', $user['code_postal']);
 			$req->bindParam(':adresse', $user['adresse']);
 			$req->bindParam(':telephone', $user['telephone']);
+			$req->bindParam(':sexe', $user['sexe']);
 
 			$req->execute();
 			$result = $req->fetch();
@@ -114,6 +125,7 @@ class User
 				$_SESSION["code_postal"] = $user['code_postal'];
 				$_SESSION["adresse"] = $user['adresse'];
 				$_SESSION["telephone"] = $user['telephone'];
+				$_SESSION["sexe"] = $user['sexe'];
 			}
 			return $result; // Returns true if one or more rows were updated
 		} catch (PDOException $e) {
@@ -126,13 +138,14 @@ class User
 	function updateUserWithRole($user)
 	{
 		try {
-			$req = $this->bdd->prepare("select update_user_with_role( :id_utilisateur, :nom, :prenom, :code_postal, :adresse, :telephone, :role);");
+			$req = $this->bdd->prepare("select update_user_with_role( :id_utilisateur, :nom, :prenom, :code_postal, :adresse, :telephone, :sexe, :role);");
 			$req->bindParam(':id_utilisateur', $user['id']);
 			$req->bindParam(':nom', $user['nom']);
 			$req->bindParam(':prenom', $user['prenom']);
 			$req->bindParam(':code_postal', $user['code_postal']);
 			$req->bindParam(':adresse', $user['adresse']);
 			$req->bindParam(':telephone', $user['telephone']);
+			$req->bindParam(':sexe', $user['sexe']);
 			$req->bindParam(':role', $user['role']);
 
 			$req->execute();

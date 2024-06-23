@@ -14,6 +14,8 @@ if ($user["role"] == "technicien") echo "<option value='technicien' selected='tr
 else echo "<option value='technicien'> Technicien </option>";
 if ($user["role"] == "admin") echo "<option value='admin' selected='true'> Admin </option>";
 else echo "<option value='admin'> Admin </option>";
+if ($user["role"] == "superviseur") echo "<option value='superviseur' selected='true'> Superviseur </option>";
+else echo "<option value='superviseur'> Superviseur </option>";
 echo '</select></div>';
 
 echo '<div>
@@ -34,6 +36,18 @@ echo '<div>
     <label for="telephone" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">Numéro de
         téléphone </label>
 </div>
+';
+echo ' 
+<div>
+<label for="role">Sexe</label></br>
+<select name="sexe" id="sexe" value="' . $user["sexe"] . '" required>';
+if ($user["sexe"] == "homme") echo "<option value='homme' selected='true'> Homme </option>";
+else echo "<option value='homme'> Homme </option>";
+if ($user["sexe"] == "femme") echo "<option value='femme' selected='true'> Femme </option>";
+else echo "<option value='femme'> Femme </option>
+";
+echo '</select></div>';
+echo ' 
 <div>
     <input type="text" id="code_postal" name="code_postal" value="' . $user["code_postal"] . '" class="peer" placeholder=" " pattern="^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4}|\d{2}(?:[\s.-]?\d{3}){2})$" required>
     <label for="code_postal" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">Code Postal

@@ -8,14 +8,15 @@ class Intervention
         $this->bdd = $bdd;
     }
 
-    public function ajouterInterventionAdmin($id_client,$date_inter, $status, $description, $id_materiel, $id_technicien)
+    public function ajouterInterventionAdmin($id_client,$date_inter, $status, $description,$priorite, $id_materiel, $id_technicien)
     {
 
-        $req = $this->bdd->prepare("select create_intervention( :date_inter, :status, :description, :id_technicien, :id_materiel, :id_utilisateur);");
+        $req = $this->bdd->prepare("select create_intervention( :date_inter, :status, :description, :priorite, :id_technicien, :id_materiel, :id_utilisateur);");
         $req->bindParam(':id_utilisateur', $id_client);
         $req->bindParam(':date_inter', $date_inter);
         $req->bindParam(':status', $status);
         $req->bindParam(':description', $description);
+        $req->bindParam(':priorite', $priorite);
         $req->bindParam(':id_materiel', $id_materiel);
         $req->bindParam(':id_technicien', $id_technicien);
 
@@ -109,9 +110,10 @@ class Intervention
         $dateTimeDebutFormated = $dateTimeDebut->format("Y-m-d H:i:s");
 
         try {
-			$req = $this->bdd->prepare("UPDATE intervention set date_inter= :date_inter, status= :status where id_intervention= :id_intervention;");
+			$req = $this->bdd->prepare("UPDATE intervention set date_inter= :date_inter, status= :status, priorite = :priorite, where id_intervention= :id_intervention;");
             $req->bindParam(':date_inter', $dateTimeDebutFormated);
             $req->bindParam(':status', $intervention['status']);
+            $req->bindParam(':priorite', $intervention['priorite']);
             $req->bindParam(':id_intervention', $intervention['id_intervention']);
 			$req->execute();
 			$result = $req->fetch();
@@ -133,16 +135,48 @@ class Intervention
         if ($intervention['id_materiel'] == "") {
             $intervention['id_materiel'] = null;
         }
+
+        try {
+			$req = $this->bdd->prepare("UPDATE intervention set date_inter= :date_inter, status= :status, description= :description, priorite= :priorite, id_materiel= :id_materiel where id_intervention= :id_intervention;");
+            $req->bindParam(':date_inter', $dateInterFormated);
+            $req->bindParam(':status', $intervention['status']);
+            $req->bindParam(':id_materiel', $intervention['id_materiel']);
+            $req->bindParam(':description', $intervention['description']);
+            $req->bindParam(':priorite', $intervention['priorite']);
+            // $req->bindParam(':id_technicien', $intervention['id_technicien']);
+            $req->bindParam(':id_intervention', $intervention['id_intervention']);
+			$req->execute();
+			$result = $req->fetch();
+			// var_dump($result); // Check how many rows were affected
+			// var_dump($req->rowCount()); // Check how many rows were affected
+
+			return $result; // Returns true if one or more rows were updated
+	  } catch (PDOException $e) {
+			error_log("Error in updateIntervention: " . $e->getMessage());
+			var_dump("Error in updateIntervention: ".$e->getMessage());
+			return false;
+	  }
+    }
+
+    function updateInterventionSuperviseur($intervention)
+    {
+        $dateInter = new DateTime($intervention['date_inter']);
+        $dateInterFormated = $dateInter->format("Y-m-d H:i:s");
+
+        if ($intervention['id_materiel'] == "") {
+            $intervention['id_materiel'] = null;
+        }
         if ($intervention['id_logiciel'] == "") {
             $intervention['id_logiciel'] = null;
         }
 
         try {
-			$req = $this->bdd->prepare("UPDATE intervention set date_inter= :date_inter, status= :status, description= :description, id_materiel= :id_materiel, id_technicien= :id_technicien where id_intervention= :id_intervention;");
+			$req = $this->bdd->prepare("UPDATE intervention set date_inter= :date_inter, status= :status, description= :description,priorite= :priorite, id_materiel= :id_materiel, id_technicien= :id_technicien where id_intervention= :id_intervention;");
             $req->bindParam(':date_inter', $dateInterFormated);
             $req->bindParam(':status', $intervention['status']);
             $req->bindParam(':id_materiel', $intervention['id_materiel']);
             $req->bindParam(':description', $intervention['description']);
+            $req->bindParam(':priorite', $intervention['priorite']);
             $req->bindParam(':id_technicien', $intervention['id_technicien']);
             $req->bindParam(':id_intervention', $intervention['id_intervention']);
 			$req->execute();
@@ -173,5 +207,28 @@ class Intervention
         $req->bindParam(':id_intervention', $id_intervention);
         $req->execute();
     }
+
+    // j'aimerais une fonction qui nous donne un filtre qui permet de donner les interventions par ordre de priorite
+
+    function selectInterventionByPriorite($priorite)
+    {
+        $req = $this->bdd->prepare("SELECT * FROM intervention ORDER BY priorite = :priorite;");
+        $req->bindParam(':priorite', $priorite);
+        $req->execute();
+        return $req->fetchAll();
+    }
+
+    function selectInterventionUrgentes()
+    {
+        // j'aimerais récupérer la vue nbIntersUrgentes
+
+
+        $req = $this->bdd->prepare("SELECT * FROM nbIntersUrgentes;");
+        $req->execute();
+        return $req->fetchAll();
+    }
+
+
+    
 
 }

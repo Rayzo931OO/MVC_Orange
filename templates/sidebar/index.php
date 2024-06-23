@@ -8,14 +8,14 @@
          <a href="/vue/interventions">Interventions</a>
       </li>
       <?php
-      if (substr($_SESSION["role"], 0, 5) == "admin") {
+      if (substr($_SESSION["role"], 0, 5) == "admin" || $_SESSION["role"] == "superviseur") {
          echo '<li>
             <a href="/vue/utilisateurs">Utilisateurs</a>
          </li>';
       }
       ?>
       <?php
-      if (substr($_SESSION["role"], 0, 5) == "admin" || $_SESSION["role"] == "technicien" ) {
+      if (substr($_SESSION["role"], 0, 5) == "admin" || $_SESSION["role"] == "superviseur" || $_SESSION["role"] == "technicien" ) {
          echo '<li>
          <a href="/vue/materiels">Materiels</a>
       </li>';

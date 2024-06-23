@@ -12,7 +12,7 @@ echo "<br><table class='tableau' border-collapse='collapse'>
         </thead>
         <tbody>";
 foreach ($logiciels as $logiciel) {
-   if (substr($_SESSION["role"], 0, 5) == "admin" || $_SESSION['role'] == "technicien") {
+   if (substr($_SESSION["role"], 0, 5) == "admin" || $_SESSION["role"] == "superviseur" || $_SESSION['role'] == "technicien") {
       echo "<tr>
       <td>" . $logiciel['nom'] . "</td>
       <td>" . $logiciel['description'] . "</td>

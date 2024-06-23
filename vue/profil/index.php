@@ -19,7 +19,7 @@ if (isset($_POST["Supprimer"])) {
     header('Location: ../../index.php');
 }
 require_once("userProfileForm.php");
-if (substr($_SESSION["role"], 0, 5) !== "admin") {
+if (substr($_SESSION["role"], 0, 5) !== "admin" || $_SESSION["role"] == "superviseur") {
     echo '<form class="formulaire" action="" method="post">
         <div>
             <button type="submit" id="Supprimer" name="Supprimer">Supprimer mon compte</button>

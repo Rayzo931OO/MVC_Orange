@@ -22,12 +22,17 @@ class ControllerIntervention
 		//controler les données avant insertion dans la table promotion
 
 		//on appelle la méthode du Modele
-		$this->unModele->ajouterInterventionAdmin($POST["id_client"],$POST["date_inter"], $POST["status"], $POST["description"], $POST["id_materiel"], $POST["id_technicien"]);
+		$this->unModele->ajouterInterventionAdmin($POST["id_client"],$POST["date_inter"], $POST["status"], $POST["description"], $POST["priorite"], $POST["id_materiel"], $POST["id_technicien"]);
 	}
 	public function allIntervention()
 	{
 		return $this->unModele->allIntervention();
 		//on realise des controles
+	}
+
+	public function selectInterventionUrgentes()
+	{
+		return $this->unModele->selectInterventionUrgentes();
 	}
 	function selectInterventionByUserId($id)
 	{
@@ -54,11 +59,6 @@ class ControllerIntervention
 		//on realise des controles
 		return $this->unModele->selectLikeInterventionDateDebut($mot);
 	}
-	public function selectLikeInterventionDateFin($mot)
-	{
-		//on realise des controles
-		return $this->unModele->selectLikeInterventionDateFin($mot);
-	}
 	public function selectLikeInterventionStatus($mot)
 	{
 		//on realise des controles
@@ -76,6 +76,11 @@ class ControllerIntervention
 		$this->unModele->updateInterventionTechnicien($Intervention);
 	}
 
+	public function updateInterventionAdmin($Intervention)
+	{
+		$this->unModele->updateInterventionAdmin($Intervention);
+	}
+
 	public function deleteInterventionById($id)
 	{
 		$this->unModele->deleteInterventionById($id);
@@ -83,5 +88,10 @@ class ControllerIntervention
 	public function assignerTechnicienAIntervention($id_intervention, $id_technicien)
 	{
 		$this->unModele->assignerTechnicienAIntervention($id_intervention, $id_technicien);
+	}
+
+	public function selectInterventionByPriorite($priorite)
+	{
+		return $this->unModele->selectInterventionByPriorite($priorite);
 	}
 }

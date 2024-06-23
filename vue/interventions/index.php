@@ -20,7 +20,12 @@ $categorieController = new ControllerCategorie($connexionController->getPDO());
 $IsDisabled = "";
 if (isset($_POST['Modifier'])) {
     // var_dump($_POST);
-    $interventionsController->updateInterventionTechnicien($_POST);
+    if($_SESSION["role"] == "technicien"){
+        $interventionsController->updateInterventionTechnicien($_POST);
+    }elseif($_SESSION["role"] == "admin" || $_SESSION["role"] == "superviseur"){
+        $interventionsController->updateInterventionAdmin($_POST);
+    }
+    
     // header('Location: index.php');
 }
 if (isset($_POST['Assigner'])) {
@@ -51,7 +56,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
 
             $tableau = '<input type="hidden" class="peer" name="id_client" placeholder=" " id="id_client" required value="' . $_SESSION["id"] . '"/>';
             require_once('./interventionForm.php');
-        } else if (substr($_SESSION["role"], 0, 5) == "admin") {
+        } else if (substr($_SESSION["role"], 0, 5) == "admin" || $_SESSION["role"] == "superviseur") {
             // $materiels = $materielController->selectMaterielById($_POST["materiel"]);
             $materiels = $materielController->allMateriel();
             // var_dump($materiels);
@@ -93,7 +98,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
             require_once('./interventionForm.php');
         }
     }
-    if (isset($_POST["RecherchezAdmin"]) && $_SESSION["role"] === "admin") {
+    if (isset($_POST["RecherchezAdmin"]) && ($_SESSION["role"] === "admin" || $_SESSION["role"] === "superviseur")) {
         // $materiels = $materielController->selectLikeMateriel($_POST["search1"]);
         // $materiels = $materielController->selectMaterielById($_POST["materiel"]);
         $techniciens = $userController->selectLikeUser($_POST["technicien"], "technicien");
@@ -119,6 +124,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                 <th>Prénom</th>
                 <th>Email</th>
                 <th>Téléphone</th>
+                <th>Sexe</th>
             </tr>
         </thead>
         <tbody>";
@@ -145,7 +151,8 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
             <td>" . $technicien['nom'] . "</td>
             <td>" . $technicien['prenom'] . "</td>
             <td>" . $technicien['email'] . "</td>
-            <td>" . $technicien['telephone'] . "</td>";
+            <td>" . $technicien['telephone'] . "</td>
+            <td>" . $technicien['sexe'] . "</td>";
         }
         $tableau = $tableau . "</tbody></table>";
         $tableau2 = $tableau2 . "</tbody></table>";
@@ -191,98 +198,108 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                 </button>
             </div>
             </form>";
+        } else {
+            $IsDisabled = "disabled";
         }
+        
+        
 
-        // FILTRE DEBUT ------------------------------------
-
-
-        // echo '
-        // <div class="filters">
-        // <form class="formulaire" action="index.php" method="post">
-        // <div style="display:grid;grid-auto-flow: column;align-items: center;gap: 20px;">
-        //     <div>
-        //     <input type="date" class="peer" id="date_debut_filter" name="date_debut_filter" placeholder=" " required>
-        //     <label for="date_debut_filter" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">
-        //         Debut
-        //     </label>
-        //     </div>
-        //     <button class="filter_btn" type="submit" name="filter" value="filter">
-        //     ✅
-        //     </button>
-        // </div></form>';
-        // echo '
-        // <form class="formulaire" action="index.php" method="post">
-        // <div style="display:grid;grid-auto-flow: column;align-items: center;gap: 20px;">
-        // <div>
-        //     <input type="date" class="peer" id="date_fin_filter" name="date_fin_filter" placeholder=" " required>
-        //     <label for="date_fin_filter" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">
-        //         Fin
-        //     </label>
-        //     </div>
-        //     <button class="filter_btn" type="submit" name="filter" value="filter">
-        //     ✅
-        //     </button>
-        // </div>
-        // </form>';
-        // echo '<form class="formulaire" action="index.php" method="post">
-        // <div style="display:grid;grid-auto-flow: column;align-items: center;gap: 20px;">
-        //     <button class="ASC_filter" type="submit" name="ASC_filter" value="ASC_filter">
-        //     ASC
-        //     </button>
-        // </div>
-        // </form>';
-        // echo '
-        // <form class="formulaire" action="index.php" method="post">
-        //     <div style="display:grid;grid-auto-flow: column;align-items: center;gap: 20px;">
-        //     <div>
-        //         <label for="status">Statut de l\'intervention</label></br>
-        //         <select name="status_filter" id="status_filter" required>
-        //             <option value="En cours"> En cours </option>
-        //             <option value="Terminer"> Terminer </option>
-        //         </select>
-        //         </div>
-        //         <button class="filter_btn" type="submit" name="filter" value="filter">
-        //         ✅
-        //         </button>
-        //     </div>
-        // </form></div>';
+            // FILTRE DEBUT ------------------------------------
 
 
-        // FILTRE FIN ------------------------------------
+            // echo '
+            // <div class="filters">
+            // <form class="formulaire" action="index.php" method="post">
+            // <div style="display:grid;grid-auto-flow: column;align-items: center;gap: 20px;">
+            //     <div>
+            //     <input type="date" class="peer" id="date_debut_filter" name="date_debut_filter" placeholder=" " required>
+            //     <label for="date_debut_filter" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">
+            //         Debut
+            //     </label>
+            //     </div>
+            //     <button class="filter_btn" type="submit" name="filter" value="filter">
+            //     ✅
+            //     </button>
+            // </div></form>';
+            // echo '
+            // <form class="formulaire" action="index.php" method="post">
+            // <div style="display:grid;grid-auto-flow: column;align-items: center;gap: 20px;">
+            // <div>
+            //     <input type="date" class="peer" id="date_fin_filter" name="date_fin_filter" placeholder=" " required>
+            //     <label for="date_fin_filter" class="peer-placeholder-shown:scale-100 peer-focus:-translate-y-6">
+            //         Fin
+            //     </label>
+            //     </div>
+            //     <button class="filter_btn" type="submit" name="filter" value="filter">
+            //     ✅
+            //     </button>
+            // </div>
+            // </form>';
+            // echo '<form class="formulaire" action="index.php" method="post">
+            // <div style="display:grid;grid-auto-flow: column;align-items: center;gap: 20px;">
+            //     <button class="ASC_filter" type="submit" name="ASC_filter" value="ASC_filter">
+            //     ASC
+            //     </button>
+            // </div>
+            // </form>';
+            // echo '
+            // <form class="formulaire" action="index.php" method="post">
+            //     <div style="display:grid;grid-auto-flow: column;align-items: center;gap: 20px;">
+            //     <div>
+            //         <label for="status">Statut de l\'intervention</label></br>
+            //         <select name="status_filter" id="status_filter" required>
+            //             <option value="En cours"> En cours </option>
+            //             <option value="Terminer"> Terminer </option>
+            //         </select>
+            //         </div>
+            //         <button class="filter_btn" type="submit" name="filter" value="filter">
+            //         ✅
+            //         </button>
+            //     </div>
+            // </form></div>';
 
-        switch (true) {
-            case isset($_POST["date_inter_filter"]):
-                $interventions = $interventionsController->selectLikeInterventionDateDebut($_POST["date_inter_filter"]);
-                break;
-            case isset($_POST["status_filter"]):
-                $interventions = $interventionsController->selectLikeInterventionStatus($_POST["status_filter"]);
-                break;
-            case isset($_POST["ASC_filter"]):
-                $interventions = $interventionsController->selectInterventionByAlphaOrderASC();
-                break;
-            default:
-                if ($_SESSION["role"] == "admin") {
-                    $interventions = $interventionsController->allIntervention();
-                } else if ($_SESSION["role"] == "technicien") {
-                    $interventions = $interventionsController->selectInterventionByTechnicien($userController->selectTechnicienById($_SESSION["id"])["id_utilisateur"]);
-                    $unAssignedInterventions = $interventionsController->selectInterventionNonAssigner();
-                } else if ($_SESSION["role"] == "client") {
-                    $interventions = $interventionsController->selectInterventionByUserId($_SESSION["id"]);
-                    // var_dump($interventions);
-                }
-                break;
+
+            // FILTRE FIN ------------------------------------
+
+            switch (true) {
+                case isset($_POST["date_inter_filter"]):
+                    $interventions = $interventionsController->selectLikeInterventionDateDebut($_POST["date_inter_filter"]);
+                    break;
+                case isset($_POST["status_filter"]):
+                    $interventions = $interventionsController->selectLikeInterventionStatus($_POST["status_filter"]);
+                    break;
+                case isset($_POST["ASC_filter"]):
+                    $interventions = $interventionsController->selectInterventionByAlphaOrderASC();
+                    break;
+                    case isset($_POST["priorite_filter"]):
+                        // var_dump($_POST);
+                        $interventions = $interventionsController->selectInterventionByPriorite($_POST["priorite"]);
+                        break;
+                default:
+                    if ($_SESSION["role"] == "admin" || $_SESSION["role"] == "superviseur") {
+                        $interventions = $interventionsController->allIntervention();
+                        $rapport = $interventionsController->selectInterventionUrgentes();
+                    } else if ($_SESSION["role"] == "technicien") {
+                        $interventions = $interventionsController->selectInterventionByTechnicien($userController->selectTechnicienById($_SESSION["id"])["id_utilisateur"]);
+                        $unAssignedInterventions = $interventionsController->selectInterventionNonAssigner();
+                    } else if ($_SESSION["role"] == "client") {
+                        $interventions = $interventionsController->selectInterventionByUserId($_SESSION["id"]);
+                        // var_dump($interventions);
+                    }
+                    break;
+            }
+
+            require_once('allInterventions.php');
+        
+        if (isset($_POST["Ajoutez"])) {
+            if ($_SESSION["role"] == "client") {
+                $_POST["id_utilisateur"] = $_SESSION["id"];
+                $interventionsController->ajouterInterventionClient($_POST);
+            } else if (substr($_SESSION["role"], 0, 5) == "admin" || $_SESSION["role"] == "superviseur") {
+                $interventionsController->ajouterInterventionAdmin($_POST);
+            }
+            header('Location: index.php');
         }
-
-        require_once('allInterventions.php');
-    }
-    if (isset($_POST["Ajoutez"])) {
-        if ($_SESSION["role"] == "client") {
-            $_POST["id_utilisateur"] = $_SESSION["id"];
-            $interventionsController->ajouterInterventionClient($_POST);
-        } else if (substr($_SESSION["role"], 0, 5) == "admin") {
-            $interventionsController->ajouterInterventionAdmin($_POST);
-        }
-        header('Location: index.php');
     }
 }
 ?>

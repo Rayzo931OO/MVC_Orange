@@ -30,7 +30,7 @@ $minDate = $today['year'] . '-' . $today['mon'] . '-' . $today['mday'];
     }
 
 
-    if (substr($_SESSION["role"], 0, 5) == "admin") {
+    if (substr($_SESSION["role"], 0, 5) == "admin" || $_SESSION["role"] == "superviseur") {
         echo '
     <div>
         <input type="datetime-local" min="' . $minDate . '" class="peer" id="date_inter" name="date_inter" placeholder=" ">
@@ -47,6 +47,15 @@ $minDate = $today['year'] . '-' . $today['mon'] . '-' . $today['mday'];
             <option value="Terminer">Terminer</option>
         </select>
     </div>';
+
+    echo '
+    <div>
+        <label for="priorite">Priorite de l\'intervention</label></br>
+        <select name="priorite" id="priorite" required>
+            <option value="Urgente">Urgente</option>
+            <option value="Mineur">Mineur</option>
+        </select>
+    </div>';
     }
 
     echo '<div>
@@ -55,6 +64,8 @@ $minDate = $today['year'] . '-' . $today['mon'] . '-' . $today['mday'];
     </div>
     <button type="submit" class="' . $IsDisabled . '" id="Ajoutez" name="Ajoutez" value="Ajoutez" ' . $IsDisabled . ' >Ajoutez</button>
     </form>';
+
+    
 
     // filtrer les interventions par type d'intervention showDropdown(this.value)
     // echo '
